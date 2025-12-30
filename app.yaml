@@ -1,0 +1,83 @@
+$sources:
+  - !pw.io.fs.read
+    path: data
+    format: binary
+    with_metadata: true
+  - !pw.io.gdrive.read
+    object_id: "1oLE60NfEO8K0BNBK_48Q_VqznUX7Ypxi"
+    service_user_credentials_file: gdrive_indexer.json
+    file_name_pattern:
+      - "*.pdf"
+      - "*.pptx"
+    object_size_limit: null
+    with_metadata: true
+    refresh_interval: 30
+
+$parser_llm: !pw.xpacks.llm.llms.LiteLLMChat
+  model: "gemini/gemini-2.0-flash"
+  retry_strategy: !pw.udfs.ExponentialBackoffRetryStrategy
+    max_retries: 2
+  cache_strategy: !pw.udfs.DefaultCache {}
+  temperature: 0
+
+$parse_prompt: |
+  Apply OCR to following page and respond in markdown. 
+  Tables should be formatted as markdown tables. Make sure to include table information such as title in a readable format.
+  Spell out all the text that is on the page.
+
+$embedder: !pw.xpacks.llm.embedders.GeminiEmbedder
+  model: "models/embedding-001"
+  cache_strategy: !pw.udfs.DefaultCache {}
+  retry_strategy: !pw.udfs.ExponentialBackoffRetryStrategy
+    max_retries: 3
+
+$splitter: !pw.xpacks.llm.splitters.TokenCountSplitter
+  min_tokens: 200
+  max_tokens: 750
+
+$parser: !pw.xpacks.llm.parsers.SlideParser
+  llm: $parser_llm
+  parse_prompt: $parse_prompt
+  image_size: !!python/tuple [800, 1200]
+  cache_strategy: !pw.udfs.DefaultCache {}
+
+$knn_index: !pw.stdlib.indexing.BruteForceKnnFactory
+  reserved_space: 1000
+  embedder: $embedder
+  metric: !pw.engine.BruteForceKnnMetricKind.COS
+
+$bm25_index: !pw.stdlib.indexing.TantivyBM25Factory
+
+$retriever_factory: !pw.stdlib.indexing.HybridIndexFactory
+  retriever_factories:
+    - $knn_index
+    - $bm25_index
+  
+$document_store: !pw.xpacks.llm.document_store.DocumentStore
+  docs: $sources
+  parser: $parser
+  splitter: $splitter
+  retriever_factory: $retriever_factory
+
+$llm: !pw.xpacks.llm.llms.LiteLLMChat
+  model: "gemini/gemini-2.0-flash"
+  retry_strategy: !pw.udfs.ExponentialBackoffRetryStrategy
+    max_retries: 2
+  cache_strategy: !pw.udfs.DefaultCache {}
+  temperature: 0
+  verbose: true
+
+$prompt_template: |
+  You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know.
+  Question: {query} 
+
+  Context: {context}
+
+  Answer:
+
+question_answerer: !pw.xpacks.llm.question_answering.BaseRAGQuestionAnswerer
+  llm: $llm
+  indexer: $document_store
+  prompt_template: $prompt_template
+  # Optionally, you can adjust the number of documents included in the context
+  # search_topk: 6

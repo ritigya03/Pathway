@@ -157,7 +157,7 @@ print("\n🌐 Starting REST API server...")
 server = QARestServer(
     host="0.0.0.0", 
     port=8080, 
-    rag_question_answerer=RoutedQA()
+    rag_question_answerer=news_question_answerer
 )
 
 print("🚀 Agentic Router Running!")

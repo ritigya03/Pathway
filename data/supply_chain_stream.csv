@@ -1,6 +1,0 @@
-record_id,buyer_firm,supplier_firm,product_name,product_category,quantity,unit,source_location,destination_location,contract_id,start_date,end_date,last_updated
-1,Firm A,Firm B,Steel Rods,Raw Materials,500,tons,India,Germany,C-A-B-001,2024-01-01,2026-01-01,2026-01-07 10:00
-2,Firm A,Firm C,Microchips,Electronics,20000,units,Taiwan,India,C-A-C-002,2025-06-01,2027-06-01,2026-01-07 10:05
-3,Firm B,Firm D,Industrial Chemicals,Chemicals,1200,kg,China,France,C-B-D-003,2024-03-15,2025-03-15,2026-01-07 10:10
-4,Firm C,Firm E,Lithium Cells,Energy,8000,units,Chile,USA,C-C-E-004,2025-01-01,2028-01-01,2026-01-07 10:15
-5,Firm A,Firm B,Aluminium ,Raw Materials,300,tons,UAE,Germany,C-A-B-001,2024-01-01,2026-01-01,2026-01-07 10:20

@@ -1,25 +1,24 @@
 import time
 import csv
-import os
 from pathlib import Path
 
 # ---------------------------------
-# Resolve paths RELATIVE to project root
+# Resolve project root
 # ---------------------------------
-BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-DATA_DIR = BASE_DIR / "pathway" / "supply_chain" / "data"
-MASTER_FILE = DATA_DIR / "master_supply_chain.csv"
-STREAM_FILE = DATA_DIR / "supply_chain_stream.csv"
+# Paths based on YOUR folder structure
+MASTER_FILE = PROJECT_ROOT / "simulate_data_stream" / "master_supply_chain.csv"
+STREAM_FILE = PROJECT_ROOT / "supply_chain" / "data" / "supply_chain_stream.csv"
 
-INTERVAL_SEC = 30  # write one record every 30 seconds
+INTERVAL_SEC = 30  # seconds
 
 
 def simulate_stream():
     if not MASTER_FILE.exists():
         raise FileNotFoundError(f"Master CSV not found: {MASTER_FILE}")
 
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    STREAM_FILE.parent.mkdir(parents=True, exist_ok=True)
 
     # Read master file
     with MASTER_FILE.open(newline="", encoding="utf-8") as f:
@@ -28,7 +27,7 @@ def simulate_stream():
     header = reader[0]
     rows = reader[1:]
 
-    # Reset stream file WITH header
+    # Reset stream file with header
     with STREAM_FILE.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(header)

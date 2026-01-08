@@ -1,6 +1,18 @@
 record_id,buyer_firm,supplier_firm,product_name,product_category,quantity,unit,source_location,destination_location,contract_id,start_date,end_date,last_updated
-1,Firm A,Firm B,Steel Rods,Raw Materials,500,tons,India,Germany,C-A-B-001,2024-01-01,2026-01-01,2026-01-07 10:00
-2,Firm A,Firm C,Microchips,Electronics,20000,units,Taiwan,India,C-A-C-002,2025-06-01,2027-06-01,2026-01-07 10:05
-3,Firm B,Firm D,Industrial Chemicals,Chemicals,1200,kg,China,France,C-B-D-003,2024-03-15,2025-03-15,2026-01-07 10:10
-4,Firm C,Firm E,Lithium Cells,Energy,8000,units,Chile,USA,C-C-E-004,2025-01-01,2028-01-01,2026-01-07 10:15
-5,Firm A,Firm B,Aluminium ,Raw Materials,300,tons,UAE,Germany,C-A-B-001,2024-01-01,2026-01-01,2026-01-07 10:20
+1001,RetailHub,EuroChem,Fertilizer,Chemicals,6470.88,kg,China,UK,C-6888,2025-10-07,2026-08-10,2026-01-07
+1002,MegaStores,UAE Plastics,Fertilizer,Chemicals,40525.17,kg,Bangladesh,Japan,C-9783,2025-09-03,2026-05-06,2026-01-07
+1003,GlobalMart,Pacific Textiles,Copper Wire,Metals,13506.37,kg,Bangladesh,India,C-9565,2025-08-03,2027-04-23,2026-01-07
+1004,RetailHub,Asia Metals Ltd,Plastic Granules,Polymers,20794.31,kg,UAE,USA,C-8755,2026-02-01,2027-06-27,2026-01-07
+1005,GlobalMart,Nordic Components,Plastic Granules,Polymers,8947.12,kg,Vietnam,Germany,C-3153,2025-07-25,2027-07-04,2026-01-07
+1006,RetailHub,Taiwan MicroTech,Steel Rods,Metals,31984.1,kg,Turkey,UK,C-3676,2025-09-07,2027-07-24,2026-01-07
+1007,GlobalMart,Vietnam Steel,Microchips,Electronics,10607.86,units,UAE,Germany,C-5393,2025-11-18,2027-05-18,2026-01-07
+1008,RetailHub,Pacific Textiles,Fertilizer,Chemicals,48693.14,kg,UAE,Germany,C-2019,2025-09-01,2027-08-15,2026-01-07
+1009,MegaStores,Nordic Components,Copper Wire,Metals,5023.05,kg,China,USA,C-8612,2025-08-16,2026-03-07,2026-01-07
+1010,GlobalMart,LatAm Agri,Textiles,Apparel,4638.02,meters,China,UK,C-4866,2025-10-24,2027-03-31,2026-01-07
+1011,RetailHub,UAE Plastics,Microchips,Electronics,38559.46,units,India,USA,C-8399,2025-10-04,2027-08-20,2026-01-07
+1012,TradeCorp,Pacific Textiles,Textiles,Apparel,20003.65,meters,Chile,Japan,C-4329,2025-09-07,2025-12-15,2026-01-07
+1013,GlobalMart,Pacific Textiles,Textiles,Apparel,4442.11,meters,Brazil,UK,C-1039,2025-07-21,2026-11-21,2026-01-07
+1014,RetailHub,Asia Metals Ltd,Copper Wire,Metals,43191.63,kg,Bangladesh,Germany,C-9608,2025-07-19,2026-12-28,2026-01-07
+1015,GlobalMart,Nordic Components,Microchips,Electronics,42213.54,units,Turkey,Germany,C-2911,2026-01-24,2026-08-11,2026-01-07
+1016,SupplyNet,Nordic Components,Plastic Granules,Polymers,5784.16,kg,Taiwan,Germany,C-8614,2025-11-01,2026-02-24,2026-01-07
+1017,TradeCorp,Taiwan MicroTech,Copper Wire,Metals,34854.87,kg,Bangladesh,Germany,C-3117,2026-01-06,2027-06-26,2026-01-07

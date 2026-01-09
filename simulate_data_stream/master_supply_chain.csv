@@ -1,51 +1,60 @@
-record_id,buyer_firm,supplier_firm,product_name,product_category,quantity,unit,source_location,destination_location,contract_id,start_date,end_date,last_updated
-1001,RetailHub,EuroChem,Fertilizer,Chemicals,6470.88,kg,China,UK,C-6888,2025-10-07,2026-08-10,2026-01-07
-1002,MegaStores,UAE Plastics,Fertilizer,Chemicals,40525.17,kg,Bangladesh,Japan,C-9783,2025-09-03,2026-05-06,2026-01-07
-1003,GlobalMart,Pacific Textiles,Copper Wire,Metals,13506.37,kg,Bangladesh,India,C-9565,2025-08-03,2027-04-23,2026-01-07
-1004,RetailHub,Asia Metals Ltd,Plastic Granules,Polymers,20794.31,kg,UAE,USA,C-8755,2026-02-01,2027-06-27,2026-01-07
-1005,GlobalMart,Nordic Components,Plastic Granules,Polymers,8947.12,kg,Vietnam,Germany,C-3153,2025-07-25,2027-07-04,2026-01-07
-1006,RetailHub,Taiwan MicroTech,Steel Rods,Metals,31984.1,kg,Turkey,UK,C-3676,2025-09-07,2027-07-24,2026-01-07
-1007,GlobalMart,Vietnam Steel,Microchips,Electronics,10607.86,units,UAE,Germany,C-5393,2025-11-18,2027-05-18,2026-01-07
-1008,RetailHub,Pacific Textiles,Fertilizer,Chemicals,48693.14,kg,UAE,Germany,C-2019,2025-09-01,2027-08-15,2026-01-07
-1009,MegaStores,Nordic Components,Copper Wire,Metals,5023.05,kg,China,USA,C-8612,2025-08-16,2026-03-07,2026-01-07
-1010,GlobalMart,LatAm Agri,Textiles,Apparel,4638.02,meters,China,UK,C-4866,2025-10-24,2027-03-31,2026-01-07
-1011,RetailHub,UAE Plastics,Microchips,Electronics,38559.46,units,India,USA,C-8399,2025-10-04,2027-08-20,2026-01-07
-1012,TradeCorp,Pacific Textiles,Textiles,Apparel,20003.65,meters,Chile,Japan,C-4329,2025-09-07,2025-12-15,2026-01-07
-1013,GlobalMart,Pacific Textiles,Textiles,Apparel,4442.11,meters,Brazil,UK,C-1039,2025-07-21,2026-11-21,2026-01-07
-1014,RetailHub,Asia Metals Ltd,Copper Wire,Metals,43191.63,kg,Bangladesh,Germany,C-9608,2025-07-19,2026-12-28,2026-01-07
-1015,GlobalMart,Nordic Components,Microchips,Electronics,42213.54,units,Turkey,Germany,C-2911,2026-01-24,2026-08-11,2026-01-07
-1016,SupplyNet,Nordic Components,Plastic Granules,Polymers,5784.16,kg,Taiwan,Germany,C-8614,2025-11-01,2026-02-24,2026-01-07
-1017,TradeCorp,Taiwan MicroTech,Copper Wire,Metals,34854.87,kg,Bangladesh,Germany,C-3117,2026-01-06,2027-06-26,2026-01-07
-1018,SupplyNet,Asia Metals Ltd,Plastic Granules,Polymers,13319.51,kg,China,UK,C-4256,2025-07-25,2026-04-03,2026-01-07
-1019,SupplyNet,LatAm Agri,Steel Rods,Metals,13794.14,kg,Vietnam,USA,C-4121,2025-10-09,2027-02-15,2026-01-07
-1020,SupplyNet,Asia Metals Ltd,Fertilizer,Chemicals,29151.78,kg,Brazil,USA,C-8034,2026-01-02,2027-02-07,2026-01-07
-1021,TradeCorp,UAE Plastics,Textiles,Apparel,42540.46,meters,India,Germany,C-5342,2025-12-02,2027-07-30,2026-01-07
-1022,RetailHub,UAE Plastics,Microchips,Electronics,12550.65,units,Turkey,Japan,C-3466,2025-09-15,2027-05-11,2026-01-07
-1023,MegaStores,Chile Copper Co,Microchips,Electronics,13713.48,units,Vietnam,Germany,C-2265,2025-07-25,2027-06-18,2026-01-07
-1024,MegaStores,Taiwan MicroTech,Plastic Granules,Polymers,24737.97,kg,Turkey,Japan,C-1374,2025-09-10,2025-12-21,2026-01-07
-1025,SupplyNet,Chile Copper Co,Fertilizer,Chemicals,18686.65,kg,China,Japan,C-3307,2025-12-14,2026-05-01,2026-01-07
-1026,RetailHub,Nordic Components,Copper Wire,Metals,12563.32,kg,Vietnam,Germany,C-5125,2026-01-28,2027-02-07,2026-01-07
-1027,GlobalMart,Vietnam Steel,Microchips,Electronics,18225.74,units,India,India,C-1152,2025-12-26,2027-10-30,2026-01-07
-1028,MegaStores,Asia Metals Ltd,Copper Wire,Metals,20404.55,kg,Turkey,India,C-3330,2026-01-06,2026-06-09,2026-01-07
-1029,RetailHub,Nordic Components,Fertilizer,Chemicals,20999.94,kg,India,Germany,C-4404,2025-10-02,2026-05-21,2026-01-07
-1030,MegaStores,EuroChem,Microchips,Electronics,27178.63,units,Bangladesh,USA,C-6316,2025-10-07,2027-03-24,2026-01-07
-1031,MegaStores,Vietnam Steel,Fertilizer,Chemicals,41628.4,kg,Bangladesh,UK,C-8455,2025-12-16,2027-09-21,2026-01-07
-1032,SupplyNet,LatAm Agri,Textiles,Apparel,28182.36,meters,China,Germany,C-6969,2025-07-11,2026-12-28,2026-01-07
-1033,MegaStores,Vietnam Steel,Textiles,Apparel,12319.5,meters,Chile,USA,C-1654,2025-10-13,2026-08-29,2026-01-07
-1034,MegaStores,Nordic Components,Steel Rods,Metals,48824.83,kg,Vietnam,Germany,C-6815,2025-09-25,2026-09-21,2026-01-07
-1035,TradeCorp,EuroChem,Plastic Granules,Polymers,16243.52,kg,Turkey,India,C-7587,2025-08-01,2026-06-04,2026-01-07
-1036,GlobalMart,Chile Copper Co,Steel Rods,Metals,19564.02,kg,Bangladesh,USA,C-5794,2026-01-07,2027-12-13,2026-01-07
-1037,TradeCorp,Taiwan MicroTech,Textiles,Apparel,18508.21,meters,Chile,Japan,C-6532,2026-01-07,2026-11-04,2026-01-07
-1038,MegaStores,UAE Plastics,Steel Rods,Metals,9460.07,kg,Bangladesh,UK,C-1986,2025-09-26,2027-05-04,2026-01-07
-1039,SupplyNet,LatAm Agri,Microchips,Electronics,47570.9,units,Turkey,Japan,C-2430,2026-01-11,2026-09-23,2026-01-07
-1040,SupplyNet,Chile Copper Co,Textiles,Apparel,15386.81,meters,Taiwan,Japan,C-7272,2025-12-21,2027-09-22,2026-01-07
-1041,TradeCorp,Pacific Textiles,Steel Rods,Metals,47949.86,kg,UAE,UK,C-4705,2025-08-22,2027-04-21,2026-01-07
-1042,RetailHub,Chile Copper Co,Plastic Granules,Polymers,17873.87,kg,Vietnam,USA,C-5985,2025-08-15,2026-10-07,2026-01-07
-1043,RetailHub,Asia Metals Ltd,Steel Rods,Metals,16592.13,kg,Chile,India,C-4984,2026-02-06,2026-11-30,2026-01-07
-1044,RetailHub,Chile Copper Co,Fertilizer,Chemicals,35600.61,kg,Vietnam,India,C-8010,2025-09-02,2026-04-24,2026-01-07
-1045,MegaStores,Taiwan MicroTech,Microchips,Electronics,10791.53,units,Turkey,UK,C-7198,2025-08-17,2026-10-21,2026-01-07
-1046,TradeCorp,UAE Plastics,Plastic Granules,Polymers,16912.2,kg,Brazil,UK,C-6968,2025-08-22,2026-04-08,2026-01-07
-1047,SupplyNet,Nordic Components,Copper Wire,Metals,3396.02,kg,Vietnam,India,C-5635,2025-08-22,2026-02-05,2026-01-07
-1048,TradeCorp,Taiwan MicroTech,Plastic Granules,Polymers,26655.6,kg,China,Germany,C-4622,2025-08-07,2026-10-11,2026-01-07
-1049,SupplyNet,Pacific Textiles,Copper Wire,Metals,1428.57,kg,China,Germany,C-5636,2025-12-16,2027-10-03,2026-01-07
-1050,GlobalMart,Nordic Components,Textiles,Apparel,30553.29,meters,Taiwan,UK,C-2255,2025-08-08,2026-07-07,2026-01-07
+record_id,buyer_firm,supplier_firm,contract_id,product_name,product_category,quantity,unit,start_date,end_date,last_updated,source_country,source_region,source_city,destination_country,supplier_industry,primary_transport_mode,port_dependency
+1,ZentivoCorp,Flarix Industries,CTR-1001,Steel Sheets,Metals,1200,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
+2,ZentivoCorp,Flarix Industries,CTR-1001,Steel Coils,Metals,900,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
+3,ZentivoCorp,Flarix Industries,CTR-1001,Aluminum Plates,Metals,700,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
+4,ZentivoCorp,Flarix Industries,CTR-1001,Copper Rods,Metals,600,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
+5,ZentivoCorp,Flarix Industries,CTR-1001,Iron Slabs,Metals,1500,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
+
+6,ZentivoCorp,Noventra Labs,CTR-2002,Pharma Compounds,Chemicals,3000,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
+7,ZentivoCorp,Noventra Labs,CTR-2002,API Chemicals,Chemicals,2800,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
+8,ZentivoCorp,Noventra Labs,CTR-2002,Medical Reagents,Chemicals,1500,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
+9,ZentivoCorp,Noventra Labs,CTR-2002,Lab Enzymes,Chemicals,1200,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
+10,ZentivoCorp,Noventra Labs,CTR-2002,Bio Solvents,Chemicals,2000,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
+
+11,ZentivoCorp,Quorvia Systems,CTR-3003,Electronic Sensors,Electronics,5000,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
+12,ZentivoCorp,Quorvia Systems,CTR-3003,Control Boards,Electronics,4200,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
+13,ZentivoCorp,Quorvia Systems,CTR-3003,IoT Modules,Electronics,3600,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
+14,ZentivoCorp,Quorvia Systems,CTR-3003,Power Units,Electronics,2800,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
+15,ZentivoCorp,Quorvia Systems,CTR-3003,Signal Chips,Electronics,3100,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
+
+16,ZentivoCorp,Axelium Works,CTR-4004,Automotive Gears,Automotive,800,sets,2025-04-01,2026-04-01,2026-01-12,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium
+17,ZentivoCorp,Axelium Works,CTR-4004,Brake Assemblies,Automotive,900,sets,2025-04-01,2026-04-01,2026-01-12,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium
+18,ZentivoCorp,Axelium Works,CTR-4004,Axle Components,Automotive,750,sets,2025-04-01,2026-04-01,2026-01-12,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium
+19,ZentivoCorp,Axelium Works,CTR-4004,Engine Mounts,Automotive,680,sets,2025-04-01,2026-04-01,2026-01-12,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium
+20,ZentivoCorp,Axelium Works,CTR-4004,Suspension Kits,Automotive,720,sets,2025-04-01,2026-04-01,2026-01-12,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium
+
+21,ZentivoCorp,Virelox Trading,CTR-5005,Plastic Granules,Polymers,9000,kg,2025-05-01,2026-05-01,2026-01-15,UAE,Dubai,Dubai,India,Trading,Sea,High
+22,ZentivoCorp,Virelox Trading,CTR-5005,PVC Sheets,Polymers,7000,kg,2025-05-01,2026-05-01,2026-01-15,UAE,Dubai,Dubai,India,Trading,Sea,High
+23,ZentivoCorp,Virelox Trading,CTR-5005,HDPE Pellets,Polymers,8500,kg,2025-05-01,2026-05-01,2026-01-15,UAE,Dubai,Dubai,India,Trading,Sea,High
+24,ZentivoCorp,Virelox Trading,CTR-5005,Polymer Resin,Polymers,7800,kg,2025-05-01,2026-05-01,2026-01-15,UAE,Dubai,Dubai,India,Trading,Sea,High
+25,ZentivoCorp,Virelox Trading,CTR-5005,Industrial Plastics,Polymers,8200,kg,2025-05-01,2026-05-01,2026-01-15,UAE,Dubai,Dubai,India,Trading,Sea,High
+
+26,ZentivoCorp,Stronvia Solutions,CTR-6006,Industrial Valves,Engineering,400,units,2025-06-01,2026-06-01,2026-01-18,Poland,Silesia,Katowice,India,Engineering,Road,Low
+27,ZentivoCorp,Stronvia Solutions,CTR-6006,Pressure Gauges,Engineering,380,units,2025-06-01,2026-06-01,2026-01-18,Poland,Silesia,Katowice,India,Engineering,Road,Low
+28,ZentivoCorp,Stronvia Solutions,CTR-6006,Flow Meters,Engineering,360,units,2025-06-01,2026-06-01,2026-01-18,Poland,Silesia,Katowice,India,Engineering,Road,Low
+29,ZentivoCorp,Stronvia Solutions,CTR-6006,Hydraulic Fittings,Engineering,420,units,2025-06-01,2026-06-01,2026-01-18,Poland,Silesia,Katowice,India,Engineering,Road,Low
+30,ZentivoCorp,Stronvia Solutions,CTR-6006,Pneumatic Parts,Engineering,390,units,2025-06-01,2026-06-01,2026-01-18,Poland,Silesia,Katowice,India,Engineering,Road,Low
+
+31,ZentivoCorp,Krydonix Ltd.,CTR-7007,Semiconductor Wafers,Electronics,1200,units,2025-07-01,2026-07-01,2026-01-20,South Korea,Gyeonggi,Suwon,India,Electronics,Air,Low
+32,ZentivoCorp,Krydonix Ltd.,CTR-7007,Memory Chips,Electronics,1800,units,2025-07-01,2026-07-01,2026-01-20,South Korea,Gyeonggi,Suwon,India,Electronics,Air,Low
+33,ZentivoCorp,Krydonix Ltd.,CTR-7007,Logic ICs,Electronics,1600,units,2025-07-01,2026-07-01,2026-01-20,South Korea,Gyeonggi,Suwon,India,Electronics,Air,Low
+34,ZentivoCorp,Krydonix Ltd.,CTR-7007,Sensor ICs,Electronics,1400,units,2025-07-01,2026-07-01,2026-01-20,South Korea,Gyeonggi,Suwon,India,Electronics,Air,Low
+35,ZentivoCorp,Krydonix Ltd.,CTR-7007,Controller Chips,Electronics,1300,units,2025-07-01,2026-07-01,2026-01-20,South Korea,Gyeonggi,Suwon,India,Electronics,Air,Low
+
+36,ZentivoCorp,Elvaron Group,CTR-8008,Copper Pipes,Metals,2200,kg,2025-08-01,2026-08-01,2026-01-22,Mexico,Nuevo Leon,Monterrey,India,Manufacturing,Sea,Medium
+37,ZentivoCorp,Elvaron Group,CTR-8008,Steel Tubes,Metals,2600,kg,2025-08-01,2026-08-01,2026-01-22,Mexico,Nuevo Leon,Monterrey,India,Manufacturing,Sea,Medium
+38,ZentivoCorp,Elvaron Group,CTR-8008,Metal Fittings,Metals,2400,kg,2025-08-01,2026-08-01,2026-01-22,Mexico,Nuevo Leon,Monterrey,India,Manufacturing,Sea,Medium
+39,ZentivoCorp,Elvaron Group,CTR-8008,Brass Components,Metals,2100,kg,2025-08-01,2026-08-01,2026-01-22,Mexico,Nuevo Leon,Monterrey,India,Manufacturing,Sea,Medium
+40,ZentivoCorp,Elvaron Group,CTR-8008,Alloy Rods,Metals,2300,kg,2025-08-01,2026-08-01,2026-01-22,Mexico,Nuevo Leon,Monterrey,India,Manufacturing,Sea,Medium
+
+41,ZentivoCorp,Trevixa Enterprises,CTR-9009,Cotton Yarn,Textiles,5000,kg,2025-09-01,2026-09-01,2026-01-25,Bangladesh,Dhaka,Dhaka,India,Textiles,Sea,High
+42,ZentivoCorp,Trevixa Enterprises,CTR-9009,Denim Fabric,Textiles,4500,kg,2025-09-01,2026-09-01,2026-01-25,Bangladesh,Dhaka,Dhaka,India,Textiles,Sea,High
+43,ZentivoCorp,Trevixa Enterprises,CTR-9009,Woven Fabric,Textiles,4800,kg,2025-09-01,2026-09-01,2026-01-25,Bangladesh,Dhaka,Dhaka,India,Textiles,Sea,High
+44,ZentivoCorp,Trevixa Enterprises,CTR-9009,Garment Panels,Textiles,5200,kg,2025-09-01,2026-09-01,2026-01-25,Bangladesh,Dhaka,Dhaka,India,Textiles,Sea,High
+45,ZentivoCorp,Trevixa Enterprises,CTR-9009,Textile Rolls,Textiles,4700,kg,2025-09-01,2026-09-01,2026-01-25,Bangladesh,Dhaka,Dhaka,India,Textiles,Sea,High
+
+46,ZentivoCorp,Flarix Industries,CTR-1001,Zinc Sheets,Metals,800,tons,2025-01-01,2026-01-01,2026-01-30,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
+47,ZentivoCorp,Quorvia Systems,CTR-3003,Power Controllers,Electronics,2900,units,2025-03-01,2026-03-01,2026-01-30,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
+48,ZentivoCorp,Axelium Works,CTR-4004,Transmission Parts,Automotive,740,sets,2025-04-01,2026-04-01,2026-01-30,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium
+49,ZentivoCorp,Krydonix Ltd.,CTR-7007,Embedded Processors,Electronics,1500,units,2025-07-01,2026-07-01,2026-01-30,South Korea,Gyeonggi,Suwon,India,Electronics,Air,Low
+50,ZentivoCorp,Elvaron Group,CTR-8008,Industrial Alloy Bars,Metals,2500,kg,2025-08-01,2026-08-01,2026-01-30,Mexico,Nuevo Leon,Monterrey,India,Manufacturing,Sea,Medium

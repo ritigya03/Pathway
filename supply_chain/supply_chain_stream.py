@@ -7,16 +7,28 @@ class SupplyChainSchema(pw.Schema):
     record_id: str
     buyer_firm: str
     supplier_firm: str
+    contract_id: str
+
+    # Product & contract context
     product_name: str
     product_category: str
     quantity: float
     unit: str
-    source_location: str
-    destination_location: str
-    contract_id: str
     start_date: str
     end_date: str
     last_updated: str
+
+    # Location context (for news correlation)
+    source_country: str
+    source_region: str
+    source_city: str
+    destination_country: str
+
+    # Supplier operational context
+    supplier_industry: str 
+
+    primary_transport_mode: str      # sea, air, road, rail
+    port_dependency: str  
 
 
 # -----------------------------

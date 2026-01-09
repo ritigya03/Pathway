@@ -1,0 +1,160 @@
+{
+  "meta": {
+    "name": "Geopolitical Supply Chain Threat Policy",
+    "scope": ["supplier_countries", "buyer_country", "trade_routes", "cross_border_contracts"]
+  },
+
+  "threat_categories": {
+    "armed_conflict": [
+      "war",
+      "military conflict",
+      "border clashes",
+      "airstrikes",
+      "naval blockade",
+      "invasion",
+      "civil war"
+    ],
+    "sanctions_and_trade_controls": [
+      "economic sanctions",
+      "export ban",
+      "import restriction",
+      "technology embargo",
+      "financial sanctions",
+      "blacklisting"
+    ],
+    "trade_disputes": [
+      "tariff increase",
+      "trade war",
+      "customs retaliation",
+      "anti-dumping duty",
+      "wto dispute",
+      "trade negotiations stalled"
+    ],
+    "political_instability": [
+      "political unrest",
+      "government collapse",
+      "state of emergency",
+      "martial law",
+      "election violence"
+    ],
+    "diplomatic_tension": [
+      "diplomatic breakdown",
+      "expulsion of diplomats",
+      "bilateral relations strained",
+      "suspension of talks"
+    ]
+  },
+
+  "severity_keywords": {
+    "high": [
+      "full-scale war",
+      "nationwide sanctions",
+      "trade embargo",
+      "border closure",
+      "airspace closed",
+      "financial system restricted",
+      "shipping lanes blocked"
+    ],
+    "medium": [
+      "targeted sanctions",
+      "sector-specific restrictions",
+      "limited military engagement",
+      "tariff escalation",
+      "temporary border checks"
+    ],
+    "low": [
+      "diplomatic warning",
+      "trade talks stalled",
+      "policy review announced",
+      "bilateral discussions ongoing"
+    ]
+  },
+
+  "country_relationship_checks": {
+    "direct_risk": [
+      "supplier_country",
+      "buyer_country"
+    ],
+    "indirect_risk": [
+      "transit_country",
+      "trade_partner_country",
+      "allied_country"
+    ],
+    "false_positive_indicators": [
+      "condemnation_statement_only",
+      "historical_reference",
+      "non_binding_resolution",
+      "no_trade_link"
+    ]
+  },
+
+  "trade_dependency_checks": {
+    "high_risk_conditions": [
+      "single_country_dependency",
+      "restricted_export_category",
+      "high_customs_sensitivity",
+      "cross_border_payment_dependency"
+    ],
+    "mitigating_conditions": [
+      "alternate_trade_route",
+      "multi_country_sourcing",
+      "domestic_substitution_available"
+    ]
+  },
+
+  "classification_rules": {
+    "direct_geopolitical_threat": {
+      "conditions": [
+        "supplier_country_affected",
+        "binding_policy_or_action_detected",
+        "trade_or_payment_impact"
+      ],
+      "label": "Geopolitically Critical"
+    },
+    "indirect_geopolitical_threat": {
+      "conditions": [
+        "transit_country_affected",
+        "partial_trade_dependency"
+      ],
+      "label": "Geopolitically Sensitive"
+    },
+    "false_positive": {
+      "conditions": [
+        "false_positive_indicator_detected",
+        "no_trade_dependency"
+      ],
+      "label": "Geopolitically Irrelevant"
+    }
+  },
+
+  "severity_rules": {
+    "high": {
+      "trigger": [
+        "high_severity_keywords",
+        "direct_dependency_present",
+        "multi-country_trade_disruption"
+      ],
+      "action": "immediate_escalation"
+    },
+    "medium": {
+      "trigger": [
+        "medium_severity_keywords",
+        "partial_dependency_present"
+      ],
+      "action": "risk_review_and_scenario_planning"
+    },
+    "low": {
+      "trigger": [
+        "low_severity_keywords",
+        "mitigating_conditions_present"
+      ],
+      "action": "monitor_geopolitical_developments"
+    }
+  },
+
+  "actions": {
+    "immediate_escalation": "Notify legal, compliance, procurement teams; assess sanctions exposure and contract viability",
+    "risk_review_and_scenario_planning": "Conduct scenario analysis and contingency sourcing evaluation",
+    "monitor_geopolitical_developments": "Track diplomatic developments and reassess risk periodically"
+  }
+}

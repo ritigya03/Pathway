@@ -1,0 +1,23 @@
+# Core Dependencies
+chromadb>=1.0.0
+google-generativeai>=0.3.0
+
+# Google APIs
+google-auth>=2.17.0
+google-auth-oauthlib>=1.0.0
+google-auth-httplib2>=0.1.0
+google-api-python-client>=2.80.0
+
+# Utilities
+python-dotenv>=1.0.0
+numpy>=1.24.0
+pandas>=2.0.0
+tqdm>=4.65.0
+requests>=2.31.0
+
+# Text Processing
+beautifulsoup4>=4.12.0
+
+# PDF Processing
+PyPDF2>=3.0.0
+pdfplumber>=0.10.0

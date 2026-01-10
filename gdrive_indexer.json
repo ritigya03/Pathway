@@ -1,0 +1,17 @@
+{
+  "source": {
+    "type": "gdrive",
+    "path": "Pathway",
+    "with_metadata": true
+  },
+
+  "filters": {
+    "include_extensions": ["pdf", "json", "jsonl"]
+  },
+
+  "index": {
+    "type": "vector",
+    "chunk_size": 800,
+    "chunk_overlap": 150
+  }
+}

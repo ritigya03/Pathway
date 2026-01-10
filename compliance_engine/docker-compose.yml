@@ -1,0 +1,17 @@
+services:
+  compliance-analyzer:
+    build: .
+    container_name: rag-compliance-analyzer
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - G_NEWS_API_KEY=${G_NEWS_API_KEY}
+      - ROOT_FOLDER_ID=${ROOT_FOLDER_ID}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
+    volumes:
+      # Mount credentials file (read-only)
+      - ./credentials.json:/app/credentials.json:ro
+      # For persistent data (optional)
+      - ./chroma_data:/tmp/chroma_db
+    stdin_open: true  # Keep STDIN open
+    tty: true         # Allocate pseudo-TTY
+    command: ["python", "-u", "app.py"]

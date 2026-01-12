@@ -1,286 +1,514 @@
-#!/usr/bin/env python3
 import os
 import sys
-import argparse
+import json
+import re
+import subprocess
 from dotenv import load_dotenv
-
-# Load environment variables first
+import requests
 load_dotenv()
+import pathway as pw
+from pathway.xpacks.llm.document_store import DocumentStore
+from pathway.xpacks.llm.parsers import ParseUnstructured
+from pathway.xpacks.llm.splitters import TokenCountSplitter
+from pathway.xpacks.llm.embedders import GeminiEmbedder
+from pathway.xpacks.llm.llms import LiteLLMChat
+from pathway.xpacks.llm.question_answering import BaseRAGQuestionAnswerer
+from pathway.stdlib.indexing import BruteForceKnnFactory, TantivyBM25Factory, HybridIndexFactory
 
-# Now import local modules
-try:
-    from rag_reader import load_documents
-    from rag_system import ComplianceAnalyzerRAG
-except ImportError as e:
-    print(f"❌ Failed to import modules: {e}")
-    print("   Make sure all required files are in the directory:")
-    print("   - rag_reader.py, rag_system.py, vector_store_simple.py, gemini_client.py")
-    sys.exit(1)
+class PathwayComplianceAnalyzer:
+    def __init__(self):
+        self.gemini_api_key = os.getenv("GEMINI_API_KEY")
+        self.company_folder_id = os.getenv("COMPANY_DOCS_FOLDER_ID")
+        self.threat_folder_id = os.getenv("THREAT_POLICIES_FOLDER_ID")
+        self.credentials_file = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+        
+        if not all([self.gemini_api_key, self.company_folder_id, self.threat_folder_id]):
+            raise ValueError("Missing environment variables")
+        
+        # Set Pathway license 
+        license_key = os.getenv("PATHWAY_LICENSE_KEY")
+        if license_key:
+            pw.set_license_key(license_key)
+        
+        print("Initializing Pathway RAG system...")
+        self.setup_pathway_pipeline()
+    
+    def setup_pathway_pipeline(self):
+        """Setup Pathway document processing pipeline with proper RAG"""
+        print("Setting up Pathway data sources...")
+        
+        # Read from Google Drive folders
+        company_docs = pw.io.gdrive.read(
+            object_id=self.company_folder_id,
+            service_user_credentials_file=self.credentials_file,
+            mode="streaming",
+            with_metadata=True
+        )
+        
+        threat_docs = pw.io.gdrive.read(
+            object_id=self.threat_folder_id,
+            service_user_credentials_file=self.credentials_file,
+            mode="streaming",
+            with_metadata=True
+        )
+        
+        print("Connected to Google Drive folders")
+        
+        # Add source tags
+        company_docs = company_docs.select(
+            data=pw.this.data,
+            _metadata=pw.apply(
+                lambda m: {**m, "source_type": "company"} if isinstance(m, dict) else {"source_type": "company"},
+                pw.this._metadata
+            )
+        )
+        
+        threat_docs = threat_docs.select(
+            data=pw.this.data,
+            _metadata=pw.apply(
+                lambda m: {**m, "source_type": "threat"} if isinstance(m, dict) else {"source_type": "threat"},
+                pw.this._metadata
+            )
+        )
+        
+        # Setup parser
+        print("Configuring document parser...")
+        parser = ParseUnstructured()
+        
+        # Setup text splitter
+        print("Configuring text splitter...")
+        text_splitter = TokenCountSplitter(min_tokens=200, max_tokens=600)
+        
+        # Setup embedder
+        print("Setting up Gemini embedder...")
+        embedder = GeminiEmbedder(
+            model="models/embedding-001",
+            cache_strategy=pw.udfs.DefaultCache(),
+            retry_strategy=pw.udfs.ExponentialBackoffRetryStrategy(max_retries=3)
+        )
+        
+        # Setup retriever factory with hybrid search
+        print("Configuring hybrid search (KNN + BM25)...")
+        knn_index = BruteForceKnnFactory(
+            reserved_space=1000,
+            embedder=embedder,
+            metric=pw.engine.BruteForceKnnMetricKind.COS
+        )
+        bm25_index = TantivyBM25Factory()
+        retriever_factory = HybridIndexFactory(
+            retriever_factories=[knn_index, bm25_index]
+        )
+        
+        # Create document stores
+        print("Creating document stores...")
+        
+        self.company_doc_store = DocumentStore(
+            docs=[company_docs],
+            parser=parser,
+            splitter=text_splitter,
+            retriever_factory=retriever_factory
+        )
+        
+        self.threat_doc_store = DocumentStore(
+            docs=[threat_docs],
+            parser=parser,
+            splitter=text_splitter,
+            retriever_factory=retriever_factory
+        )
+        
+        # Create LLM for question answering
+        print("Setting up LLM for retrieval...")
+        llm = LiteLLMChat(
+            model="gemini/gemini-2.0-flash-exp",
+            retry_strategy=pw.udfs.ExponentialBackoffRetryStrategy(max_retries=2),
+            cache_strategy=pw.udfs.DefaultCache(),
+            temperature=0.1
+        )
+        
+        # Create question answerers for retrieval
+        retrieval_prompt = """Use the following context to extract relevant information:
 
-SUPPLIERS = [
-    "Nexvora Industries Pvt. Ltd.",
-    "Alturon Global Solutions",
-    "BlueCrest Manufacturing Co.",
-    "Veridion Supply Systems",
-    "StratEdge Enterprises",
-    "Orbinex Components Ltd.",
-    "Kalyx Materials Group",
-    "Zenlith Logistics Corp.",
-    "PrimeAxis Industrial Works",
-    "Solvex Trade & Sourcing"
-]
+Context:
+{context}
 
-def check_environment():
-    """Check if all required environment variables are set"""
-    print("\n🔍 Checking environment...")
-    
-    required_vars = ['GEMINI_API_KEY', 'ROOT_FOLDER_ID']
-    missing = []
-    
-    for var in required_vars:
-        value = os.getenv(var)
-        if not value:
-            missing.append(var)
-        else:
-            print(f"   ✅ {var}: {'*' * 8}{value[-4:] if len(value) > 8 else '***'}")
-    
-    if missing:
-        print(f"\n❌ Missing environment variables: {', '.join(missing)}")
-        print("   Please set them in .env file:")
-        print("   GEMINI_API_KEY=your_key_here")
-        print("   ROOT_FOLDER_ID=your_folder_id_here")
-        return False
-    
-    # Check credentials file
-    creds_file = os.getenv('GOOGLE_APPLICATION_CREDENTIALS', 'credentials.json')
-    if not os.path.exists(creds_file):
-        print(f"❌ Credentials file not found: {creds_file}")
-        print("   Please download your Google Service Account JSON and save as credentials.json")
-        return False
-    
-    print("✅ All environment checks passed")
-    return True
+Query: {query}
 
-def get_news_context(buyer, supplier):
-    """Get news context if API key is available"""
-    news_api_key = os.getenv('G_NEWS_API_KEY')
-    if not news_api_key or news_api_key == 'your_news_key_here':
-        return ""
+Provide all relevant information from the context."""
+
+        self.company_qa = BaseRAGQuestionAnswerer(
+            llm=llm,
+            indexer=self.company_doc_store,
+            search_topk=8,
+            prompt_template=retrieval_prompt
+        )
+        
+        self.threat_qa = BaseRAGQuestionAnswerer(
+            llm=llm,
+            indexer=self.threat_doc_store,
+            search_topk=10,
+            prompt_template=retrieval_prompt
+        )
+        
+        print("Pathway RAG pipeline ready")
+        print("Starting Pathway computation in background...")
+        
+        # Start Pathway computation in a separate thread
+        import threading
+        self.pathway_thread = threading.Thread(target=self._run_pathway, daemon=True)
+        self.pathway_thread.start()
+        
+        # Give it a moment to initialize
+        import time
+        time.sleep(2)
     
-    try:
-        # Placeholder for GNews API integration
-        return f"News context for {buyer} and {supplier} would be checked here."
-    except:
-        return ""
+    def _run_pathway(self):
+        """Run Pathway computation in background"""
+        try:
+            pw.run()
+        except Exception as e:
+            print(f"Pathway computation error: {e}")
+    
+    def retrieve_relevant_chunks(self, query, qa_system, top_k=5):
+        """Retrieve relevant document chunks using Pathway's RAG"""
+        print(f"   Searching for: {query[:60]}...")
+        
+        try:
+            # Use the question answerer to retrieve context
+            # Access the indexer's retrieve method directly
+            retriever = qa_system.indexer
+            
+            # Get the retriever's query method
+            if hasattr(retriever, 'query_as_of_now'):
+                results = retriever.query_as_of_now(query, k=top_k)
+            elif hasattr(retriever, 'retrieve'):
+                results = retriever.retrieve(query, k=top_k)
+            else:
+                # Fallback: use the QA system but extract just the context
+                print("   Using QA system fallback...")
+                response = qa_system.answer(query)
+                return str(response)
+            
+            # Format results
+            context_parts = []
+            for idx, result in enumerate(results, 1):
+                if isinstance(result, dict):
+                    chunk_text = result.get('text', result.get('chunk', str(result)))
+                    metadata = result.get('metadata', {})
+                    source = metadata.get('path', metadata.get('name', 'Unknown'))
+                else:
+                    chunk_text = str(result)
+                    source = 'Document'
+                
+                context_parts.append(f"[Source {idx}: {source}]\n{chunk_text}\n")
+            
+            return "\n".join(context_parts) if context_parts else self._fallback_retrieval(query, qa_system)
+        
+        except Exception as e:
+            print(f"   Retrieval error: {e}")
+            return self._fallback_retrieval(query, qa_system)
+    
+    def _fallback_retrieval(self, query, qa_system):
+        print("   Using fallback direct retrieval...")
+        from google.oauth2 import service_account
+        from googleapiclient.discovery import build
+        from googleapiclient.http import MediaIoBaseDownload
+        import io
+        
+        try:
+            credentials = service_account.Credentials.from_service_account_file(
+                self.credentials_file,
+                scopes=['https://www.googleapis.com/auth/drive.readonly']
+            )
+            service = build('drive', 'v3', credentials=credentials)
+            
+            # Determine which folder to search
+            folder_id = self.company_folder_id if qa_system == self.company_qa else self.threat_folder_id
+            
+            # List files
+            results = service.files().list(
+                q=f"'{folder_id}' in parents",
+                fields="files(id, name, mimeType)"
+            ).execute()
+            
+            files = results.get('files', [])
+            all_content = []
+            
+            # Prioritize files matching query terms
+            query_lower = query.lower()
+            
+            # Sort files by relevance
+            def relevance_score(fname):
+                fname_lower = fname.lower()
+                score = 0
+                for word in query_lower.split():
+                    if len(word) > 3 and word in fname_lower:
+                        score += 1
+                return score
+            
+            files.sort(key=lambda f: relevance_score(f['name']), reverse=True)
+            
+            for f in files[:5]:  # Limit to top 5 files
+                try:
+                    request = service.files().get_media(fileId=f['id'])
+                    file_buffer = io.BytesIO()
+                    downloader = MediaIoBaseDownload(file_buffer, request)
+                    
+                    done = False
+                    while not done:
+                        status, done = downloader.next_chunk()
+                    
+                    file_buffer.seek(0)
+                    
+                    # Handle different file types
+                    if f['name'].endswith('.pdf'):
+                        try:
+                            import PyPDF2
+                            pdf_reader = PyPDF2.PdfReader(file_buffer)
+                            text = ""
+                            for page in pdf_reader.pages[:10]:  # First 10 pages
+                                text += page.extract_text() + "\n"
+                            all_content.append(f"[{f['name']}]\n{text}\n")
+                        except Exception as e:
+                            print(f"   PDF parse error: {e}")
+                    elif f['name'].endswith('.jsonl'):
+                        try:
+                            content = file_buffer.read().decode('utf-8', errors='ignore')
+                            formatted = f"[{f['name']}]\n"
+                            for line in content.strip().split('\n')[:20]:  # First 20 lines
+                                if line.strip():
+                                    try:
+                                        obj = json.loads(line)
+                                        formatted += json.dumps(obj, indent=2) + "\n"
+                                    except:
+                                        formatted += line + "\n"
+                            all_content.append(formatted)
+                        except Exception as e:
+                            print(f"   JSONL parse error: {e}")
+                    else:
+                        try:
+                            content = file_buffer.read().decode('utf-8', errors='ignore')
+                            all_content.append(f"[{f['name']}]\n{content[:3000]}\n")
+                        except:
+                            pass
+                
+                except Exception as e:
+                    print(f"   Error reading {f['name']}: {e}")
+                    continue
+            
+            return "\n".join(all_content) if all_content else f"[Unable to retrieve content for: {query}]"
+        
+        except Exception as e:
+            print(f"   Fallback retrieval error: {e}")
+            return f"[Unable to retrieve content for query: {query}]"
+    
+    def get_policy_content(self):
+        """Get compliance policy using Pathway retrieval"""
+        print("\nRetrieving compliance policy...")
+        
+        policy_query = "compliance policy rules requirements violations sanctions fraud anti-corruption identity verification"
+        policy_context = self.retrieve_relevant_chunks(
+            policy_query, 
+            self.threat_qa, 
+            top_k=10
+        )
+        
+        print(f"Policy retrieved ({len(policy_context)} chars)")
+        return policy_context
+    
+    def get_company_content(self, company_name):
+        """Get company document using Pathway retrieval"""
+        print(f"   Retrieving: {company_name}")
+        
+        # Clean company name for better matching
+        clean_name = company_name.replace('.pdf', '').replace('.json', '').replace('_', ' ').replace('-', ' ')
+        
+        company_query = f"{clean_name} company information business operations financial history background profile"
+        company_context = self.retrieve_relevant_chunks(
+            company_query,
+            self.company_qa,
+            top_k=8
+        )
+        
+        print(f"   Retrieved ({len(company_context)} chars)")
+        return company_context
+    
+    def analyze_transaction(self, buyer_name, supplier_name):
+        """Analyze using Pathway RAG + Gemini"""
+        print("\n" + "="*80)
+        print("PATHWAY RAG COMPLIANCE ANALYSIS")
+        print("="*80)
+        
+        print(f"\nTransaction:")
+        print(f"   Buyer:    {buyer_name}")
+        print(f"   Supplier: {supplier_name}")
+        
+        # Retrieve all necessary documents
+        print("\nStep 1: Retrieving compliance policy via Pathway...")
+        policy_text = self.get_policy_content()
+        
+        print(f"\nStep 2: Retrieving buyer document via Pathway...")
+        buyer_info = self.get_company_content(buyer_name)
+        
+        print(f"\nStep 3: Retrieving supplier document via Pathway...")
+        supplier_info = self.get_company_content(supplier_name)
+        
+        print("\nStep 4: Analyzing with Gemini...")
+        analysis = self.generate_analysis(
+            buyer_name, buyer_info,
+            supplier_name, supplier_info,
+            policy_text
+        )
+        
+        return analysis
+    
+    def generate_analysis(self, buyer_name, buyer_info, supplier_name, supplier_info, policy_text):
+        """Generate analysis using Gemini"""
+        
+        # Truncate to fit in context
+        policy_snippet = policy_text[:6000] if len(policy_text) > 6000 else policy_text
+        buyer_snippet = buyer_info[:4000] if len(buyer_info) > 4000 else buyer_info
+        supplier_snippet = supplier_info[:4000] if len(supplier_info) > 4000 else supplier_info
+        
+        prompt = f"""You are a senior compliance analyst conducting a thorough risk assessment. Analyze this transaction strictly against the provided compliance policy.
+
+COMPLIANCE POLICY:
+{policy_snippet}
+
+BUYER ENTITY: {buyer_name}
+{buyer_snippet}
+
+SUPPLIER ENTITY: {supplier_name}
+{supplier_snippet}
+
+INSTRUCTIONS:
+1. Carefully review ALL policy rules including: identity_checks, sanctions_screening, contract_rules, fraud_detection, and spoofing_signs
+2. Cross-reference each entity's information against specific policy requirements
+3. Identify any missing mandatory information or red flags
+4. Provide specific policy rule citations for each finding
+5. Base your risk assessment on actual policy violations found
+
+Respond in EXACT format with NO EMOJIS:
+
+RISK LEVEL: [HIGH/MEDIUM/LOW]
+Risk Justification: [One sentence explaining the risk level based on findings]
+
+BUYER ANALYSIS ({buyer_name}):
+Identity Verification:
+- Status: [PASS/FAIL/INCOMPLETE]
+- Details: [Specific findings with policy citations]
+
+Sanctions Screening:
+- Status: [PASS/FAIL/INCOMPLETE]
+- Details: [Specific findings with policy citations]
+
+Fraud Indicators:
+- Status: [DETECTED/NOT DETECTED]
+- Details: [List any red flags found]
+
+SUPPLIER ANALYSIS ({supplier_name}):
+Identity Verification:
+- Status: [PASS/FAIL/INCOMPLETE]
+- Details: [Specific findings with policy citations]
+
+Sanctions Screening:
+- Status: [PASS/FAIL/INCOMPLETE]
+- Details: [Specific findings with policy citations]
+
+Fraud Indicators:
+- Status: [DETECTED/NOT DETECTED]
+- Details: [List any red flags found]
+
+POLICY VIOLATIONS DETECTED:
+[List each violation with specific policy rule citation, or state "None detected"]
+1. [Violation with policy rule reference]
+2. [Violation with policy rule reference]
+
+MANDATORY INFORMATION GAPS:
+[List missing required information per identity_checks policy]
+1. [Missing field and which entity]
+2. [Missing field and which entity]
+
+ACTION ITEMS:
+1. [Specific action required]
+2. [Specific action required]
+3. [Specific action required]
+
+FINAL DECISION: [APPROVE/CONDITIONAL APPROVAL/REJECT]
+Decision Rationale: [2-3 sentences explaining why this decision was made based on policy compliance]
+
+EXECUTIVE SUMMARY:
+[Concise 2-3 sentence summary of key findings and recommendation]"""
+        
+        try:
+            url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent"
+            
+            response = requests.post(
+                f"{url}?key={self.gemini_api_key}",
+                json={
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {"temperature": 0.1, "maxOutputTokens": 3000}
+                },
+                timeout=60
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                text = result.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                return text if text else "ERROR: Empty response"
+            else:
+                return f"ERROR: API {response.status_code}"
+                
+        except Exception as e:
+            return f"ERROR: {str(e)}"
+    
+    def parse_and_display(self, buyer_name, supplier_name, result):
+        """Parse and display results in structured format"""
+        print("\n\n" + "="*80)
+        print("COMPLIANCE ANALYSIS REPORT")
+        print("="*80)
+        print(f"Transaction: {buyer_name} <-> {supplier_name}")
+        print(f"Analysis Date: {__import__('datetime').datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        print("="*80)
+        
+        # Display raw structured output
+        print("\n" + result)
+        print("\n" + "="*80)
 
 def main():
-    print("="*60)
-    print("           COMPLIANCE ANALYZER (RAG + Gemini)")
-    print("           ChromaDB v1.0.0+ Compatible")
-    print("="*60)
-    
-    # Parse command line arguments
-    parser = argparse.ArgumentParser(description='Compliance Analyzer')
-    parser.add_argument('--buyer', help='Buyer company name')
-    parser.add_argument('--supplier', type=int, choices=range(1, 11), 
-                       help='Supplier number (1-10)')
-    parser.add_argument('--test', action='store_true', 
-                       help='Test mode - verify setup without full analysis')
-    parser.add_argument('--quick', action='store_true',
-                       help='Quick analysis with sample data')
-    args = parser.parse_args()
-    
-    # Check environment
-    if not check_environment():
-        sys.exit(1)
-    
-    # Test mode - just verify setup
-    if args.test:
-        print("\n🧪 TEST MODE - Verifying setup...")
-        try:
-            # Test Google Drive connection
-            print("🔗 Testing Google Drive connection...")
-            sample_docs = [{"name": "test.txt", "text": "Test document content"}]
-            
-            # Test vector store
-            print("🗄️  Testing vector store...")
-            from vector_store_simple import VectorStoreSimple
-            vs = VectorStoreSimple("test_collection")
-            vs.add_documents(sample_docs)
-            
-            # Test Gemini
-            print("🤖 Testing Gemini...")
-            from gemini_client import GeminiClient
-            gc = GeminiClient()
-            
-            print("\n✅ All systems are ready!")
-            return
-        except Exception as e:
-            print(f"\n❌ Test failed: {e}")
-            import traceback
-            traceback.print_exc()
-            return
-    
-    # Get buyer info
-    buyer = args.buyer
-    if not buyer:
-        print("\n📋 COMPANY INFORMATION")
-        print("-"*40)
-        buyer = input("Enter BUYER company name: ").strip()
-        while not buyer:
-            print("❌ Buyer name cannot be empty")
-            buyer = input("Enter BUYER company name: ").strip()
-    
-    # Get supplier info
-    if args.supplier:
-        supplier = SUPPLIERS[args.supplier - 1]
-    else:
-        print("\n🏭 Select SUPPLIER company:")
-        print("-"*40)
-        for i, s in enumerate(SUPPLIERS, start=1):
-            print(f"{i:2}. {s}")
-        
-        while True:
-            try:
-                choice = input("\nEnter supplier number (1-10): ").strip()
-                if not choice:
-                    print("❌ Please enter a number")
-                    continue
-                    
-                choice = int(choice)
-                if 1 <= choice <= len(SUPPLIERS):
-                    supplier = SUPPLIERS[choice - 1]
-                    break
-                else:
-                    print(f"❌ Please enter a number between 1 and {len(SUPPLIERS)}")
-            except ValueError:
-                print("❌ Please enter a valid number")
-    
-    print(f"\n✅ Analysis Target:")
-    print(f"   👤 Buyer:    {buyer}")
-    print(f"   🏭 Supplier: {supplier}")
-    
-    # Quick mode - use sample data
-    if args.quick:
-        print("\n⚡ QUICK MODE - Using sample data")
-        docs = [
-            {"name": "sample_policy.json", "text": '{"keywords": {"high": ["fraud", "bribery"], "medium": ["conflict", "interest"], "low": ["delay"]}}'},
-            {"name": "sample_contract.txt", "text": "This agreement establishes terms between parties regarding data protection and compliance with regulations."}
-        ]
-    else:
-        # Load documents from Google Drive
-        print("\n" + "="*60)
-        print("📂 LOADING DOCUMENTS FROM GOOGLE DRIVE")
-        print("="*60)
-        
-        try:
-            # Pass buyer and supplier names to filter documents
-            docs = load_documents(buyer, supplier)
-            if not docs:
-                print("❌ No documents found in Google Drive!")
-                sys.exit(1)
-            
-            print(f"✅ Loaded {len(docs)} relevant documents")
-            
-        except Exception as e:
-            print(f"❌ Failed to load documents: {e}")
-            print("\n💡 Try --quick mode for testing: python app.py --quick --buyer Test --supplier 1")
-            sys.exit(1)
-    
-    # Get news context if available
-    news_context = get_news_context(buyer, supplier)
-    if news_context:
-        docs.append({"name": "news_context.txt", "text": news_context})
-        print("✅ Added news context")
-    
-    # Initialize and run analyzer
-    print("\n" + "="*60)
-    print("🤖 INITIALIZING RAG SYSTEM")
-    print("="*60)
+    print("="*80)
+    print("PATHWAY RAG COMPLIANCE ANALYZER")
+    print("Real-time Document Retrieval and Risk Assessment")
+    print("="*80)
     
     try:
-        analyzer = ComplianceAnalyzerRAG()
+        analyzer = PathwayComplianceAnalyzer()
         
-        print("\n📚 Setting up vector database...")
-        analyzer.setup_rag(docs)
+        print("\nTRANSACTION DETAILS")
+        print("-"*80)
+        print("Enter company names (exact names or file names):")
         
-        print("\n" + "="*60)
-        print("🔍 ANALYZING COMPLIANCE")
-        print("="*60)
+        buyer = input("\nBUYER: ").strip()
+        while not buyer:
+            buyer = input("BUYER: ").strip()
         
-        result = analyzer.analyze_compliance(buyer, supplier, docs)
+        supplier = input("SUPPLIER: ").strip()
+        while not supplier:
+            supplier = input("SUPPLIER: ").strip()
         
-        # Display results
-        print("\n" + "="*60)
-        print("📊 COMPLIANCE ANALYSIS REPORT")
-        print("="*60)
+        result = analyzer.analyze_transaction(buyer, supplier)
         
-        print(f"\n📋 Parties:")
-        print(f"   👤 Buyer:    {buyer}")
-        print(f"   🏭 Supplier: {supplier}")
-        
-        # Color-coded decision
-        decision = result['decision']
-        risk_color = {
-            "REJECT": "❌",
-            "REVIEW": "⚠️ ",
-            "APPROVE": "✅"
-        }
-        decision_display = f"{risk_color.get(decision, '📝')} {decision}"
-        
-        print(f"\n🎯 Decision: {decision_display}")
-        print(f"⚠️  Risk Level: {result['risk_level']}")
-        print(f"📈 Confidence: {result.get('confidence', 'N/A')}")
-        print(f"📄 Documents: {result.get('documents_processed', 0)}")
-        print(f"🔍 Chunks Analyzed: {result.get('chunks_analyzed', 0)}")
-        
-        print(f"\n📝 Summary:")
-        for reason in result.get('reasons', []):
-            print(f"   • {reason}")
-        
-        print(f"\n🔎 Key Findings:")
-        findings = result.get('findings', [])
-        if findings:
-            for i, finding in enumerate(findings[:5], 1):
-                print(f"   {i}. {finding}")
-            if len(findings) > 5:
-                print(f"   ... and {len(findings) - 5} more")
+        if result:
+            analyzer.parse_and_display(buyer, supplier, result)
+            print("\nAnalysis complete. Powered by Pathway RAG")
         else:
-            print("   No specific findings")
+            print("\nError: Analysis failed")
         
-        print(f"\n🚫 Policy Violations:")
-        violations = result.get('violations', [])
-        if violations:
-            for i, violation in enumerate(violations, 1):
-                print(f"   {i}. {violation}")
-        else:
-            print("   ✅ No violations detected")
-        
-        print(f"\n💡 Recommendations:")
-        recommendations = result.get('recommendations', [])
-        if recommendations:
-            for i, rec in enumerate(recommendations[:3], 1):
-                print(f"   {i}. {rec}")
-            if len(recommendations) > 3:
-                print(f"   ... and {len(recommendations) - 3} more")
-        else:
-            print("   No specific recommendations")
-        
-        print("\n" + "="*60)
-        print(f"🧠 Analysis Method: {result.get('analysis_method', 'RAG + Gemini')}")
-        print(f"🏗️  Vector Store: ChromaDB v1.0.0+")
-        print("="*60)
-        
+    except KeyboardInterrupt:
+        print("\n\nProcess interrupted by user")
     except Exception as e:
-        print(f"\n❌ Error during analysis: {str(e)}")
+        print(f"\nError: {e}")
         import traceback
         traceback.print_exc()
-        print("\n💡 Try these troubleshooting steps:")
-        print("1. Check your .env file has correct API keys")
-        print("2. Verify credentials.json is valid")
-        print("3. Run test mode: python app.py --test")
-        print("4. Try quick mode: python app.py --quick --buyer Test --supplier 1")
-        sys.exit(1)
 
 if __name__ == "__main__":
     main()

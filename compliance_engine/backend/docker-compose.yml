@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    container_name: pathway-compliance-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./app.py:/app/app.py
+      - ./api.py:/app/api.py
+      - ./.env:/app/.env
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - PATHWAY_LICENSE_KEY=${PATHWAY_LICENSE_KEY}
+    restart: unless-stopped
+    networks:
+      - compliance-network
+
+networks:
+  compliance-network:
+    driver: bridge

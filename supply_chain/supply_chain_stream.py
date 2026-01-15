@@ -46,3 +46,48 @@ supply_chain_table = pw.io.csv.read(
 supply_chain_table = supply_chain_table.with_columns(
     __key__=pw.this.record_id
 )
+import json
+
+# ============================================================
+# RISK KEYWORDS
+# ============================================================
+
+RISK_KEYWORDS = [
+    "strike",
+    "war",
+    "shutdown",
+    "port",
+    "flood",
+    "earthquake",
+    "cyclone",
+    "sanction",
+    "fire",
+]
+
+def contains_risk_keyword(text: str):
+    text = text.lower()
+    for kw in RISK_KEYWORDS:
+        if kw in text:
+            return kw
+    return None
+
+
+# ============================================================
+# FAKE API (STATIC JSONL FILE)
+# ============================================================
+
+FAKE_API_PATH = "data/synthetic_country_disaster.jsonl"
+
+def load_fake_api_articles():
+    articles = []
+    try:
+        with open(FAKE_API_PATH, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.strip():
+                    articles.append(json.loads(line))
+    except Exception as e:
+        print(f"❌ Failed to load fake API file: {e}")
+    return articles
+
+
+FAKE_API_ARTICLES = load_fake_api_articles()

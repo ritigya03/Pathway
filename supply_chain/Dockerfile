@@ -18,4 +18,4 @@ RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.
 COPY . .
 
 # Run the news app 
-CMD ["python", "alert_pipeline.py"]
+CMD ["python", "main.py"]

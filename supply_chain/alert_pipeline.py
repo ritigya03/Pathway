@@ -108,19 +108,27 @@ def process_threats_for_supplier(supplier: str, country: str) -> list[dict]:
     """
     Check news sources for threats and validate with LLM.
     Returns list of validated threats.
+    
+    IMPORTANT: All dict values MUST be plain Python types (str, int, float, bool)
+    NOT Pathway types, as they will be used in downstream UDFs.
     """
     threats = []
     seen_headlines = set()  # Track duplicates
+    
+    # Convert Pathway types to plain Python strings
+    supplier = str(supplier)
+    country = str(country)
+    
     log(f"🔍 Checking: {supplier} | {country}")
     
     # Check GNews
     for art in fetch_gnews(country):
-        headline = art.get("title", "")
-        description = art.get("description", "")
+        headline = str(art.get("title", ""))
+        description = str(art.get("description", ""))
         
         # Skip duplicates
         if headline in seen_headlines:
-            log(f"⏭️  Skipping duplicate: {headline[:50]}...")
+            log(f"⏭️ Skipping duplicate: {headline[:50]}...")
             continue
         
         kw = keyword_match(headline + " " + description)
@@ -129,12 +137,7 @@ def process_threats_for_supplier(supplier: str, country: str) -> list[dict]:
             continue
         
         seen_headlines.add(headline)
-        log(f"⚠️  Keyword match [{kw}]: {headline[:50]}...")
-        
-        if not kw:
-            continue
-            
-        log(f"⚠️  Keyword match [{kw}]: {headline[:50]}...")
+        log(f"⚠️ Keyword match [{kw}]: {headline[:50]}...")
         
         # LLM validation
         is_threat = is_real_supply_chain_threat(country, headline, description)
@@ -143,11 +146,11 @@ def process_threats_for_supplier(supplier: str, country: str) -> list[dict]:
         if is_threat:
             log(f"🚨 REAL THREAT | {supplier} | {country} | {kw}")
             threats.append({
-                "supplier": supplier,
-                "country": country,
-                "threat_type": kw,
-                "headline": headline,
-                "description": description,
+                "supplier": str(supplier),  # Ensure plain string
+                "country": str(country),    # Ensure plain string
+                "threat_type": str(kw),     # Ensure plain string
+                "headline": str(headline),  # Ensure plain string
+                "description": str(description),  # Ensure plain string
                 "source": "gnews",
             })
         else:
@@ -158,24 +161,34 @@ def process_threats_for_supplier(supplier: str, country: str) -> list[dict]:
         if art.get("country", "").lower() != country.lower():
             continue
             
-        headline = art.get("headline", "")
-        description = art.get("description", "")
+        headline = str(art.get("headline", ""))
+        description = str(art.get("description", ""))
+        
+        # Skip duplicates
+        if headline in seen_headlines:
+            log(f"⏭️ Skipping duplicate: {headline[:50]}...")
+            continue
+            
         kw = keyword_match(headline + " " + description)
         
         if not kw:
             continue
-            
-        log(f"⚠️  Keyword match [{kw}]: {headline[:50]}...")
+        
+        seen_headlines.add(headline)
+        log(f"⚠️ Keyword match [{kw}]: {headline[:50]}...")
         
         # LLM validation
-        if is_real_supply_chain_threat(country, headline, description):
+        is_threat = is_real_supply_chain_threat(country, headline, description)
+        log(f"   LLM validation result: {is_threat}")
+        
+        if is_threat:
             log(f"🚨 REAL THREAT | {supplier} | {country} | {kw}")
             threats.append({
-                "supplier": supplier,
-                "country": country,
-                "threat_type": kw,
-                "headline": headline,
-                "description": description,
+                "supplier": str(supplier),  # Ensure plain string
+                "country": str(country),    # Ensure plain string
+                "threat_type": str(kw),     # Ensure plain string
+                "headline": str(headline),  # Ensure plain string
+                "description": str(description),  # Ensure plain string
                 "source": "synthetic",
             })
         else:
@@ -232,6 +245,13 @@ pw.io.csv.write(validated_threats, "output/validated_threats.csv")
 # Log each validated threat
 @pw.udf
 def log_threat(supplier: str, country: str, threat_type: str, headline: str, source: str) -> str:
+    # Convert all to plain strings
+    supplier = str(supplier)
+    country = str(country)
+    threat_type = str(threat_type)
+    headline = str(headline)
+    source = str(source)
+    
     short_headline = headline[:70] + "..." if len(headline) > 70 else headline
     log("")
     log("=" * 60)
@@ -255,11 +275,11 @@ validated_threats.select(
 )
 
 log("✅ Pipeline configured. Now monitoring for threats...")
-log("📝 Check output/threat_detection.log for detailed logs")
+log("🔍 Check output/threat_detection.log for detailed logs")
 log("📊 Validated threats saved to output/validated_threats.csv")
 
 # ============================================================
 # RUN
 # ============================================================
-if __name__ == "__main__":
-    pw.run()
+# if __name__ == "__main__":
+#     pw.run()

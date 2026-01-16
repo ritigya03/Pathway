@@ -1,426 +1,160 @@
-=== Threat Detection Log Started at 2026-01-16 04:50:17.093151 ===
+=== Threat Detection Log Started at 2026-01-16 10:03:49.180864 ===
 
-[04:50:17] ✅ Loaded 12 synthetic news articles
-[04:50:17] 🚀 Starting Supply Chain Threat Alert Pipeline
-[04:50:17] ============================================================
-[04:50:17] 📂 Working directory: /app
-[04:50:17] 📂 Output directory: /app/output
-[04:50:17] 📂 CSV will be written to: /app/output/validated_threats.csv
-[04:50:17] ✅ Pipeline configured. Now monitoring for threats...
-[04:50:17] 🔍 Check output/threat_detection.log for detailed logs
-[04:50:17] 📊 Validated threats saved to output/validated_threats.csv
-[04:50:41] 🔍 Checking: Noventra Labs | Germany
-[04:50:42] 📡 fetch_gnews called for country: Germany
-[04:50:42] 📡 GNEWS_API_KEY present: True
-[04:50:42] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Germany (strike OR sanction OR war OR conflict ...
-[04:50:43] ✅ GNews returned 3 articles for Germany
-[04:50:43] ⚠️ Keyword match [conflict]: Germany and Israel strengthen military ties amid p...
-[04:50:45]    LLM validation result: False
-[04:50:45] ✅ LLM rejected: Not a supply chain threat
-[04:50:45] ⚠️ Keyword match [war]: Putin 'would punish UK with nuclear weapons' if it...
-[04:50:47]    LLM validation result: False
-[04:50:47] ✅ LLM rejected: Not a supply chain threat
-[04:50:47] ⚠️ Keyword match [war]: Jim Bovard: Germany's Latest War On Freedom...
-[04:50:48]    LLM validation result: False
-[04:50:48] ✅ LLM rejected: Not a supply chain threat
-[04:50:48] ⚠️ Keyword match [strike]: Nationwide Bank Employees Strike Disrupts Financia...
-[04:50:49]    LLM validation result: False
-[04:50:49] ✅ LLM rejected: Not a supply chain threat
-[04:50:49] 🔍 Checking: Virelox Trading | UAE
-[04:50:49] 📡 fetch_gnews called for country: UAE
-[04:50:49] 📡 GNEWS_API_KEY present: True
-[04:50:49] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=UAE (strike OR sanction OR war OR conflict OR s...
-[04:50:50] ✅ GNews returned 3 articles for UAE
-[04:50:51] ⚠️ Keyword match [war]: Rare protest held at Manchester City over UAE owne...
-[04:50:52]    LLM validation result: False
-[04:50:52] ✅ LLM rejected: Not a supply chain threat
-[04:50:52] ⚠️ Keyword match [conflict]: Turkish Diplomatic Insight: UAE's Yemen Exit Eases...
-[04:50:53]    LLM validation result: False
-[04:50:53] ✅ LLM rejected: Not a supply chain threat
-[04:50:53] ⚠️ Keyword match [conflict]: Israel's recognition of Somaliland and Yemen confl...
-[04:50:54]    LLM validation result: False
-[04:50:54] ✅ LLM rejected: Not a supply chain threat
-[04:50:54] ⚠️ Keyword match [port]: Major UAE Logistics Firm Announces Internal IT Sys...
-[04:50:55]    LLM validation result: False
-[04:50:55] ✅ LLM rejected: Not a supply chain threat
-[04:50:55] 🔍 Checking: Stronvia Solutions | Poland
-[04:50:55] 📡 fetch_gnews called for country: Poland
-[04:50:55] 📡 GNEWS_API_KEY present: True
-[04:50:55] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Poland (strike OR sanction OR war OR conflict O...
-[04:50:56] ✅ GNews returned 3 articles for Poland
-[04:50:56] ⚠️ Keyword match [strike]: As Poland fears Russian strike, its PM says only T...
-[04:50:57]    LLM validation result: False
-[04:50:57] ✅ LLM rejected: Not a supply chain threat
-[04:50:57] ⚠️ Keyword match [war]: US accuses Russia of 'dangerous', 'inexplicable es...
-[04:50:58]    LLM validation result: False
-[04:50:58] ✅ LLM rejected: Not a supply chain threat
-[04:50:58] ⚠️ Keyword match [port]: Mega £24billion airport in Europe to rival Heathro...
-[04:50:59]    LLM validation result: True
-[04:50:59] 🚨 REAL THREAT | Stronvia Solutions | Poland | port
-[04:50:59] ✅ Found 1 validated threat(s) for Stronvia Solutions
-[04:50:59] 🔍 Checking: Krydonix Ltd. | South Korea
-[04:50:59] 📡 fetch_gnews called for country: South Korea
-[04:50:59] 📡 GNEWS_API_KEY present: True
-[04:50:59] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=South Korea (strike OR sanction OR war OR confl...
-[04:51:00] ✅ GNews returned 3 articles for South Korea
-[04:51:00] ⚠️ Keyword match [war]: 75% of registered S. Koreans separated from family...
-[04:51:01]    LLM validation result: False
-[04:51:01] ✅ LLM rejected: Not a supply chain threat
-[04:51:01] ⚠️ Keyword match [conflict]: Diplomatic Tensions: South Korea Stays Neutral Ami...
-[04:51:03]    LLM validation result: False
-[04:51:03] ✅ LLM rejected: Not a supply chain threat
-[04:51:03] ⚠️ Keyword match [fire]: 'Once We Were Us' and 'Avatar 3' Tussle for Korea ...
-[04:51:04]    LLM validation result: False
-[04:51:04] ✅ LLM rejected: Not a supply chain threat
-[04:51:04] 🔍 Checking: Flarix Industries | China
-[04:51:04] 📡 fetch_gnews called for country: China
-[04:51:04] 📡 GNEWS_API_KEY present: True
-[04:51:04] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=China (strike OR sanction OR war OR conflict OR...
-[04:51:05] ✅ GNews returned 3 articles for China
-[04:51:05] ⚠️ Keyword match [fire]: Trump's greenlight for Nvidia AI chips to China dr...
-[04:51:06]    LLM validation result: False
-[04:51:06] ✅ LLM rejected: Not a supply chain threat
-[04:51:06] ⚠️ Keyword match [strike]: US Moving Carrier Strike Group To Middle East Amid...
-[04:51:07]    LLM validation result: False
-[04:51:07] ✅ LLM rejected: Not a supply chain threat
-[04:51:07] ⚠️ Keyword match [war]: Inside Greenland's Only US Military Base, Pituffik...
-[04:51:08]    LLM validation result: False
-[04:51:08] ✅ LLM rejected: Not a supply chain threat
-[04:51:08] ⚠️ Keyword match [port]: Shenzhen Port Operations Slowed After Flood Damage...
-[04:51:09]    LLM validation result: True
-[04:51:09] 🚨 REAL THREAT | Flarix Industries | China | port
-[04:51:09] ⚠️ Keyword match [strike]: China Condemns Strike Action in Venezuela During D...
-[04:51:10]    LLM validation result: False
-[04:51:10] ✅ LLM rejected: Not a supply chain threat
-[04:51:10] ✅ Found 1 validated threat(s) for Flarix Industries
-[04:51:10] 🔍 Checking: Elvaron Group | Mexico
-[04:51:10] 📡 fetch_gnews called for country: Mexico
-[04:51:10] 📡 GNEWS_API_KEY present: True
-[04:51:10] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Mexico (strike OR sanction OR war OR conflict O...
-[04:51:11] ✅ GNews returned 3 articles for Mexico
-[04:51:11] ⚠️ Keyword match [war]: US military advisers embed in Mexico as Trump thre...
-[04:51:12]    LLM validation result: False
-[04:51:12] ✅ LLM rejected: Not a supply chain threat
-[04:51:12] ⚠️ Keyword match [fire]: 'Heads will roll!' US Marshals under fire for send...
-[04:51:13]    LLM validation result: False
-[04:51:13] ✅ LLM rejected: Not a supply chain threat
-[04:51:13] ⚠️ Keyword match [war]: Jesse Marsch Admits ‘Mistake’ in Canada vs. Mexico...
-[04:51:14]    LLM validation result: False
-[04:51:15] ✅ LLM rejected: Not a supply chain threat
-[04:51:15] 🔍 Checking: Trevixa Enterprises | Bangladesh
-[04:51:15] 📡 fetch_gnews called for country: Bangladesh
-[04:51:15] 📡 GNEWS_API_KEY present: True
-[04:51:15] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Bangladesh (strike OR sanction OR war OR confli...
-[04:51:16] ✅ GNews returned 3 articles for Bangladesh
-[04:51:16] ⚠️ Keyword match [war]: Shocking! Mustafizur Rahman saves KKR from action,...
-[04:51:17]    LLM validation result: False
-[04:51:17] ✅ LLM rejected: Not a supply chain threat
-[04:51:17] ⚠️ Keyword match [strike]: Bangladesh cricketers on strike? 'Najmul Islam out...
-[04:51:18]    LLM validation result: False
-[04:51:18] ✅ LLM rejected: Not a supply chain threat
-[04:51:18] ⚠️ Keyword match [shutdown]: Bangladesh cricket on brink of shutdown as players...
-[04:51:19]    LLM validation result: False
-[04:51:19] ✅ LLM rejected: Not a supply chain threat
-[04:51:19] ⚠️ Keyword match [strike]: Port Workers Strike in Bangladesh Causes Export De...
-[04:51:20]    LLM validation result: True
-[04:51:20] 🚨 REAL THREAT | Trevixa Enterprises | Bangladesh | strike
-[04:51:20] ⚠️ Keyword match [port]: Seasonal Rains Expected to Continue Across Banglad...
-[04:51:21]    LLM validation result: False
-[04:51:21] ✅ LLM rejected: Not a supply chain threat
-[04:51:21] ✅ Found 1 validated threat(s) for Trevixa Enterprises
-[04:51:21] 🔍 Checking: Axelium Works | Turkey
-[04:51:21] 📡 fetch_gnews called for country: Turkey
-[04:51:21] 📡 GNEWS_API_KEY present: True
-[04:51:21] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Turkey (strike OR sanction OR war OR conflict O...
-[04:51:22] ✅ GNews returned 3 articles for Turkey
-[04:51:22] ⚠️ Keyword match [strike]: Turkey says it opposes military intervention in Ir...
-[04:51:23]    LLM validation result: False
-[04:51:23] ✅ LLM rejected: Not a supply chain threat
-[04:51:23] ⚠️ Keyword match [conflict]: Turkey's Stance: Diplomatic Solutions Over Militar...
-[04:51:24]    LLM validation result: False
-[04:51:24] ✅ LLM rejected: Not a supply chain threat
-[04:51:24] ⚠️ Keyword match [strike]: Iran puts Saudi, UAE and Turkey on notice: 'Block ...
-[04:51:25]    LLM validation result: False
-[04:51:25] ✅ LLM rejected: Not a supply chain threat
-[04:51:25] ⚠️ Keyword match [earthquake]: Strong Earthquake Strikes Northwestern Turkey, Dis...
-[04:51:26]    LLM validation result: True
-[04:51:26] 🚨 REAL THREAT | Axelium Works | Turkey | earthquake
-[04:51:26] ✅ Found 1 validated threat(s) for Axelium Works
-[04:51:26] 🔍 Checking: Quorvia Systems | Vietnam
-[04:51:26] 📡 fetch_gnews called for country: Vietnam
-[04:51:26] 📡 GNEWS_API_KEY present: True
-[04:51:26] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Vietnam (strike OR sanction OR war OR conflict ...
-[04:51:27] ✅ GNews returned 3 articles for Vietnam
-[04:51:27] ⚠️ Keyword match [war]: Hyundai Bioscience Confirms Entry into U.S. FDA Ph...
-[04:51:28]    LLM validation result: False
-[04:51:28] ✅ LLM rejected: Not a supply chain threat
-[04:51:28] ⚠️ Keyword match [war]: ‘Draft-dodging coward!’: Vietnam war vet (and ex-g...
-[04:51:29]    LLM validation result: False
-[04:51:29] ✅ LLM rejected: Not a supply chain threat
-[04:51:29] ⚠️ Keyword match [war]: Texas Tech secures federal grant to aid Vietnam Wa...
-[04:51:30]    LLM validation result: False
-[04:51:30] ✅ LLM rejected: Not a supply chain threat
-[04:51:50] 🔍 Checking: Quorvia Systems | Vietnam
-[04:51:50] 📡 fetch_gnews called for country: Vietnam
-[04:51:50] 📡 GNEWS_API_KEY present: True
-[04:51:50] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Vietnam (strike OR sanction OR war OR conflict ...
-[04:51:51] ✅ GNews returned 3 articles for Vietnam
-[04:51:51] ⚠️ Keyword match [war]: Hyundai Bioscience Confirms Entry into U.S. FDA Ph...
-[04:51:52]    LLM validation result: False
-[04:51:52] ✅ LLM rejected: Not a supply chain threat
-[04:51:52] ⚠️ Keyword match [war]: ‘Draft-dodging coward!’: Vietnam war vet (and ex-g...
-[04:51:53]    LLM validation result: False
-[04:51:53] ✅ LLM rejected: Not a supply chain threat
-[04:51:53] ⚠️ Keyword match [war]: Texas Tech secures federal grant to aid Vietnam Wa...
-[04:51:54]    LLM validation result: False
-[04:51:54] ✅ LLM rejected: Not a supply chain threat
-[04:52:15] 🔍 Checking: Axelium Works | Turkey
-[04:52:15] 📡 fetch_gnews called for country: Turkey
-[04:52:15] 📡 GNEWS_API_KEY present: True
-[04:52:15] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Turkey (strike OR sanction OR war OR conflict O...
-[04:52:16] ✅ GNews returned 3 articles for Turkey
-[04:52:16] ⚠️ Keyword match [strike]: Turkey says it opposes military intervention in Ir...
-[04:52:17]    LLM validation result: False
-[04:52:17] ✅ LLM rejected: Not a supply chain threat
-[04:52:17] ⚠️ Keyword match [conflict]: Turkey's Stance: Diplomatic Solutions Over Militar...
-[04:52:18]    LLM validation result: False
-[04:52:18] ✅ LLM rejected: Not a supply chain threat
-[04:52:18] ⚠️ Keyword match [strike]: Iran puts Saudi, UAE and Turkey on notice: 'Block ...
-[04:52:19]    LLM validation result: False
-[04:52:19] ✅ LLM rejected: Not a supply chain threat
-[04:52:19] ⚠️ Keyword match [earthquake]: Strong Earthquake Strikes Northwestern Turkey, Dis...
-[04:52:20]    LLM validation result: True
-[04:52:20] 🚨 REAL THREAT | Axelium Works | Turkey | earthquake
-[04:52:20] ✅ Found 1 validated threat(s) for Axelium Works
-[04:52:40] 🔍 Checking: Virelox Trading | UAE
-[04:52:40] 📡 fetch_gnews called for country: UAE
-[04:52:40] 📡 GNEWS_API_KEY present: True
-[04:52:40] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=UAE (strike OR sanction OR war OR conflict OR s...
-[04:52:41] ✅ GNews returned 3 articles for UAE
-[04:52:41] ⚠️ Keyword match [war]: Rare protest held at Manchester City over UAE owne...
-[04:52:42]    LLM validation result: False
-[04:52:42] ✅ LLM rejected: Not a supply chain threat
-[04:52:42] ⚠️ Keyword match [conflict]: Turkish Diplomatic Insight: UAE's Yemen Exit Eases...
-[04:52:43]    LLM validation result: False
-[04:52:43] ✅ LLM rejected: Not a supply chain threat
-[04:52:43] ⚠️ Keyword match [conflict]: Israel's recognition of Somaliland and Yemen confl...
-[04:52:44]    LLM validation result: False
-[04:52:44] ✅ LLM rejected: Not a supply chain threat
-[04:52:44] ⚠️ Keyword match [port]: Major UAE Logistics Firm Announces Internal IT Sys...
-[04:52:45]    LLM validation result: False
-[04:52:45] ✅ LLM rejected: Not a supply chain threat
-[04:53:05] 🔍 Checking: Stronvia Solutions | Poland
-[04:53:05] 📡 fetch_gnews called for country: Poland
-[04:53:05] 📡 GNEWS_API_KEY present: True
-[04:53:05] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Poland (strike OR sanction OR war OR conflict O...
-[04:53:06] ✅ GNews returned 3 articles for Poland
-[04:53:06] ⚠️ Keyword match [strike]: As Poland fears Russian strike, its PM says only T...
-[04:53:07]    LLM validation result: False
-[04:53:07] ✅ LLM rejected: Not a supply chain threat
-[04:53:07] ⚠️ Keyword match [war]: US accuses Russia of 'dangerous', 'inexplicable es...
-[04:53:08]    LLM validation result: False
-[04:53:08] ✅ LLM rejected: Not a supply chain threat
-[04:53:08] ⚠️ Keyword match [port]: Mega £24billion airport in Europe to rival Heathro...
-[04:53:09]    LLM validation result: True
-[04:53:09] 🚨 REAL THREAT | Stronvia Solutions | Poland | port
-[04:53:09] ✅ Found 1 validated threat(s) for Stronvia Solutions
-[04:53:30] 🔍 Checking: Krydonix Ltd. | South Korea
-[04:53:30] 📡 fetch_gnews called for country: South Korea
-[04:53:30] 📡 GNEWS_API_KEY present: True
-[04:53:30] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=South Korea (strike OR sanction OR war OR confl...
-[04:53:31] ✅ GNews returned 3 articles for South Korea
-[04:53:31] ⚠️ Keyword match [war]: 75% of registered S. Koreans separated from family...
-[04:53:32]    LLM validation result: False
-[04:53:32] ✅ LLM rejected: Not a supply chain threat
-[04:53:32] ⚠️ Keyword match [conflict]: Diplomatic Tensions: South Korea Stays Neutral Ami...
-[04:53:33]    LLM validation result: False
-[04:53:33] ✅ LLM rejected: Not a supply chain threat
-[04:53:34] ⚠️ Keyword match [fire]: 'Once We Were Us' and 'Avatar 3' Tussle for Korea ...
-[04:53:35]    LLM validation result: False
-[04:53:35] ✅ LLM rejected: Not a supply chain threat
-[04:53:55] 🔍 Checking: Elvaron Group | Mexico
-[04:53:55] 📡 fetch_gnews called for country: Mexico
-[04:53:55] 📡 GNEWS_API_KEY present: True
-[04:53:55] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Mexico (strike OR sanction OR war OR conflict O...
-[04:53:56] ✅ GNews returned 3 articles for Mexico
-[04:53:56] ⚠️ Keyword match [war]: US military advisers embed in Mexico as Trump thre...
-[04:53:57]    LLM validation result: False
-[04:53:57] ✅ LLM rejected: Not a supply chain threat
-[04:53:57] ⚠️ Keyword match [fire]: 'Heads will roll!' US Marshals under fire for send...
-[04:53:58]    LLM validation result: False
-[04:53:58] ✅ LLM rejected: Not a supply chain threat
-[04:53:58] ⚠️ Keyword match [war]: Jesse Marsch Admits ‘Mistake’ in Canada vs. Mexico...
-[04:53:59]    LLM validation result: False
-[04:53:59] ✅ LLM rejected: Not a supply chain threat
-[04:54:20] 🔍 Checking: Trevixa Enterprises | Bangladesh
-[04:54:20] 📡 fetch_gnews called for country: Bangladesh
-[04:54:20] 📡 GNEWS_API_KEY present: True
-[04:54:20] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Bangladesh (strike OR sanction OR war OR confli...
-[04:54:21] ✅ GNews returned 3 articles for Bangladesh
-[04:54:21] ⚠️ Keyword match [war]: Shocking! Mustafizur Rahman saves KKR from action,...
-[04:54:22]    LLM validation result: False
-[04:54:22] ✅ LLM rejected: Not a supply chain threat
-[04:54:22] ⚠️ Keyword match [strike]: Bangladesh cricketers on strike? 'Najmul Islam out...
-[04:54:23]    LLM validation result: False
-[04:54:23] ✅ LLM rejected: Not a supply chain threat
-[04:54:23] ⚠️ Keyword match [shutdown]: Bangladesh cricket on brink of shutdown as players...
-[04:54:24]    LLM validation result: False
-[04:54:24] ✅ LLM rejected: Not a supply chain threat
-[04:54:24] ⚠️ Keyword match [strike]: Port Workers Strike in Bangladesh Causes Export De...
-[04:54:25]    LLM validation result: True
-[04:54:25] 🚨 REAL THREAT | Trevixa Enterprises | Bangladesh | strike
-[04:54:25] ⚠️ Keyword match [port]: Seasonal Rains Expected to Continue Across Banglad...
-[04:54:27]    LLM validation result: False
-[04:54:27] ✅ LLM rejected: Not a supply chain threat
-[04:54:27] ✅ Found 1 validated threat(s) for Trevixa Enterprises
-[05:15:02] 🔍 Checking: Noventra Labs | Germany
-[05:15:02] 📡 fetch_gnews called for country: Germany
-[05:15:02] 📡 GNEWS_API_KEY present: True
-[05:15:02] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Germany (strike OR sanction OR war OR conflict ...
-[05:15:04] ✅ GNews returned 3 articles for Germany
-[05:15:04] ⚠️ Keyword match [conflict]: Germany and Israel strengthen military ties amid p...
-[05:15:05]    LLM validation result: False
-[05:15:05] ✅ LLM rejected: Not a supply chain threat
-[05:15:05] ⚠️ Keyword match [war]: Putin 'would punish UK with nuclear weapons' if it...
-[05:15:06]    LLM validation result: False
-[05:15:06] ✅ LLM rejected: Not a supply chain threat
-[05:15:06] ⚠️ Keyword match [war]: Jim Bovard: Germany's Latest War On Freedom...
-[05:15:07]    LLM validation result: False
-[05:15:07] ✅ LLM rejected: Not a supply chain threat
-[05:15:07] ⚠️ Keyword match [strike]: Nationwide Bank Employees Strike Disrupts Financia...
-[05:15:08]    LLM validation result: False
-[05:15:08] ✅ LLM rejected: Not a supply chain threat
-[05:15:08] 🔍 Checking: Virelox Trading | UAE
-[05:15:08] 📡 fetch_gnews called for country: UAE
-[05:15:08] 📡 GNEWS_API_KEY present: True
-[05:15:08] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=UAE (strike OR sanction OR war OR conflict OR s...
-[05:15:09] ✅ GNews returned 3 articles for UAE
-[05:15:09] ⚠️ Keyword match [war]: Rare protest held at Manchester City over UAE owne...
-[05:15:10]    LLM validation result: False
-[05:15:10] ✅ LLM rejected: Not a supply chain threat
-[05:15:10] ⚠️ Keyword match [conflict]: Turkish Diplomatic Insight: UAE's Yemen Exit Eases...
-[05:15:11]    LLM validation result: False
-[05:15:11] ✅ LLM rejected: Not a supply chain threat
-[05:15:11] ⚠️ Keyword match [conflict]: Israel's recognition of Somaliland and Yemen confl...
-[05:15:12]    LLM validation result: False
-[05:15:13] ✅ LLM rejected: Not a supply chain threat
-[05:15:13] ⚠️ Keyword match [port]: Major UAE Logistics Firm Announces Internal IT Sys...
-[05:15:14]    LLM validation result: False
-[05:15:14] ✅ LLM rejected: Not a supply chain threat
-[05:15:14] 🔍 Checking: Stronvia Solutions | Poland
-[05:15:14] 📡 fetch_gnews called for country: Poland
-[05:15:14] 📡 GNEWS_API_KEY present: True
-[05:15:14] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Poland (strike OR sanction OR war OR conflict O...
-[05:15:15] ✅ GNews returned 3 articles for Poland
-[05:15:15] ⚠️ Keyword match [strike]: As Poland fears Russian strike, its PM says only T...
-[05:15:16]    LLM validation result: False
-[05:15:16] ✅ LLM rejected: Not a supply chain threat
-[05:15:16] ⚠️ Keyword match [war]: US accuses Russia of 'dangerous', 'inexplicable es...
-[05:15:17]    LLM validation result: False
-[05:15:17] ✅ LLM rejected: Not a supply chain threat
-[05:15:17] ⚠️ Keyword match [port]: Mega £24billion airport in Europe to rival Heathro...
-[05:15:19]    LLM validation result: True
-[05:15:19] 🚨 REAL THREAT | Stronvia Solutions | Poland | port
-[05:15:19] ✅ Found 1 validated threat(s) for Stronvia Solutions
-[05:15:19] 🔍 Checking: Krydonix Ltd. | South Korea
-[05:15:19] 📡 fetch_gnews called for country: South Korea
-[05:15:19] 📡 GNEWS_API_KEY present: True
-[05:15:19] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=South Korea (strike OR sanction OR war OR confl...
-[05:15:20] ✅ GNews returned 3 articles for South Korea
-[05:15:20] ⚠️ Keyword match [war]: 75% of registered S. Koreans separated from family...
-[05:15:21]    LLM validation result: False
-[05:15:21] ✅ LLM rejected: Not a supply chain threat
-[05:15:21] ⚠️ Keyword match [conflict]: Diplomatic Tensions: South Korea Stays Neutral Ami...
-[05:15:22]    LLM validation result: False
-[05:15:22] ✅ LLM rejected: Not a supply chain threat
-[05:15:22] ⚠️ Keyword match [fire]: 'Once We Were Us' and 'Avatar 3' Tussle for Korea ...
-[05:15:23]    LLM validation result: False
-[05:15:23] ✅ LLM rejected: Not a supply chain threat
-[05:15:23] 🔍 Checking: Flarix Industries | China
-[05:15:23] 📡 fetch_gnews called for country: China
-[05:15:23] 📡 GNEWS_API_KEY present: True
-[05:15:24] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=China (strike OR sanction OR war OR conflict OR...
-[05:15:24] ✅ GNews returned 3 articles for China
-[05:15:24] ⚠️ Keyword match [strike]: Donald Trump Preparing to Attack Iran? Pentagon Mo...
-[05:15:26]    LLM validation result: False
-[05:15:26] ✅ LLM rejected: Not a supply chain threat
-[05:15:26] ⚠️ Keyword match [war]: U.S. Colleges Slide Down World Rankings Amid Trump...
-[05:15:27]    LLM validation result: False
-[05:15:27] ✅ LLM rejected: Not a supply chain threat
-[05:15:27] ⚠️ Keyword match [fire]: Trump's greenlight for Nvidia AI chips to China dr...
-[05:15:28]    LLM validation result: False
-[05:15:28] ✅ LLM rejected: Not a supply chain threat
-[05:15:28] ⚠️ Keyword match [port]: Shenzhen Port Operations Slowed After Flood Damage...
-[05:15:29]    LLM validation result: True
-[05:15:29] 🚨 REAL THREAT | Flarix Industries | China | port
-[05:15:29] ⚠️ Keyword match [strike]: China Condemns Strike Action in Venezuela During D...
-[05:15:30]    LLM validation result: False
-[05:15:30] ✅ LLM rejected: Not a supply chain threat
-[05:15:30] ✅ Found 1 validated threat(s) for Flarix Industries
-[05:15:30] 🔍 Checking: Elvaron Group | Mexico
-[05:15:30] 📡 fetch_gnews called for country: Mexico
-[05:15:30] 📡 GNEWS_API_KEY present: True
-[05:15:30] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Mexico (strike OR sanction OR war OR conflict O...
-[05:15:31] ✅ GNews returned 3 articles for Mexico
-[05:15:31] ⚠️ Keyword match [war]: US military advisers embed in Mexico as Trump thre...
-[05:15:32]    LLM validation result: False
-[05:15:32] ✅ LLM rejected: Not a supply chain threat
-[05:15:32] ⚠️ Keyword match [fire]: 'Heads will roll!' US Marshals under fire for send...
-[05:15:33]    LLM validation result: False
-[05:15:33] ✅ LLM rejected: Not a supply chain threat
-[05:15:33] ⚠️ Keyword match [war]: Jesse Marsch Admits ‘Mistake’ in Canada vs. Mexico...
-[05:15:34]    LLM validation result: False
-[05:15:35] ✅ LLM rejected: Not a supply chain threat
-[05:15:35] 🔍 Checking: Trevixa Enterprises | Bangladesh
-[05:15:35] 📡 fetch_gnews called for country: Bangladesh
-[05:15:35] 📡 GNEWS_API_KEY present: True
-[05:15:35] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Bangladesh (strike OR sanction OR war OR confli...
-[05:15:36] ✅ GNews returned 3 articles for Bangladesh
-[05:15:36] ⚠️ Keyword match [war]: Shocking! Mustafizur Rahman saves KKR from action,...
-[05:15:37]    LLM validation result: False
-[05:15:37] ✅ LLM rejected: Not a supply chain threat
-[05:15:37] ⚠️ Keyword match [strike]: Bangladesh cricketers on strike? 'Najmul Islam out...
-[05:15:38]    LLM validation result: False
-[05:15:38] ✅ LLM rejected: Not a supply chain threat
-[05:15:38] ⚠️ Keyword match [shutdown]: Bangladesh cricket on brink of shutdown as players...
-[05:15:39]    LLM validation result: False
-[05:15:39] ✅ LLM rejected: Not a supply chain threat
-[05:15:39] ⚠️ Keyword match [strike]: Port Workers Strike in Bangladesh Causes Export De...
-[05:15:40]    LLM validation result: True
-[05:15:40] 🚨 REAL THREAT | Trevixa Enterprises | Bangladesh | strike
-[05:15:41] ⚠️ Keyword match [port]: Seasonal Rains Expected to Continue Across Banglad...
-[05:15:41]    LLM validation result: False
-[05:15:41] ✅ LLM rejected: Not a supply chain threat
-[05:15:42] ✅ Found 1 validated threat(s) for Trevixa Enterprises
-[05:15:42] 🔍 Checking: Axelium Works | Turkey
-[05:15:42] 📡 fetch_gnews called for country: Turkey
-[05:15:42] 📡 GNEWS_API_KEY present: True
-[05:15:42] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Turkey (strike OR sanction OR war OR conflict O...
-[05:15:43] ✅ GNews returned 3 articles for Turkey
-[05:15:43] ⚠️ Keyword match [strike]: Turkey says it opposes military intervention in Ir...
-[05:15:44]    LLM validation result: False
-[05:15:44] ✅ LLM rejected: Not a supply chain threat
-[05:15:44] ⚠️ Keyword match [conflict]: Turkey's Stance: Diplomatic Solutions Over Militar...
-[05:15:45]    LLM validation result: False
-[05:15:45] ✅ LLM rejected: Not a supply chain threat
-[05:15:45] ⚠️ Keyword match [strike]: Iran puts Saudi, UAE and Turkey on notice: 'Block ...
-[05:15:46]    LLM validation result: False
-[05:15:46] ✅ LLM rejected: Not a supply chain threat
-[05:15:46] ⚠️ Keyword match [earthquake]: Strong Earthquake Strikes Northwestern Turkey, Dis...
-[05:15:47]    LLM validation result: True
-[05:15:47] 🚨 REAL THREAT | Axelium Works | Turkey | earthquake
-[05:15:47] ✅ Found 1 validated threat(s) for Axelium Works
-[05:15:47] 🔍 Checking: Quorvia Systems | Vietnam
-[05:15:47] 📡 fetch_gnews called for country: Vietnam
-[05:15:48] 📡 GNEWS_API_KEY present: True
-[05:15:48] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Vietnam (strike OR sanction OR war OR conflict ...
-[05:15:49] ✅ GNews returned 3 articles for Vietnam
-[05:15:49] ⚠️ Keyword match [war]: Hyundai Bioscience Confirms Entry into U.S. FDA Ph...
-[05:15:50]    LLM validation result: False
-[05:15:50] ✅ LLM rejected: Not a supply chain threat
-[05:15:50] ⚠️ Keyword match [war]: ‘Draft-dodging coward!’: Vietnam war vet (and ex-g...
-[05:15:51]    LLM validation result: False
-[05:15:51] ✅ LLM rejected: Not a supply chain threat
-[05:15:51] ⚠️ Keyword match [war]: Texas Tech secures federal grant to aid Vietnam Wa...
-[05:15:52]    LLM validation result: False
-[05:15:52] ✅ LLM rejected: Not a supply chain threat
+[10:03:49] ✅ Loaded 12 synthetic news articles
+[10:03:49] 🚀 Starting Supply Chain Threat Alert Pipeline
+[10:03:49] ============================================================
+[10:03:49] 📂 Working directory: /app
+[10:03:49] 📂 Output directory: /app/output
+[10:03:49] 📂 CSV will be written to: /app/output/validated_threats.csv
+[10:03:49] ✅ Pipeline configured. Now monitoring for threats...
+[10:03:49] 🔍 Check output/threat_detection.log for detailed logs
+[10:03:49] 📊 Validated threats saved to output/validated_threats.csv
+[10:04:20] 🔍 Checking: Noventra Labs | Germany
+[10:04:20] 📡 fetch_gnews called for country: Germany
+[10:04:20] 📡 GNEWS_API_KEY present: True
+[10:04:20] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Germany (strike OR sanction OR war OR conflict ...
+[10:04:21] ✅ GNews returned 3 articles for Germany
+[10:04:21] ⚠️ Keyword match [conflict]: Germany and Israel strengthen military ties amid p...
+[10:04:23]    LLM validation result: False
+[10:04:23] ✅ LLM rejected: Not a supply chain threat
+[10:04:23] ⚠️ Keyword match [war]: Putin 'would punish UK with nuclear weapons' if it...
+[10:04:24]    LLM validation result: False
+[10:04:24] ✅ LLM rejected: Not a supply chain threat
+[10:04:24] ⚠️ Keyword match [war]: Jim Bovard: Germany's Latest War On Freedom...
+[10:04:25]    LLM validation result: False
+[10:04:25] ✅ LLM rejected: Not a supply chain threat
+[10:04:25] ⚠️ Keyword match [strike]: Nationwide Bank Employees Strike Disrupts Financia...
+[10:04:26]    LLM validation result: False
+[10:04:26] ✅ LLM rejected: Not a supply chain threat
+[10:04:26] 🔍 Checking: Virelox Trading | UAE
+[10:04:26] 📡 fetch_gnews called for country: UAE
+[10:04:26] 📡 GNEWS_API_KEY present: True
+[10:04:26] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=UAE (strike OR sanction OR war OR conflict OR s...
+[10:04:27] ✅ GNews returned 3 articles for UAE
+[10:04:27] ⚠️ Keyword match [war]: Rare protest held at Manchester City over UAE owne...
+[10:04:28]    LLM validation result: False
+[10:04:28] ✅ LLM rejected: Not a supply chain threat
+[10:04:28] ⚠️ Keyword match [conflict]: Turkish Diplomatic Insight: UAE's Yemen Exit Eases...
+[10:04:29]    LLM validation result: False
+[10:04:29] ✅ LLM rejected: Not a supply chain threat
+[10:04:29] ⚠️ Keyword match [conflict]: Israel's recognition of Somaliland and Yemen confl...
+[10:04:30]    LLM validation result: False
+[10:04:30] ✅ LLM rejected: Not a supply chain threat
+[10:04:30] ⚠️ Keyword match [port]: Major UAE Logistics Firm Announces Internal IT Sys...
+[10:04:31]    LLM validation result: False
+[10:04:31] ✅ LLM rejected: Not a supply chain threat
+[10:04:31] 🔍 Checking: Stronvia Solutions | Poland
+[10:04:31] 📡 fetch_gnews called for country: Poland
+[10:04:31] 📡 GNEWS_API_KEY present: True
+[10:04:31] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Poland (strike OR sanction OR war OR conflict O...
+[10:04:33] ✅ GNews returned 3 articles for Poland
+[10:04:33] ⚠️ Keyword match [strike]: As Poland fears Russian strike, its PM says only T...
+[10:04:34]    LLM validation result: False
+[10:04:34] ✅ LLM rejected: Not a supply chain threat
+[10:04:34] ⚠️ Keyword match [war]: US accuses Russia of 'dangerous', 'inexplicable es...
+[10:04:35]    LLM validation result: False
+[10:04:35] ✅ LLM rejected: Not a supply chain threat
+[10:04:35] ⚠️ Keyword match [port]: Mega £24billion airport in Europe to rival Heathro...
+[10:04:36]    LLM validation result: True
+[10:04:36] 🚨 REAL THREAT | Stronvia Solutions | Poland | port
+[10:04:36] ✅ Found 1 validated threat(s) for Stronvia Solutions
+[10:04:36] 🔍 Checking: Krydonix Ltd. | South Korea
+[10:04:36] 📡 fetch_gnews called for country: South Korea
+[10:04:36] 📡 GNEWS_API_KEY present: True
+[10:04:36] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=South Korea (strike OR sanction OR war OR confl...
+[10:04:37] ✅ GNews returned 3 articles for South Korea
+[10:04:37] ⚠️ Keyword match [war]: 75% of registered S. Koreans separated from family...
+[10:04:38]    LLM validation result: False
+[10:04:38] ✅ LLM rejected: Not a supply chain threat
+[10:04:38] ⚠️ Keyword match [conflict]: Diplomatic Tensions: South Korea Stays Neutral Ami...
+[10:04:39]    LLM validation result: False
+[10:04:39] ✅ LLM rejected: Not a supply chain threat
+[10:04:39] ⚠️ Keyword match [fire]: 'Once We Were Us' and 'Avatar 3' Tussle for Korea ...
+[10:04:40]    LLM validation result: False
+[10:04:40] ✅ LLM rejected: Not a supply chain threat
+[10:04:40] 🔍 Checking: Flarix Industries | China
+[10:04:40] 📡 fetch_gnews called for country: China
+[10:04:40] 📡 GNEWS_API_KEY present: True
+[10:04:40] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=China (strike OR sanction OR war OR conflict OR...
+[10:04:41] ✅ GNews returned 3 articles for China
+[10:04:42] ⚠️ Keyword match [war]: US lawmakers propose US$2.5 billion agency to boos...
+[10:04:42]    LLM validation result: False
+[10:04:42] ✅ LLM rejected: Not a supply chain threat
+[10:04:43] ⚠️ Keyword match [strike]: Pentagon Moving Carrier Strike Group Toward Middle...
+[10:04:43]    LLM validation result: False
+[10:04:43] ✅ LLM rejected: Not a supply chain threat
+[10:04:43] ⏭️ Skipping duplicate: Pentagon Moving Carrier Strike Group Toward Middle...
+[10:04:44] ⚠️ Keyword match [port]: Shenzhen Port Operations Slowed After Flood Damage...
+[10:04:45]    LLM validation result: True
+[10:04:45] 🚨 REAL THREAT | Flarix Industries | China | port
+[10:04:45] ⚠️ Keyword match [strike]: China Condemns Strike Action in Venezuela During D...
+[10:04:46]    LLM validation result: False
+[10:04:46] ✅ LLM rejected: Not a supply chain threat
+[10:04:46] ✅ Found 1 validated threat(s) for Flarix Industries
+[10:04:46] 🔍 Checking: Elvaron Group | Mexico
+[10:04:46] 📡 fetch_gnews called for country: Mexico
+[10:04:46] 📡 GNEWS_API_KEY present: True
+[10:04:46] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Mexico (strike OR sanction OR war OR conflict O...
+[10:04:47] ✅ GNews returned 3 articles for Mexico
+[10:04:47] ⚠️ Keyword match [war]: US military advisers embed in Mexico as Trump thre...
+[10:04:48]    LLM validation result: False
+[10:04:48] ✅ LLM rejected: Not a supply chain threat
+[10:04:48] ⚠️ Keyword match [fire]: 'Heads will roll!' US Marshals under fire for send...
+[10:04:49]    LLM validation result: False
+[10:04:49] ✅ LLM rejected: Not a supply chain threat
+[10:04:49] ⚠️ Keyword match [war]: Jesse Marsch Admits ‘Mistake’ in Canada vs. Mexico...
+[10:04:50]    LLM validation result: False
+[10:04:50] ✅ LLM rejected: Not a supply chain threat
+[10:04:50] 🔍 Checking: Trevixa Enterprises | Bangladesh
+[10:04:50] 📡 fetch_gnews called for country: Bangladesh
+[10:04:50] 📡 GNEWS_API_KEY present: True
+[10:04:50] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Bangladesh (strike OR sanction OR war OR confli...
+[10:04:51] ✅ GNews returned 3 articles for Bangladesh
+[10:04:51] ⚠️ Keyword match [war]: Shocking! Mustafizur Rahman saves KKR from action,...
+[10:04:52]    LLM validation result: False
+[10:04:52] ✅ LLM rejected: Not a supply chain threat
+[10:04:52] ⚠️ Keyword match [strike]: Bangladesh cricketers on strike? 'Najmul Islam out...
+[10:04:53]    LLM validation result: False
+[10:04:53] ✅ LLM rejected: Not a supply chain threat
+[10:04:53] ⚠️ Keyword match [shutdown]: Bangladesh cricket on brink of shutdown as players...
+[10:04:54]    LLM validation result: False
+[10:04:54] ✅ LLM rejected: Not a supply chain threat
+[10:04:54] ⚠️ Keyword match [strike]: Port Workers Strike in Bangladesh Causes Export De...
+[10:04:55]    LLM validation result: True
+[10:04:55] 🚨 REAL THREAT | Trevixa Enterprises | Bangladesh | strike
+[10:04:55] ⚠️ Keyword match [port]: Seasonal Rains Expected to Continue Across Banglad...
+[10:04:56]    LLM validation result: False
+[10:04:56] ✅ LLM rejected: Not a supply chain threat
+[10:04:56] ✅ Found 1 validated threat(s) for Trevixa Enterprises
+[10:04:56] 🔍 Checking: Axelium Works | Turkey
+[10:04:56] 📡 fetch_gnews called for country: Turkey
+[10:04:56] 📡 GNEWS_API_KEY present: True
+[10:04:56] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Turkey (strike OR sanction OR war OR conflict O...
+[10:04:57] ✅ GNews returned 3 articles for Turkey
+[10:04:57] ⚠️ Keyword match [strike]: Gulf States, Turkey warn Trump striking Iran could...
+[10:04:58]    LLM validation result: False
+[10:04:58] ✅ LLM rejected: Not a supply chain threat
+[10:04:58] ⚠️ Keyword match [conflict]: Gulf states and Turkey urged Trump not to launch s...
+[10:04:59]    LLM validation result: False
+[10:04:59] ✅ LLM rejected: Not a supply chain threat
+[10:04:59] ⚠️ Keyword match [strike]: Turkey says it opposes military intervention in Ir...
+[10:05:00]    LLM validation result: False
+[10:05:00] ✅ LLM rejected: Not a supply chain threat
+[10:05:00] ⚠️ Keyword match [earthquake]: Strong Earthquake Strikes Northwestern Turkey, Dis...
+[10:05:01]    LLM validation result: True
+[10:05:01] 🚨 REAL THREAT | Axelium Works | Turkey | earthquake
+[10:05:01] ✅ Found 1 validated threat(s) for Axelium Works
+[10:05:01] 🔍 Checking: Quorvia Systems | Vietnam
+[10:05:01] 📡 fetch_gnews called for country: Vietnam
+[10:05:01] 📡 GNEWS_API_KEY present: True
+[10:05:01] 📡 Making GNews API call to: https://gnews.io/api/v4/search?q=Vietnam (strike OR sanction OR war OR conflict ...
+[10:05:03] ✅ GNews returned 3 articles for Vietnam
+[10:05:03] ⚠️ Keyword match [war]: Hyundai Bioscience Confirms Entry into U.S. FDA Ph...
+[10:05:04]    LLM validation result: False
+[10:05:04] ✅ LLM rejected: Not a supply chain threat
+[10:05:04] ⚠️ Keyword match [war]: ‘Draft-dodging coward!’: Vietnam war vet (and ex-g...
+[10:05:05]    LLM validation result: False
+[10:05:05] ✅ LLM rejected: Not a supply chain threat
+[10:05:05] ⚠️ Keyword match [war]: Texas Tech secures federal grant to aid Vietnam Wa...
+[10:05:06]    LLM validation result: False
+[10:05:06] ✅ LLM rejected: Not a supply chain threat

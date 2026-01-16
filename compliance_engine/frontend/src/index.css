@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* SentinelChain Light Theme - Mint & Navy */
+    --background: 0 0% 96%;
+    --foreground: 212 57% 19%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 212 57% 19%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 212 57% 19%;
+
+    --primary: 213 34% 33%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 163 36% 92%;
+    --secondary-foreground: 212 57% 19%;
+
+    --muted: 0 0% 92%;
+    --muted-foreground: 213 20% 45%;
+
+    --accent: 163 36% 73%;
+    --accent-foreground: 212 57% 19%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 213 20% 85%;
+    --input: 213 20% 88%;
+    --ring: 213 34% 33%;
+
+    --radius: 0.5rem;
+
+    /* Custom SentinelChain tokens */
+    --warning: 38 92% 50%;
+    --warning-foreground: 212 57% 19%;
+    --success: 142 71% 35%;
+    --success-foreground: 0 0% 100%;
+    --risk-low: 142 71% 35%;
+    --risk-medium: 38 92% 45%;
+    --risk-high: 0 72% 51%;
+    --risk-critical: 0 84% 40%;
+
+    /* Surface hierarchy - light theme */
+    --surface-0: 0 0% 100%;
+    --surface-1: 0 0% 98%;
+    --surface-2: 0 0% 96%;
+    --surface-3: 0 0% 93%;
+    --surface-4: 213 20% 90%;
+
+    /* Glows and effects */
+    --glow-primary: 213 34% 33%;
+    --glow-warning: 38 92% 50%;
+    --glow-success: 142 71% 35%;
+
+    /* Mint accent colors */
+    --mint: 163 36% 73%;
+    --mint-light: 163 36% 92%;
+    --navy: 213 34% 33%;
+    --navy-dark: 212 57% 19%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 212 57% 19%;
+    --sidebar-primary: 213 34% 33%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 163 36% 92%;
+    --sidebar-accent-foreground: 212 57% 19%;
+    --sidebar-border: 213 20% 90%;
+    --sidebar-ring: 213 34% 33%;
+  }
+
+  .dark {
+    --background: 212 57% 12%;
+    --foreground: 0 0% 96%;
+    --card: 212 57% 15%;
+    --card-foreground: 0 0% 96%;
+    --popover: 212 57% 15%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 163 36% 73%;
+    --primary-foreground: 212 57% 19%;
+    --secondary: 213 34% 25%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 213 34% 20%;
+    --muted-foreground: 213 20% 60%;
+    --accent: 163 36% 30%;
+    --accent-foreground: 0 0% 96%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 213 34% 25%;
+    --input: 213 34% 25%;
+    --ring: 163 36% 73%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom scrollbar for enterprise feel */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--surface-2));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+  }
+}
+
+@layer components {
+  /* Card variants */
+  .card-elevated {
+    @apply bg-card border border-border;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  .card-interactive {
+    @apply card-elevated transition-all duration-200;
+  }
+
+  .card-interactive:hover {
+    @apply border-primary/40;
+    box-shadow: 0 4px 20px rgba(56, 81, 112, 0.12);
+  }
+
+  /* Status badges */
+  .badge-risk-low {
+    @apply bg-[hsl(142_71%_95%)] text-[hsl(142_71%_30%)] border border-[hsl(142_71%_80%)];
+  }
+
+  .badge-risk-medium {
+    @apply bg-[hsl(38_92%_95%)] text-[hsl(38_92%_35%)] border border-[hsl(38_92%_80%)];
+  }
+
+  .badge-risk-high {
+    @apply bg-[hsl(0_72%_95%)] text-[hsl(0_72%_45%)] border border-[hsl(0_72%_80%)];
+  }
+
+  .badge-risk-critical {
+    @apply bg-[hsl(0_84%_95%)] text-[hsl(0_84%_35%)] border border-[hsl(0_84%_75%)];
+  }
+
+  /* Glow effects - subtle for light theme */
+  .glow-primary {
+    box-shadow: 0 0 20px hsl(213 34% 33% / 0.15);
+  }
+
+  .glow-warning {
+    box-shadow: 0 0 20px hsl(38 92% 50% / 0.2);
+  }
+
+  /* Grid patterns */
+  .grid-pattern {
+    background-image: 
+      linear-gradient(to right, hsl(var(--border) / 0.5) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.5) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Pulse animation for live indicators */
+  .pulse-live {
+    animation: pulse-live 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse-live {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+}
+
+@layer utilities {
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-primary to-[hsl(163_36%_40%)] bg-clip-text text-transparent;
+  }
+
+  .border-glow {
+    @apply border border-primary/40;
+    box-shadow: 0 0 15px hsl(213 34% 33% / 0.1);
+  }
+}

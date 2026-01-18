@@ -8,7 +8,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 MASTER_FILE = PROJECT_ROOT / "simulate_data_stream" / "master_supply_chain.csv"
-STREAM_FILE = PROJECT_ROOT / "supply_chain" / "data" / "supply_chain_stream.csv"
+STREAM_FILE = PROJECT_ROOT / "country_level_threats" / "data" / "supply_chain_stream.csv"
 
 INTERVAL_SEC = 5 # seconds
 

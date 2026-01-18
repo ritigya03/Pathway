@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = "http://localhost:8001";
 
 export default function Register() {
   const [configMethod, setConfigMethod] = useState<"gdrive" | "local" | null>(null);

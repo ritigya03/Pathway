@@ -21,10 +21,10 @@ COPY .env ./
 RUN mkdir -p /app/data/company_docs /app/data/credentials
 
 # Expose port
-EXPOSE 8000
+EXPOSE 8001
 
 # Set environment variable for pathway license
 ENV PATHWAY_LICENSE_KEY=${PATHWAY_LICENSE_KEY}
 
 # Run FastAPI
-CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8001"]

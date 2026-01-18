@@ -43,8 +43,8 @@ async def proxy_answer(request: PromptRequest):
     Proxy requests to Pathway RAG service with CORS support
     """
     try:
-        # Pathway RAG service endpoint
-        pathway_url = "http://localhost:8000/v2/answer"
+        # CHANGED: Pathway RAG service now on port 8082
+        pathway_url = "http://localhost:8082/v2/answer"
         
         # Prepare payload for Pathway
         payload = {
@@ -66,7 +66,7 @@ async def proxy_answer(request: PromptRequest):
     except requests.exceptions.ConnectionError:
         raise HTTPException(
             status_code=503,
-            detail="Pathway RAG service is not available. Ensure it's running on port 8000."
+            detail="Pathway RAG service is not available. Ensure it's running on port 8082."
         )
     except requests.exceptions.Timeout:
         raise HTTPException(
@@ -156,7 +156,7 @@ async def root():
             "GET /countries": "Get unique supplier countries",
             "GET /health": "Service health check"
         },
-        "pathway_target": "http://localhost:8000/v2/answer"
+        "pathway_target": "http://localhost:8082/v2/answer"  # Updated
     }
 
 if __name__ == "__main__":

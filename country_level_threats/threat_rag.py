@@ -310,36 +310,22 @@ Answer:
 )
 
 # ============================================================
-# 5. START REST API SERVER
+# 5. START REST API SERVER ON PORT 8082
 # ============================================================
 print("🚀 Starting RAG API server...")
 print("=" * 60)
-print("📡 Endpoint: POST http://localhost:8000/v2/answer")
+print("📡 Endpoint: POST http://localhost:8082/v2/answer")
 print("=" * 60)
 print("")
 print("Example PowerShell query:")
-print("  Invoke-RestMethod -Uri http://localhost:8000/v2/answer `")
+print("  Invoke-RestMethod -Uri http://localhost:8082/v2/answer `")
 print("    -Method Post `")
 print('    -ContentType "application/json" `')
 print('    -Body \'{"prompt": "What threats are affecting China suppliers?"}\'')
 print("=" * 60)
 
-<<<<<<< HEAD:country_level_threats/threat_rag.py
-
-# 2. Pass the host, port, AND the webserver object
-# Positional arguments (host, port) are required by BaseRAGQuestionAnswerer
+# CHANGED: Port from 8000 to 8082
 rag_app.build_server(
     "0.0.0.0", 
-    8000, 
-   
+    8082,  # Changed from 8000
 )
-=======
-# Use build_server method
-rag_app.build_server(host="0.0.0.0", port=8000)
->>>>>>> bb25e63f08f1b25cc68a9d99dbb4dc4af013f82c:supply_chain/threat_rag.py
-
-# ============================================================
-# RUN
-# ============================================================
-# if __name__ == "__main__":
-#     pw.run()

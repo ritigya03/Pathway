@@ -4,55 +4,46 @@ record_id,buyer_firm,supplier_firm,contract_id,product_name,product_category,qua
 3,ZentivoCorp,Flarix Industries,CTR-1001,Aluminum Plates,Metals,700,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
 4,ZentivoCorp,Flarix Industries,CTR-1001,Copper Rods,Metals,600,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
 5,ZentivoCorp,Flarix Industries,CTR-1001,Iron Slabs,Metals,1500,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
-
 6,ZentivoCorp,Noventra Labs,CTR-2002,Pharma Compounds,Chemicals,3000,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
 7,ZentivoCorp,Noventra Labs,CTR-2002,API Chemicals,Chemicals,2800,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
 8,ZentivoCorp,Noventra Labs,CTR-2002,Medical Reagents,Chemicals,1500,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
 9,ZentivoCorp,Noventra Labs,CTR-2002,Lab Enzymes,Chemicals,1200,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
 10,ZentivoCorp,Noventra Labs,CTR-2002,Bio Solvents,Chemicals,2000,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
-
 11,ZentivoCorp,Quorvia Systems,CTR-3003,Electronic Sensors,Electronics,5000,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
 12,ZentivoCorp,Quorvia Systems,CTR-3003,Control Boards,Electronics,4200,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
 13,ZentivoCorp,Quorvia Systems,CTR-3003,IoT Modules,Electronics,3600,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
 14,ZentivoCorp,Quorvia Systems,CTR-3003,Power Units,Electronics,2800,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
 15,ZentivoCorp,Quorvia Systems,CTR-3003,Signal Chips,Electronics,3100,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
-
 16,ZentivoCorp,Axelium Works,CTR-4004,Automotive Gears,Automotive,800,sets,2025-04-01,2026-04-01,2026-01-12,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium
 17,ZentivoCorp,Axelium Works,CTR-4004,Brake Assemblies,Automotive,900,sets,2025-04-01,2026-04-01,2026-01-12,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium
 18,ZentivoCorp,Axelium Works,CTR-4004,Axle Components,Automotive,750,sets,2025-04-01,2026-04-01,2026-01-12,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium
 19,ZentivoCorp,Axelium Works,CTR-4004,Engine Mounts,Automotive,680,sets,2025-04-01,2026-04-01,2026-01-12,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium
 20,ZentivoCorp,Axelium Works,CTR-4004,Suspension Kits,Automotive,720,sets,2025-04-01,2026-04-01,2026-01-12,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium
-
 21,ZentivoCorp,Virelox Trading,CTR-5005,Plastic Granules,Polymers,9000,kg,2025-05-01,2026-05-01,2026-01-15,UAE,Dubai,Dubai,India,Trading,Sea,High
 22,ZentivoCorp,Virelox Trading,CTR-5005,PVC Sheets,Polymers,7000,kg,2025-05-01,2026-05-01,2026-01-15,UAE,Dubai,Dubai,India,Trading,Sea,High
 23,ZentivoCorp,Virelox Trading,CTR-5005,HDPE Pellets,Polymers,8500,kg,2025-05-01,2026-05-01,2026-01-15,UAE,Dubai,Dubai,India,Trading,Sea,High
 24,ZentivoCorp,Virelox Trading,CTR-5005,Polymer Resin,Polymers,7800,kg,2025-05-01,2026-05-01,2026-01-15,UAE,Dubai,Dubai,India,Trading,Sea,High
 25,ZentivoCorp,Virelox Trading,CTR-5005,Industrial Plastics,Polymers,8200,kg,2025-05-01,2026-05-01,2026-01-15,UAE,Dubai,Dubai,India,Trading,Sea,High
-
 26,ZentivoCorp,Stronvia Solutions,CTR-6006,Industrial Valves,Engineering,400,units,2025-06-01,2026-06-01,2026-01-18,Poland,Silesia,Katowice,India,Engineering,Road,Low
 27,ZentivoCorp,Stronvia Solutions,CTR-6006,Pressure Gauges,Engineering,380,units,2025-06-01,2026-06-01,2026-01-18,Poland,Silesia,Katowice,India,Engineering,Road,Low
 28,ZentivoCorp,Stronvia Solutions,CTR-6006,Flow Meters,Engineering,360,units,2025-06-01,2026-06-01,2026-01-18,Poland,Silesia,Katowice,India,Engineering,Road,Low
 29,ZentivoCorp,Stronvia Solutions,CTR-6006,Hydraulic Fittings,Engineering,420,units,2025-06-01,2026-06-01,2026-01-18,Poland,Silesia,Katowice,India,Engineering,Road,Low
 30,ZentivoCorp,Stronvia Solutions,CTR-6006,Pneumatic Parts,Engineering,390,units,2025-06-01,2026-06-01,2026-01-18,Poland,Silesia,Katowice,India,Engineering,Road,Low
-
 31,ZentivoCorp,Krydonix Ltd.,CTR-7007,Semiconductor Wafers,Electronics,1200,units,2025-07-01,2026-07-01,2026-01-20,South Korea,Gyeonggi,Suwon,India,Electronics,Air,Low
 32,ZentivoCorp,Krydonix Ltd.,CTR-7007,Memory Chips,Electronics,1800,units,2025-07-01,2026-07-01,2026-01-20,South Korea,Gyeonggi,Suwon,India,Electronics,Air,Low
 33,ZentivoCorp,Krydonix Ltd.,CTR-7007,Logic ICs,Electronics,1600,units,2025-07-01,2026-07-01,2026-01-20,South Korea,Gyeonggi,Suwon,India,Electronics,Air,Low
 34,ZentivoCorp,Krydonix Ltd.,CTR-7007,Sensor ICs,Electronics,1400,units,2025-07-01,2026-07-01,2026-01-20,South Korea,Gyeonggi,Suwon,India,Electronics,Air,Low
 35,ZentivoCorp,Krydonix Ltd.,CTR-7007,Controller Chips,Electronics,1300,units,2025-07-01,2026-07-01,2026-01-20,South Korea,Gyeonggi,Suwon,India,Electronics,Air,Low
-
 36,ZentivoCorp,Elvaron Group,CTR-8008,Copper Pipes,Metals,2200,kg,2025-08-01,2026-08-01,2026-01-22,Mexico,Nuevo Leon,Monterrey,India,Manufacturing,Sea,Medium
 37,ZentivoCorp,Elvaron Group,CTR-8008,Steel Tubes,Metals,2600,kg,2025-08-01,2026-08-01,2026-01-22,Mexico,Nuevo Leon,Monterrey,India,Manufacturing,Sea,Medium
 38,ZentivoCorp,Elvaron Group,CTR-8008,Metal Fittings,Metals,2400,kg,2025-08-01,2026-08-01,2026-01-22,Mexico,Nuevo Leon,Monterrey,India,Manufacturing,Sea,Medium
 39,ZentivoCorp,Elvaron Group,CTR-8008,Brass Components,Metals,2100,kg,2025-08-01,2026-08-01,2026-01-22,Mexico,Nuevo Leon,Monterrey,India,Manufacturing,Sea,Medium
 40,ZentivoCorp,Elvaron Group,CTR-8008,Alloy Rods,Metals,2300,kg,2025-08-01,2026-08-01,2026-01-22,Mexico,Nuevo Leon,Monterrey,India,Manufacturing,Sea,Medium
-
 41,ZentivoCorp,Trevixa Enterprises,CTR-9009,Cotton Yarn,Textiles,5000,kg,2025-09-01,2026-09-01,2026-01-25,Bangladesh,Dhaka,Dhaka,India,Textiles,Sea,High
 42,ZentivoCorp,Trevixa Enterprises,CTR-9009,Denim Fabric,Textiles,4500,kg,2025-09-01,2026-09-01,2026-01-25,Bangladesh,Dhaka,Dhaka,India,Textiles,Sea,High
 43,ZentivoCorp,Trevixa Enterprises,CTR-9009,Woven Fabric,Textiles,4800,kg,2025-09-01,2026-09-01,2026-01-25,Bangladesh,Dhaka,Dhaka,India,Textiles,Sea,High
 44,ZentivoCorp,Trevixa Enterprises,CTR-9009,Garment Panels,Textiles,5200,kg,2025-09-01,2026-09-01,2026-01-25,Bangladesh,Dhaka,Dhaka,India,Textiles,Sea,High
 45,ZentivoCorp,Trevixa Enterprises,CTR-9009,Textile Rolls,Textiles,4700,kg,2025-09-01,2026-09-01,2026-01-25,Bangladesh,Dhaka,Dhaka,India,Textiles,Sea,High
-
 46,ZentivoCorp,Flarix Industries,CTR-1001,Zinc Sheets,Metals,800,tons,2025-01-01,2026-01-01,2026-01-30,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
 47,ZentivoCorp,Quorvia Systems,CTR-3003,Power Controllers,Electronics,2900,units,2025-03-01,2026-03-01,2026-01-30,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
 48,ZentivoCorp,Axelium Works,CTR-4004,Transmission Parts,Automotive,740,sets,2025-04-01,2026-04-01,2026-01-30,Turkey,Marmara,Bursa,India,Automotive,Sea,Medium

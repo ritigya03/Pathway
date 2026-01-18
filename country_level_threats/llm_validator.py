@@ -28,7 +28,11 @@ Description: {description}
 
 STRICT CRITERIA - Answer YES only if ALL of these are true:
 1. The event is physically happening IN {country} (not other countries)
+<<<<<<< HEAD:country_level_threats/llm_validator.py
 2. The event DIRECTLY affects: factories, ports, transportation, logistics, manufacturing, or supplier operations in a harful manner
+=======
+2. The event DIRECTLY affects: factories, ports, transportation, logistics, manufacturing, or supplier operations
+>>>>>>> bb25e63f08f1b25cc68a9d99dbb4dc4af013f82c:supply_chain/llm_validator.py
 3. The event is NOT just political commentary, financial news, or metaphorical language
 4. Keywords like "fire", "strike", "war" refer to LITERAL events, not metaphors (e.g., "draws fire" = criticism = NO)
 

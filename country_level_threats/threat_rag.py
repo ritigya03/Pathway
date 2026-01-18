@@ -324,6 +324,7 @@ print('    -ContentType "application/json" `')
 print('    -Body \'{"prompt": "What threats are affecting China suppliers?"}\'')
 print("=" * 60)
 
+<<<<<<< HEAD:country_level_threats/threat_rag.py
 
 # 2. Pass the host, port, AND the webserver object
 # Positional arguments (host, port) are required by BaseRAGQuestionAnswerer
@@ -332,6 +333,10 @@ rag_app.build_server(
     8000, 
    
 )
+=======
+# Use build_server method
+rag_app.build_server(host="0.0.0.0", port=8000)
+>>>>>>> bb25e63f08f1b25cc68a9d99dbb4dc4af013f82c:supply_chain/threat_rag.py
 
 # ============================================================
 # RUN

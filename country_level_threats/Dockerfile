@@ -8,14 +8,20 @@ RUN apt-get update && apt-get install -y \
     libreoffice \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-# Copy requirements file if you have one
-COPY requirements.txt* ./
+# Copy requirements file
+COPY requirements.txt ./
 
-# Install Python dependencies (if requirements.txt exists)
-RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Additional packages for FastAPI proxy
+RUN pip install --no-cache-dir \
+    fastapi \
+    uvicorn \
+    pydantic
 
 # Copy all application files
 COPY . .
 
-# Run the news app 
+# Run the combined app
 CMD ["python", "main.py"]

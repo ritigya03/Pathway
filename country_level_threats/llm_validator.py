@@ -28,7 +28,7 @@ Description: {description}
 
 STRICT CRITERIA - Answer YES only if ALL of these are true:
 1. The event is physically happening IN {country} (not other countries)
-2. The event DIRECTLY affects: factories, ports, transportation, logistics, manufacturing, or supplier operations
+2. The event DIRECTLY affects: factories, ports, transportation, logistics, manufacturing, or supplier operations in a harful manner
 3. The event is NOT just political commentary, financial news, or metaphorical language
 4. Keywords like "fire", "strike", "war" refer to LITERAL events, not metaphors (e.g., "draws fire" = criticism = NO)
 

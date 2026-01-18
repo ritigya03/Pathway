@@ -324,8 +324,14 @@ print('    -ContentType "application/json" `')
 print('    -Body \'{"prompt": "What threats are affecting China suppliers?"}\'')
 print("=" * 60)
 
-# Use build_server method
-rag_app.build_server(host="0.0.0.0", port=8000)
+
+# 2. Pass the host, port, AND the webserver object
+# Positional arguments (host, port) are required by BaseRAGQuestionAnswerer
+rag_app.build_server(
+    "0.0.0.0", 
+    8000, 
+   
+)
 
 # ============================================================
 # RUN

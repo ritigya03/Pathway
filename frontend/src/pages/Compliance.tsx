@@ -11,7 +11,9 @@ import {
   AlertTriangle,
   FileText,
   Sparkles,
-  Loader2
+  Loader2,
+  User,
+  ArrowRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -37,16 +39,26 @@ interface QueryResult {
 export default function Compliance() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
-  const [buyerName, setBuyerName] = useState("");
+  const [buyerCompany, setBuyerCompany] = useState(""); // Fixed buyer from registration
+  const [searchQuery, setSearchQuery] = useState("");
   const [isQuerying, setIsQuerying] = useState(false);
   const [result, setResult] = useState<QueryResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string>("");
 
-  // Fetch suppliers on mount
+  // Fetch suppliers and buyer info on mount
   useEffect(() => {
     fetchSuppliers();
+    loadBuyerInfo();
   }, []);
+
+  const loadBuyerInfo = () => {
+    // Try to get buyer company name from localStorage (set during registration)
+    const storedBuyer = localStorage.getItem("buyer_company_name");
+    if (storedBuyer) {
+      setBuyerCompany(storedBuyer);
+    }
+  };
 
   const fetchSuppliers = async () => {
     try {
@@ -70,8 +82,13 @@ export default function Compliance() {
   };
 
   const handleQuery = async () => {
-    if (!buyerName.trim() || !selectedSupplier) {
-      setError("Please enter buyer name and select a supplier");
+    if (!buyerCompany.trim()) {
+      setError("Buyer company not set. Please complete registration first.");
+      return;
+    }
+
+    if (!selectedSupplier) {
+      setError("Please select a supplier");
       return;
     }
     
@@ -84,7 +101,7 @@ export default function Compliance() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          buyer_name: buyerName,
+          buyer_name: buyerCompany,
           supplier_name: selectedSupplier.name
         })
       });
@@ -109,6 +126,10 @@ export default function Compliance() {
     }
   };
 
+  const filteredSuppliers = suppliers.filter(s => 
+    s.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (isLoading) {
     return (
       <DashboardLayout>
@@ -122,15 +143,15 @@ export default function Compliance() {
     );
   }
 
-  if (suppliers.length === 0) {
+  if (!buyerCompany) {
     return (
       <DashboardLayout>
         <div className="p-8 h-screen flex items-center justify-center">
           <div className="text-center max-w-md">
-            <AlertTriangle className="w-16 h-16 text-warning mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-2 text-foreground">No Data Source Configured</h2>
+            <User className="w-16 h-16 text-warning mx-auto mb-4" />
+            <h2 className="text-2xl font-bold mb-2 text-foreground">Buyer Company Not Set</h2>
             <p className="text-muted-foreground mb-6">
-              Please go to the Register page to configure your Google Drive or upload local files.
+              Please complete the registration process to set your buyer company information.
             </p>
             <Button onClick={() => window.location.href = "/register"}>
               Go to Register
@@ -141,94 +162,165 @@ export default function Compliance() {
     );
   }
 
+  if (suppliers.length === 0) {
+    return (
+      <DashboardLayout>
+        <div className="p-8 h-screen flex items-center justify-center">
+          <div className="text-center max-w-md">
+            <AlertTriangle className="w-16 h-16 text-warning mx-auto mb-4" />
+            <h2 className="text-2xl font-bold mb-2 text-foreground">No Suppliers Found</h2>
+            <p className="text-muted-foreground mb-6">
+              No supplier documents found in your configured data source. Please upload supplier documents.
+            </p>
+            <Button onClick={() => window.location.href = "/register"}>
+              Configure Data Source
+            </Button>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout>
       <div className="p-8 h-[calc(100vh-2rem)] bg-background">
-        {/* Header */}
+        {/* Header with Fixed Buyer Info */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold mb-1 text-foreground">Compliance Check</h1>
+            <h1 className="text-2xl font-bold mb-1 text-foreground">Compliance Analysis</h1>
             <p className="text-muted-foreground">
-              Query your documents to verify supplier compliance
+              Analyze supplier compliance for transactions
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <StatusBadge status="ready" />
-            <span className="text-sm text-muted-foreground">
-              {suppliers.length} suppliers available
-            </span>
+          
+          {/* Fixed Buyer Company Badge */}
+          <div className="flex items-center gap-4">
+            <div className="bg-primary/10 border border-primary/20 rounded-lg px-4 py-2">
+              <div className="flex items-center gap-2">
+                <User className="w-4 h-4 text-primary" />
+                <div>
+                  <p className="text-xs text-muted-foreground">Buyer Company</p>
+                  <p className="font-semibold text-sm text-foreground">{buyerCompany}</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <StatusBadge status="ready" />
+              <span className="text-sm text-muted-foreground">
+                {suppliers.length} suppliers available
+              </span>
+            </div>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-12 gap-6 h-[calc(100%-5rem)]">
           {/* Supplier List */}
           <div className="lg:col-span-3 bg-card rounded-xl p-4 overflow-hidden flex flex-col border border-border shadow-sm">
-            <div className="flex items-center gap-2 mb-4">
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <Input 
-                placeholder="Search suppliers..."
-                className="bg-background border-border h-9"
-              />
+            <div className="mb-4">
+              <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+                Select Supplier
+              </h3>
+              <div className="flex items-center gap-2">
+                <Search className="w-4 h-4 text-muted-foreground" />
+                <Input 
+                  placeholder="Search suppliers..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-background border-border h-9"
+                />
+              </div>
             </div>
+            
             <div className="flex-1 overflow-auto space-y-2">
-              {suppliers.map((supplier) => (
-                <button
-                  key={supplier.id}
-                  onClick={() => setSelectedSupplier(supplier)}
-                  className={cn(
-                    "w-full p-3 rounded-lg text-left transition-all",
-                    selectedSupplier?.id === supplier.id
-                      ? "bg-secondary border border-primary/30"
-                      : "bg-muted/50 border border-transparent hover:border-border hover:bg-muted"
-                  )}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-sm truncate pr-2 text-foreground">
-                      {supplier.name}
-                    </span>
-                    <StatusBadge status={supplier.status} />
-                  </div>
-                  {supplier.score > 0 && (
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
-                        <div 
-                          className="h-full rounded-full bg-primary"
-                          style={{ width: `${supplier.score}%` }}
-                        />
-                      </div>
-                      <span className="text-xs text-muted-foreground">{supplier.score}%</span>
+              {filteredSuppliers.length === 0 ? (
+                <div className="text-center text-muted-foreground text-sm py-8">
+                  No suppliers match your search
+                </div>
+              ) : (
+                filteredSuppliers.map((supplier) => (
+                  <button
+                    key={supplier.id}
+                    onClick={() => {
+                      setSelectedSupplier(supplier);
+                      setResult(null); // Clear previous analysis
+                      setError(""); // Clear any errors
+                    }}
+                    className={cn(
+                      "w-full p-3 rounded-lg text-left transition-all",
+                      selectedSupplier?.id === supplier.id
+                        ? "bg-secondary border border-primary/30"
+                        : "bg-muted/50 border border-transparent hover:border-border hover:bg-muted"
+                    )}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-medium text-sm truncate pr-2 text-foreground">
+                        {supplier.name}
+                      </span>
+                      <StatusBadge status={supplier.status} />
                     </div>
-                  )}
-                </button>
-              ))}
+                    {supplier.score > 0 && (
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
+                          <div 
+                            className="h-full rounded-full bg-primary"
+                            style={{ width: `${supplier.score}%` }}
+                          />
+                        </div>
+                        <span className="text-xs text-muted-foreground">{supplier.score}%</span>
+                      </div>
+                    )}
+                  </button>
+                ))
+              )}
             </div>
           </div>
 
           {/* Main Query Panel */}
           <div className="lg:col-span-9 bg-card rounded-xl p-6 flex flex-col overflow-hidden border border-border shadow-sm">
-            {/* Selected Supplier Header */}
+            {/* Transaction Header */}
             {selectedSupplier && (
-              <div className="flex items-center justify-between pb-6 border-b border-border">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-accent border border-primary/20 flex items-center justify-center">
-                    <Building2 className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-semibold text-foreground">{selectedSupplier.name}</h2>
-                    <div className="flex items-center gap-3 mt-1">
-                      <StatusBadge status={selectedSupplier.status} />
-                      {selectedSupplier.score > 0 && (
-                        <RiskBadge level={selectedSupplier.risk} />
-                      )}
+              <div className="pb-6 border-b border-border">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-foreground">Transaction Analysis</h2>
+                  {selectedSupplier.score > 0 && (
+                    <div className="text-right">
+                      <div className="text-3xl font-bold text-foreground">{selectedSupplier.score}%</div>
+                      <div className="text-sm text-muted-foreground">Compliance Score</div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Transaction Flow Visualization */}
+                <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg">
+                  <div className="flex items-center gap-3 flex-1">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                      <User className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Buyer</p>
+                      <p className="font-medium text-sm text-foreground">{buyerCompany}</p>
                     </div>
                   </div>
-                </div>
-                {selectedSupplier.score > 0 && (
-                  <div className="text-right">
-                    <div className="text-3xl font-bold text-foreground">{selectedSupplier.score}%</div>
-                    <div className="text-sm text-muted-foreground">Compliance Score</div>
+
+                  <ArrowRight className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+
+                  <div className="flex items-center gap-3 flex-1">
+                    <div className="w-10 h-10 rounded-lg bg-accent border border-primary/20 flex items-center justify-center">
+                      <Building2 className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Supplier</p>
+                      <p className="font-medium text-sm text-foreground">{selectedSupplier.name}</p>
+                    </div>
                   </div>
-                )}
+
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <StatusBadge status={selectedSupplier.status} />
+                    {selectedSupplier.score > 0 && (
+                      <RiskBadge level={selectedSupplier.risk} />
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 
@@ -318,43 +410,39 @@ export default function Compliance() {
                     <Sparkles className="w-8 h-8 text-primary" />
                   </div>
                   <h3 className="text-lg font-medium mb-2 text-foreground">Run Compliance Analysis</h3>
-                  <p className="text-muted-foreground max-w-md">
-                    Enter the buyer name and click Query to analyze the transaction against your compliance policies.
+                  <p className="text-muted-foreground max-w-md mb-4">
+                    Click "Analyze Transaction" to check compliance between <strong>{buyerCompany}</strong> and <strong>{selectedSupplier?.name}</strong>
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    This will analyze contracts, policies, and identify any compliance risks
                   </p>
                 </div>
               )}
             </div>
 
-            {/* Query Input */}
+            {/* Query Action */}
             <div className="pt-4 border-t border-border">
-              <div className="flex gap-3 mb-3">
-                <div className="flex-1">
-                  <Input
-                    value={buyerName}
-                    onChange={(e) => setBuyerName(e.target.value)}
-                    placeholder="Enter buyer company name..."
-                    className="h-12 bg-background border-border"
-                    onKeyDown={(e) => e.key === "Enter" && handleQuery()}
-                  />
-                </div>
-                <Button 
-                  onClick={handleQuery}
-                  disabled={!buyerName.trim() || isQuerying}
-                  className="h-12 px-6"
-                >
-                  {isQuerying ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4 mr-2" />
-                      Query
-                    </>
-                  )}
-                </Button>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Buyer: <span className="font-mono">{buyerName || "(not set)"}</span> • 
-                Supplier: <span className="font-mono">{selectedSupplier?.name}</span>
+              <Button 
+                onClick={handleQuery}
+                disabled={!selectedSupplier || isQuerying}
+                className="w-full h-12"
+                size="lg"
+              >
+                {isQuerying ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                    Analyzing Transaction...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4 mr-2" />
+                    Analyze Transaction: {buyerCompany} ↔ {selectedSupplier?.name}
+                  </>
+                )}
+              </Button>
+              
+              <p className="text-xs text-muted-foreground text-center mt-3">
+                Analysis will check policy compliance, sanctions screening, and fraud indicators
               </p>
             </div>
           </div>

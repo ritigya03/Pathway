@@ -1,0 +1,7 @@
+pathway
+python-dotenv
+requests
+fastapi
+uvicorn
+pdf2image
+litellm

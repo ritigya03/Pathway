@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  reputation-monitoring:
+    build: .
+    container_name: reputation-monitoring
+    ports:
+      - "8002:8002" # Pathway RAG API
+      - "8083:8083" # FastAPI Proxy
+    volumes:
+      # Mount data directory for streaming
+      - ./data:/app/data
+      # Mount output directory for results
+      - ./output:/app/output
+      # Mount credentials
+      - ./credentials.json:/app/credentials.json:ro
+      # Mount policy files (optional if using Google Drive)
+      - ./policies:/app/policies:ro
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    stdin_open: true
+    tty: true

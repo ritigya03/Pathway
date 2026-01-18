@@ -1,0 +1,12 @@
+pathway[all]
+python-dotenv~=1.0
+mpmath~=1.3
+google-generativeai
+PyPDF2
+fastapi
+uvicorn[standard]
+python-multipart
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client

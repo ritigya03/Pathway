@@ -1,0 +1,7 @@
+compliance_engine/.env
+compliance_engine/credentials.json
+.env
+gdrive_indexer.json
+__pycache__/
+.ipynb_checkpoints/
+credentials.json

@@ -38,6 +38,36 @@ DATA_DIR = Path("/app/data")
 DATA_DIR.mkdir(exist_ok=True)
 (DATA_DIR / "company_docs").mkdir(exist_ok=True)
 (DATA_DIR / "credentials").mkdir(exist_ok=True)
+(DATA_DIR / "analysis_results").mkdir(exist_ok=True)
+
+# In-memory cache for supplier analysis results
+# Format: { "supplier_name": { "score": 85, "risk": "low", "timestamp": "...", "violations": [...] } }
+analysis_cache = {}
+
+# File to persist analysis results
+CACHE_FILE = DATA_DIR / "analysis_results" / "analysis_cache.json"
+
+# Load existing cache on startup
+def load_cache():
+    global analysis_cache
+    try:
+        if CACHE_FILE.exists():
+            with open(CACHE_FILE, 'r') as f:
+                analysis_cache = json.load(f)
+            print(f"✓ Loaded {len(analysis_cache)} cached analyses")
+    except Exception as e:
+        print(f"Cache load error: {e}")
+        analysis_cache = {}
+
+def save_cache():
+    try:
+        with open(CACHE_FILE, 'w') as f:
+            json.dump(analysis_cache, f, indent=2)
+    except Exception as e:
+        print(f"Cache save error: {e}")
+
+# Load cache on startup
+load_cache()
 
 
 # ============================================================================
@@ -160,7 +190,7 @@ async def get_status():
 
 @app.get("/api/suppliers")
 async def get_suppliers():
-    """Get list of suppliers from Google Drive"""
+    """Get list of suppliers from Google Drive with cached analysis results"""
     if not analyzer:
         # Return empty but valid response
         return JSONResponse({
@@ -196,19 +226,39 @@ async def get_suppliers():
             name = f['name'].replace('.pdf', '').replace('.json', '').replace('.jsonl', '')
             name = name.replace('_', ' ').replace('-', ' ').strip()
             
-            suppliers.append({
-                "id": idx,
-                "name": name,
-                "status": "ready",
-                "score": 0,
-                "risk": "low"
-            })
-            print(f"  {idx}. {name}")
+            # Check if we have cached analysis for this supplier
+            cached_analysis = analysis_cache.get(name)
+            
+            if cached_analysis:
+                # Use cached data
+                suppliers.append({
+                    "id": idx,
+                    "name": name,
+                    "status": "indexed",  # Changed from "ready" to show it's been analyzed
+                    "score": cached_analysis.get("score", 0),
+                    "risk": cached_analysis.get("risk", "low"),
+                    "analyzed_at": cached_analysis.get("timestamp", None),
+                    "violations_count": len(cached_analysis.get("violations", []))
+                })
+                print(f"  {idx}. {name} - Score: {cached_analysis.get('score')}% (cached)")
+            else:
+                # No analysis yet
+                suppliers.append({
+                    "id": idx,
+                    "name": name,
+                    "status": "ready",
+                    "score": 0,  # Explicitly 0 to indicate NOT analyzed
+                    "risk": "unknown",  # Changed from "low" to "unknown"
+                    "analyzed_at": None,
+                    "violations_count": 0
+                })
+                print(f"  {idx}. {name} - Not analyzed yet")
         
         return JSONResponse({
             "success": True,
             "suppliers": suppliers,
-            "count": len(suppliers)
+            "count": len(suppliers),
+            "analyzed_count": len([s for s in suppliers if s["score"] > 0])
         })
         
     except Exception as e:
@@ -226,7 +276,7 @@ async def get_suppliers():
 
 @app.post("/api/analyze/batch")
 async def analyze_batch(request: AnalyzeRequest):
-    """Run compliance analysis"""
+    """Run compliance analysis and cache results"""
     if not analyzer:
         raise HTTPException(
             status_code=400, 
@@ -282,6 +332,20 @@ async def analyze_batch(request: AnalyzeRequest):
         if violations:
             evidence.append(f"{len(violations)} policy violations detected")
         
+        # CACHE THE RESULTS
+        import datetime
+        analysis_cache[request.supplier_name] = {
+            "score": score,
+            "risk": risk_level,
+            "violations": violations,
+            "timestamp": datetime.datetime.now().isoformat(),
+            "buyer_name": request.buyer_name
+        }
+        
+        # Save cache to disk
+        save_cache()
+        print(f"✓ Analysis cached for {request.supplier_name}")
+        
         return JSONResponse({
             "success": True,
             "result": {
@@ -303,6 +367,41 @@ async def analyze_batch(request: AnalyzeRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.delete("/api/analysis/{supplier_name}")
+async def delete_analysis(supplier_name: str):
+    """Delete cached analysis for a supplier"""
+    try:
+        if supplier_name in analysis_cache:
+            del analysis_cache[supplier_name]
+            save_cache()
+            return JSONResponse({
+                "success": True,
+                "message": f"Analysis deleted for {supplier_name}"
+            })
+        else:
+            return JSONResponse({
+                "success": False,
+                "message": f"No cached analysis found for {supplier_name}"
+            })
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/analysis")
+async def clear_all_analyses():
+    """Clear all cached analyses"""
+    try:
+        global analysis_cache
+        analysis_cache = {}
+        save_cache()
+        return JSONResponse({
+            "success": True,
+            "message": "All analyses cleared"
+        })
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ============================================================================
 # HEALTH CHECK
 # ============================================================================
@@ -312,7 +411,8 @@ async def root():
     return {
         "message": "Pathway Compliance API",
         "status": "running",
-        "configured": config_status["initialized"]
+        "configured": config_status["initialized"],
+        "cached_analyses": len(analysis_cache)
     }
 
 
@@ -321,7 +421,8 @@ async def health():
     return {
         "status": "healthy",
         "configured": config_status["initialized"],
-        "source": config_status.get("source_type")
+        "source": config_status.get("source_type"),
+        "cached_analyses": len(analysis_cache)
     }
 
 

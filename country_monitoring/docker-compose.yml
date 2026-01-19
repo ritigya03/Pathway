@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  threat-monitor:
+    build: 
+      context: ./country_level_threats
+      dockerfile: Dockerfile
+    container_name: country-threat-monitor
+    ports:
+      - "8081:8081" # FastAPI Proxy
+      - "8082:8082" # Pathway RAG API
+    volumes:
+      - ./country_level_threats/data:/app/data
+      - ./country_level_threats/output:/app/output
+      - ./country_level_threats/credentials.json:/app/credentials.json:ro
+    env_file:
+      - ./country_level_threats/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  stream-simulator:
+    build:
+      context: ./simulate_data_stream
+      dockerfile: Dockerfile
+    container_name: stream-simulator
+    volumes:
+      - ./country_level_threats/data:/app/data_out
+      - ./simulate_data_stream:/app/simulate_data_stream
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MASTER_FILE=/app/simulate_data_stream/master_supply_chain.csv
+      - STREAM_FILE=/app/data_out/supply_chain_stream.csv
+    depends_on:
+      - threat-monitor
+    restart: unless-stopped

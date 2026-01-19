@@ -26,7 +26,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = "http://localhost:8001";
 
 const industries = [
   "Manufacturing", "Technology", "Healthcare", "Retail",

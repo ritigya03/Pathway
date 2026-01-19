@@ -3,3 +3,4 @@ gdrive_indexer.json
 __pycache__/
 .ipynb_checkpoints/
 output
+credentials.json

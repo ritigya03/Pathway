@@ -23,5 +23,7 @@ RUN pip install --no-cache-dir \
 # Copy all application files
 COPY . .
 
+EXPOSE 8081 8082
+
 # Run the combined app
 CMD ["python", "main.py"]

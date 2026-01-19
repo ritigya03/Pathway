@@ -1,0 +1,13 @@
+record_id,buyer_firm,supplier_firm,contract_id,product_name,product_category,quantity,unit,start_date,end_date,last_updated,source_country,source_region,source_city,destination_country,supplier_industry,primary_transport_mode,port_dependency
+1,ZentivoCorp,Flarix Industries,CTR-1001,Steel Sheets,Metals,1200,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
+2,ZentivoCorp,Flarix Industries,CTR-1001,Steel Coils,Metals,900,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
+3,ZentivoCorp,Flarix Industries,CTR-1001,Aluminum Plates,Metals,700,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
+4,ZentivoCorp,Flarix Industries,CTR-1001,Copper Rods,Metals,600,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
+5,ZentivoCorp,Flarix Industries,CTR-1001,Iron Slabs,Metals,1500,tons,2025-01-01,2026-01-01,2026-01-05,China,Guangdong,Shenzhen,India,Manufacturing,Sea,High
+6,ZentivoCorp,Noventra Labs,CTR-2002,Pharma Compounds,Chemicals,3000,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
+7,ZentivoCorp,Noventra Labs,CTR-2002,API Chemicals,Chemicals,2800,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
+8,ZentivoCorp,Noventra Labs,CTR-2002,Medical Reagents,Chemicals,1500,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
+9,ZentivoCorp,Noventra Labs,CTR-2002,Lab Enzymes,Chemicals,1200,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
+10,ZentivoCorp,Noventra Labs,CTR-2002,Bio Solvents,Chemicals,2000,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
+11,ZentivoCorp,Quorvia Systems,CTR-3003,Electronic Sensors,Electronics,5000,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
+12,ZentivoCorp,Quorvia Systems,CTR-3003,Control Boards,Electronics,4200,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium

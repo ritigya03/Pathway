@@ -8,6 +8,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import requests
+import os
+import csv
 
 app = FastAPI(title="Reputation Monitoring Proxy API")
 
@@ -130,6 +132,59 @@ async def health_check():
         "threats_available": Path(THREATS_CSV).exists(),
         "stream_available": Path(STREAM_CSV).exists()
     }
+
+
+
+# Paths
+THREATS_CSV = "output/validated_threats.csv"
+
+@app.get("/threats")
+async def get_threats():
+    """
+    Get all validated threats from CSV
+    """
+    try:
+        threats = []
+        
+        if not os.path.exists(THREATS_CSV):
+            return {"threats": []}
+        
+        with open(THREATS_CSV, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                threats.append(row)
+        
+        return {"threats": threats}
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error reading threats: {str(e)}"
+        )
+
+@app.get("/fake-industries")
+async def get_fake_industries():
+    """
+    Get latest 5 fake industry threats
+    """
+    try:
+        threats = []
+        if os.path.exists(THREATS_CSV):
+            with open(THREATS_CSV, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                threats = [row for row in reader]
+        
+        # Filter for 'fake' category and sort by timestamp descending
+        fake_threats = [t for t in threats if t.get('category') == 'fake']
+        fake_threats.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
+        
+        return {"fake_industries": fake_threats[:5]}
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error reading fake industries: {str(e)}"
+        )
 
 
 if __name__ == "__main__":

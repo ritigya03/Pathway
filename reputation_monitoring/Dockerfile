@@ -27,7 +27,7 @@ COPY . .
 RUN mkdir -p output data
 
 # Expose ports
-EXPOSE 8000 8081
+EXPOSE 8002 8083
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1

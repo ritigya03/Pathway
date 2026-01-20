@@ -46,7 +46,10 @@ def simulate_stream():
     print("📡 Stream simulator started")
     print(f"📂 Writing to {len(STREAM_FILES)} destinations")
 
-    for i, row in enumerate(rows, start=1):
+    # Limit to 50 records if more
+    stream_rows = rows[:50]
+    
+    for i, row in enumerate(stream_rows, start=1):
         for stream_file in STREAM_FILES:
             with stream_file.open("a", newline="", encoding="utf-8") as f:
                 writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -61,8 +64,14 @@ def simulate_stream():
 
         time.sleep(INTERVAL_SEC)
 
-    print("✅ Streaming complete")
+    print("✅ Streaming complete (50 records maximum reached)")
+    
+    # Stay alive but stop streaming to prevent Docker from restarting the container
+    print("💤 Simulator entering idle state")
+    while True:
+        time.sleep(3600)
 
 
 if __name__ == "__main__":
     simulate_stream()
+

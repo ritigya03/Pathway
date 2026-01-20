@@ -1,15 +1,12 @@
-# fastapi_proxy.py
-"""
-FastAPI proxy to add CORS support for the Pathway RAG API.
-This allows frontend applications to query the RAG system.
-"""
-
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import requests
 import os
 import csv
+import shutil
+import threading
+from pathlib import Path
 
 app = FastAPI(title="Reputation Monitoring Proxy API")
 
@@ -22,31 +19,86 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Pathway RAG server URL
+# Paths
 PATHWAY_URL = "http://localhost:8002"
+THREATS_CSV = "output/validated_threats.csv"
+STREAM_CSV = "data/supply_chain_stream.csv"
+CREDENTIALS_FILE = "credentials.json"
 
+# Global state
+config_status = {
+    "initialized": False,
+    "indexing_progress": 0,
+    "message": "Waiting for configuration"
+}
+pathway_thread = None
 
 class QueryRequest(BaseModel):
     prompt: str
     return_context_docs: bool = False
 
+def run_pathway_server():
+    """Background task to initialize and run Reputation Pathway"""
+    global config_status
+    try:
+        config_status["message"] = "Initializing Reputation RAG..."
+        config_status["indexing_progress"] = 20
+        
+        # Import inside function to defer setup
+        import pathway as pw
+        from reputation_alert_pipeline import validated_threats
+        from reputation_rag import rag_app
+        
+        config_status["indexing_progress"] = 50
+        config_status["message"] = "Starting reputation engine..."
+        
+        config_status["initialized"] = True
+        config_status["indexing_progress"] = 100
+        config_status["message"] = "Reputation monitoring active"
+        
+        print("🚀 Reputation Pathway pipeline starting...")
+        pw.run()
+    except Exception as e:
+        config_status["message"] = f"Error: {str(e)}"
+        config_status["initialized"] = False
+        print(f"❌ Reputation Init Error: {e}")
 
-class QueryResponse(BaseModel):
-    response: str
-    context_docs: list = None
+@app.post("/api/config/google-drive")
+async def configure_google_drive(
+    credentials: UploadFile = File(...),
+    reputation_folder_id: str = Form(...)
+):
+    """Configure Google Drive credentials and start Reputation Monitoring"""
+    global pathway_thread
+    try:
+        # Save credentials
+        with open(CREDENTIALS_FILE, "wb") as f:
+            shutil.copyfileobj(credentials.file, f)
+        
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(Path(CREDENTIALS_FILE).absolute())
+        os.environ["REPUTATION_POLICIES_FOLDER_ID"] = reputation_folder_id
+        
+        if pathway_thread is None:
+            pathway_thread = threading.Thread(target=run_pathway_server, daemon=True)
+            pathway_thread.start()
+        
+        return {"success": True, "message": "Credentials saved and system initializing"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/config/status")
+async def get_config_status():
+    """Get initialization status"""
+    return config_status
 
 @app.post("/proxy-answer")
 async def proxy_answer(request: QueryRequest):
-    """
-    Proxy endpoint for querying the RAG system.
-    Forwards requests to Pathway and returns responses.
-    """
+    """Proxy endpoint for querying the RAG system."""
     try:
         response = requests.post(
             f"{PATHWAY_URL}/v2/answer",
             json=request.dict(),
-            timeout=30,
+            timeout=60, # Increased timeout
         )
         response.raise_for_status()
         data = response.json()
@@ -57,57 +109,33 @@ async def proxy_answer(request: QueryRequest):
             data["result"] = "There are no reputational threats for this supplier."
             
         return data
-    
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Pathway API error: {str(e)}")
-
-
-@app.post("/proxy-list-documents")
-async def proxy_list_documents():
-    """
-    Proxy endpoint for listing indexed documents.
-    """
-    try:
-        response = requests.post(
-            f"{PATHWAY_URL}/v2/list_documents",
-            timeout=10,
-        )
-        response.raise_for_status()
-        return response.json()
-    
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=500, detail=f"Pathway API error: {str(e)}")
-
-
-import os
-import csv
-from pathlib import Path
-
-# Paths
-THREATS_CSV = "output/validated_threats.csv"
-STREAM_CSV = "data/supply_chain_stream.csv"
 
 @app.get("/threats")
 async def get_threats():
-    """Get all validated threats from CSV"""
+    """Get all validated threats from CSV with deduplication"""
     try:
         threats = []
+        seen_headlines = set()
         if not Path(THREATS_CSV).exists():
             return {"threats": []}
             
         with open(THREATS_CSV, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
-                # Map reputation monitoring fields to keys expected by frontend
-                threats.append({
-                    "supplier": row.get("company", ""),
-                    "country": row.get("category", ""), # category plays role of country/grouping
-                    "threat_type": row.get("threat_type", ""),
-                    "headline": row.get("headline", ""),
-                    "description": row.get("description", ""),
-                    "source": row.get("source", ""),
-                    "timestamp": row.get("timestamp", "")
-                })
+                headline = row.get("headline", "").strip()
+                if headline and headline not in seen_headlines:
+                    threats.append({
+                        "supplier": row.get("company", row.get("supplier", "")),
+                        "country": row.get("category", row.get("country", "")), 
+                        "threat_type": row.get("threat_type", ""),
+                        "headline": headline,
+                        "description": row.get("description", ""),
+                        "source": row.get("source", ""),
+                        "timestamp": row.get("timestamp", "")
+                    })
+                    seen_headlines.add(headline)
         return {"threats": threats}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -132,48 +160,15 @@ async def get_companies():
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint"""
     return {
         "status": "healthy", 
-        "service": "reputation-monitoring-proxy",
-        "threats_available": Path(THREATS_CSV).exists(),
-        "stream_available": Path(STREAM_CSV).exists()
+        "initialized": config_status["initialized"],
+        "threats_available": Path(THREATS_CSV).exists()
     }
-
-
-
-# Paths
-THREATS_CSV = "output/validated_threats.csv"
-
-@app.get("/threats")
-async def get_threats():
-    """
-    Get all validated threats from CSV
-    """
-    try:
-        threats = []
-        
-        if not os.path.exists(THREATS_CSV):
-            return {"threats": []}
-        
-        with open(THREATS_CSV, 'r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                threats.append(row)
-        
-        return {"threats": threats}
-        
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error reading threats: {str(e)}"
-        )
 
 @app.get("/fake-industries")
 async def get_fake_industries():
-    """
-    Get latest 5 fake industry threats
-    """
+    """Get latest 5 fake industry threats"""
     try:
         threats = []
         if os.path.exists(THREATS_CSV):
@@ -181,19 +176,11 @@ async def get_fake_industries():
                 reader = csv.DictReader(f)
                 threats = [row for row in reader]
         
-        # Filter for 'fake' category and sort by timestamp descending
         fake_threats = [t for t in threats if t.get('category') == 'fake']
         fake_threats.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
-        
         return {"fake_industries": fake_threats[:5]}
-        
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error reading fake industries: {str(e)}"
-        )
-
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8083, log_level="info")

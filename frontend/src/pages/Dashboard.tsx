@@ -19,11 +19,9 @@ import {
   ComplianceRiskChart,
   ComplianceScoreChart,
   OperationalPerformanceChart,
-  OperationalCapacityChart,
-  GeographicalRiskChart,
-  GeographicalStabilityChart,
+  OperationalRiskMetrics,
   ReputationalSentimentChart,
-  ReputationalESGChart
+  ReputationalRiskMetrics
 } from "../components/ThreatGraphs";
 
 const API_BASE = "http://localhost:8001";
@@ -38,6 +36,8 @@ export default function Dashboard() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [buyerCompany, setBuyerCompany] = useState("");
+  const [operationalStats, setOperationalStats] = useState({ total: 0, withThreats: 0 });
+  const [reputationalStats, setReputationalStats] = useState({ total: 0, withThreats: 0 });
 
   useEffect(() => {
     loadDashboardData();
@@ -54,14 +54,45 @@ export default function Dashboard() {
   const loadDashboardData = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`${API_BASE}/api/suppliers`);
-      const data = await response.json();
 
-      if (response.ok && data.success) {
-        const supplierList = data.suppliers || [];
+      // 1. Fetch Compliance Data
+      const complianceRes = await fetch(`${API_BASE}/api/suppliers`);
+      const complianceData = await complianceRes.json();
+
+      if (complianceRes.ok && complianceData.success) {
+        const supplierList = complianceData.suppliers || [];
         setSuppliers(supplierList);
         calculateStats(supplierList);
       }
+
+      // 2. Fetch Operational Threats
+      try {
+        const opCountriesRes = await fetch("http://localhost:8081/countries");
+        const opThreatsRes = await fetch("http://localhost:8081/threats");
+        const countries = (await opCountriesRes.json()).countries || [];
+        const threats = (await opThreatsRes.json()).threats || [];
+
+        const countriesWithThreats = new Set(threats.map(t => t.country));
+        setOperationalStats({
+          total: countries.length,
+          withThreats: countriesWithThreats.size
+        });
+      } catch (e) { console.error("Op fetch error", e); }
+
+      // 3. Fetch Reputational Threats
+      try {
+        const repCompaniesRes = await fetch("http://localhost:8083/companies");
+        const repThreatsRes = await fetch("http://localhost:8083/threats");
+        const companies = (await repCompaniesRes.json()).companies || [];
+        const threats = (await repThreatsRes.json()).threats || [];
+
+        const companiesWithThreats = new Set(threats.map(t => t.supplier || t.company));
+        setReputationalStats({
+          total: companies.length,
+          withThreats: companiesWithThreats.size
+        });
+      } catch (e) { console.error("Rep fetch error", e); }
+
     } catch (err) {
       console.error("Failed to load dashboard data:", err);
     } finally {
@@ -193,30 +224,13 @@ export default function Dashboard() {
               <TrendingUp className="w-5 h-5 text-purple-500" />
             </div>
             <div>
-              <h2 className="text-xl font-bold">Operational Threat</h2>
-              <p className="text-sm text-muted-foreground">Supply chain disruption and capacity risks</p>
+              <h2 className="text-xl font-bold">Operational & Geopolitical Risk</h2>
+              <p className="text-sm text-muted-foreground">Regional stability and supply chain disruptions</p>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <OperationalPerformanceChart suppliers={suppliers} />
-            <OperationalCapacityChart suppliers={suppliers} />
-          </div>
-        </div>
-
-        {/* GEOGRAPHICAL THREAT SECTION */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-lg bg-green-500/10 border border-green-500/30 flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-green-500" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold">Geographical Threat</h2>
-              <p className="text-sm text-muted-foreground">Location-based risk assessment and regional stability</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <GeographicalRiskChart suppliers={suppliers} />
-            <GeographicalStabilityChart suppliers={suppliers} />
+            <OperationalPerformanceChart stats={operationalStats} />
+            <OperationalRiskMetrics stats={operationalStats} />
           </div>
         </div>
 
@@ -227,13 +241,13 @@ export default function Dashboard() {
               <AlertTriangle className="w-5 h-5 text-amber-500" />
             </div>
             <div>
-              <h2 className="text-xl font-bold">Reputational Threat</h2>
-              <p className="text-sm text-muted-foreground">Brand risk and public perception monitoring</p>
+              <h2 className="text-xl font-bold">Reputational Risk</h2>
+              <p className="text-sm text-muted-foreground">Brand risk and supplier fraud monitoring</p>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <ReputationalSentimentChart suppliers={suppliers} />
-            <ReputationalESGChart suppliers={suppliers} />
+            <ReputationalSentimentChart stats={reputationalStats} />
+            <ReputationalRiskMetrics stats={reputationalStats} />
           </div>
         </div>
 

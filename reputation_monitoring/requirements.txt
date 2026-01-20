@@ -5,3 +5,5 @@ fastapi
 uvicorn
 pdf2image
 litellm
+python-multipart
+pydantic

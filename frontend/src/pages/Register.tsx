@@ -21,12 +21,23 @@ import {
   ChevronRight,
   Database,
   HardDrive,
-  Cloud
+  Cloud,
+  FileSpreadsheet
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
-const API_BASE = "http://localhost:8001";
+const COMPLIANCE_API = "http://localhost:8001";
+const THREAT_API = "http://localhost:8081";
+const REPUTATION_API = "http://localhost:8083";
+
+// Demo defaults
+const DEMO_COMPANY_NAME = "Zentivo Coorp";
+const DEMO_INDUSTRY = "Retail";
+const DEMO_COUNTRY = "India";
+const DEMO_EMAIL = "compliance@zentivocoorp.com";
+const DEMO_COMPANY_FOLDER_ID = "1XF3Ore12NE2NYR078zIa5rJ1j3hZt51d";
+const DEMO_THREAT_FOLDER_ID = "19voCC205C61k_zxWv0QQD3iBNhzY_Yzx";
 
 const industries = [
   "Manufacturing", "Technology", "Healthcare", "Retail",
@@ -57,13 +68,24 @@ export default function Register() {
   const [companyFolderId, setCompanyFolderId] = useState("");
   const [threatFolderId, setThreatFolderId] = useState("");
 
-  // Step 3: Optional Local Upload
-  const [useLocalUpload, setUseLocalUpload] = useState(false);
-  const [localCompanyDocs, setLocalCompanyDocs] = useState<File[]>([]);
-  const [localPolicyDocs, setLocalPolicyDocs] = useState<File[]>([]);
+  // Step 3: Add Supplier Data (CSV)
+  const [supplierCsv, setSupplierCsv] = useState<File | null>(null);
+
+  const handleUseDemoData = () => {
+    // Buyer company demo details
+    setCompanyName(DEMO_COMPANY_NAME);
+    setIndustry(DEMO_INDUSTRY);
+    setCountry(DEMO_COUNTRY);
+    setContactEmail(DEMO_EMAIL);
+
+    // Google Drive demo folder IDs (use the same values as shown in placeholders)
+    setCompanyFolderId(DEMO_COMPANY_FOLDER_ID);
+    setThreatFolderId(DEMO_THREAT_FOLDER_ID);
+  };
 
   const canProceedStep1 = companyName && industry && country && contactEmail;
   const canProceedStep2 = credentialsFile && companyFolderId && threatFolderId;
+  const canProceedStep3 = supplierCsv !== null;
 
   const handleStep1Next = () => {
     if (canProceedStep1) setCurrentStep(2);
@@ -74,86 +96,86 @@ export default function Register() {
   };
 
   const handleFinalSubmit = async () => {
+    if (!canProceedStep3) return;
+
     setIsSubmitting(true);
-    setSubmitProgress(10);
-    setSubmitStatus("Registering your company...");
+    setSubmitProgress(5);
+    setSubmitStatus("Registration in progress...");
 
     try {
-      // Main: Upload Google Drive credentials
-      setSubmitStatus("Connecting to Google Drive...");
-      setSubmitProgress(30);
+      // 1. Configure Compliance Engine
+      setSubmitStatus("Configuring Compliance Engine...");
+      const complianceForm = new FormData();
+      complianceForm.append("credentials", credentialsFile!);
+      complianceForm.append("company_folder_id", companyFolderId);
+      complianceForm.append("threat_folder_id", threatFolderId);
 
-      const formData = new FormData();
-      formData.append("credentials", credentialsFile!);
-      formData.append("company_folder_id", companyFolderId);
-      formData.append("threat_folder_id", threatFolderId);
-
-      const response = await fetch(`${API_BASE}/api/config/google-drive`, {
+      const resCompliance = await fetch(`${COMPLIANCE_API}/api/config/google-drive`, {
         method: "POST",
-        body: formData,
+        body: complianceForm,
       });
+      if (!resCompliance.ok) throw new Error("Failed to configure Compliance Engine");
+      setSubmitProgress(20);
 
-      const data = await response.json();
+      // 2. Configure Threat Monitor
+      setSubmitStatus("Configuring Threat Monitor...");
+      const threatForm = new FormData();
+      threatForm.append("credentials", credentialsFile!);
+      threatForm.append("threat_folder_id", threatFolderId);
 
-      if (!response.ok) {
-        throw new Error(data.detail || "Failed to connect Google Drive");
-      }
+      const resThreat = await fetch(`${THREAT_API}/api/config/google-drive`, {
+        method: "POST",
+        body: threatForm,
+      });
+      if (!resThreat.ok) throw new Error("Failed to configure Threat Monitor");
+      setSubmitProgress(40);
 
+      // 3. Configure Reputation Monitoring
+      setSubmitStatus("Configuring Reputation Monitoring...");
+      const reputationForm = new FormData();
+      reputationForm.append("credentials", credentialsFile!);
+      reputationForm.append("reputation_folder_id", threatFolderId); // Using same policy folder
+
+      const resReputation = await fetch(`${REPUTATION_API}/api/config/google-drive`, {
+        method: "POST",
+        body: reputationForm,
+      });
+      if (!resReputation.ok) throw new Error("Failed to configure Reputation Monitoring");
       setSubmitProgress(60);
-      setSubmitStatus("Google Drive connected! Indexing documents...");
 
-      // Poll for indexing completion
+      // 4. Upload Supplier Data CSV (Master file)
+      setSubmitStatus("Uploading Master Supply Chain data...");
+      const csvForm = new FormData();
+      csvForm.append("file", supplierCsv!);
+
+      const resCsv = await fetch(`${THREAT_API}/api/config/supplier-data`, {
+        method: "POST",
+        body: csvForm,
+      });
+      if (!resCsv.ok) throw new Error("Failed to upload supplier data");
+      setSubmitProgress(80);
+
+      // 5. Poll Compliance Engine for initialization (it's the most complex)
+      setSubmitStatus("Finalizing setup and indexing...");
       let attempts = 0;
-      const maxAttempts = 30; // 60 seconds max
-
+      const maxAttempts = 15;
       while (attempts < maxAttempts) {
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        const statusRes = await fetch(`${API_BASE}/api/config/status`);
+        await new Promise(r => setTimeout(r, 2000));
+        const statusRes = await fetch(`${COMPLIANCE_API}/api/config/status`);
         const status = await statusRes.json();
 
-        setSubmitProgress(60 + (status.indexing_progress || 0) * 0.3);
+        const currentProgress = 80 + (status.indexing_progress || 0) * 0.2;
+        setSubmitProgress(currentProgress);
         setSubmitStatus(`Indexing documents... ${status.indexing_progress || 0}%`);
 
-        if (status.initialized) {
-          break;
-        }
-
+        if (status.initialized) break;
         attempts++;
       }
 
-      // Optional: Upload local files if provided
-      if (useLocalUpload && (localCompanyDocs.length > 0 || localPolicyDocs.length > 0)) {
-        setSubmitProgress(90);
-        setSubmitStatus("Uploading additional local files...");
-
-        if (localCompanyDocs.length > 0) {
-          const companyFormData = new FormData();
-          localCompanyDocs.forEach(file => companyFormData.append("files", file));
-          companyFormData.append("document_type", "company");
-
-          await fetch(`${API_BASE}/api/config/local-upload`, {
-            method: "POST",
-            body: companyFormData,
-          });
-        }
-
-        if (localPolicyDocs.length > 0) {
-          const policyFormData = new FormData();
-          localPolicyDocs.forEach(file => policyFormData.append("files", file));
-          policyFormData.append("document_type", "policy");
-
-          await fetch(`${API_BASE}/api/config/local-upload`, {
-            method: "POST",
-            body: policyFormData,
-          });
-        }
-      }
-
       setSubmitProgress(100);
-      setSubmitStatus("✓ Registration complete!");
+      setSubmitStatus("✓ All systems configured successfully!");
 
-      // Save buyer company name to localStorage for Compliance page
+      // Save info
       localStorage.setItem("buyer_company_name", companyName);
       localStorage.setItem("buyer_company_info", JSON.stringify({
         name: companyName,
@@ -163,7 +185,6 @@ export default function Register() {
       }));
 
       setRegistrationComplete(true);
-
     } catch (error: any) {
       setSubmitStatus(`Error: ${error.message}`);
       setIsSubmitting(false);
@@ -174,11 +195,21 @@ export default function Register() {
     <DashboardLayout>
       <div className="min-h-screen bg-background p-8">
         {/* Header */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <h1 className="text-3xl font-bold mb-2 text-foreground">Register Your Company</h1>
-          <p className="text-muted-foreground">
-            Set up your compliance monitoring system in 3 easy steps
-          </p>
+        <div className="max-w-4xl mx-auto mb-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold mb-2 text-foreground">Register Your Company</h1>
+            <p className="text-muted-foreground">
+              Set up your monitoring and intelligence systems in 3 steps
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleUseDemoData}
+            className="self-start"
+          >
+            Add demo data
+          </Button>
         </div>
 
         <div className="max-w-4xl mx-auto">
@@ -188,7 +219,7 @@ export default function Register() {
               {[
                 { num: 1, title: "Company Info", icon: Building2 },
                 { num: 2, title: "Google Drive Setup", icon: Cloud },
-                { num: 3, title: "Optional Uploads", icon: HardDrive },
+                { num: 3, title: "Add Supplier Data", icon: FileSpreadsheet },
               ].map((step, idx) => (
                 <div key={step.num} className="flex items-center flex-1">
                   <div className="flex flex-col items-center flex-1">
@@ -206,7 +237,7 @@ export default function Register() {
                         <step.icon className="w-6 h-6" />
                       )}
                     </div>
-                    <span className="text-sm font-medium mt-2 text-foreground">
+                    <span className="text-sm font-medium mt-2 text-foreground text-center">
                       {step.title}
                     </span>
                   </div>
@@ -306,7 +337,7 @@ export default function Register() {
             </div>
           )}
 
-          {/* Step 2: Google Drive Setup (PRIMARY) */}
+          {/* Step 2: Google Drive Setup */}
           {currentStep === 2 && (
             <div className="bg-card rounded-xl p-8 border border-border shadow-sm space-y-6 animate-fade-in">
               <div className="flex items-center gap-3 mb-4">
@@ -316,18 +347,9 @@ export default function Register() {
                 <div>
                   <h2 className="text-xl font-semibold text-foreground">Google Drive Configuration</h2>
                   <p className="text-sm text-muted-foreground">
-                    Connect your Google Drive folders containing company docs and compliance policies
+                    Connect your Google Drive folders for monitoring and compliance
                   </p>
                 </div>
-              </div>
-
-              {/* Info Box */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="text-sm font-semibold text-blue-900 mb-2">📁 Required Google Drive Folders:</h3>
-                <ul className="text-sm text-blue-800 space-y-1 ml-4 list-disc">
-                  <li><strong>Company Documents Folder:</strong> Supplier company profiles, contracts, financial docs</li>
-                  <li><strong>Threat Policies Folder:</strong> Compliance policies (e.g., compliance_policy.jsonl)</li>
-                </ul>
               </div>
 
               <div className="space-y-4">
@@ -351,9 +373,6 @@ export default function Register() {
                       {credentialsFile.name}
                     </p>
                   )}
-                  <p className="text-xs text-muted-foreground">
-                    Upload your Google service account JSON credentials file
-                  </p>
                 </div>
 
                 <div className="space-y-2">
@@ -365,13 +384,10 @@ export default function Register() {
                     onChange={(e) => setCompanyFolderId(e.target.value)}
                     className="bg-background border-border font-mono text-sm"
                   />
-                  <p className="text-xs text-muted-foreground">
-                    The Google Drive folder containing supplier/buyer company documents
-                  </p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="threat-folder">Threat Policies Folder ID *</Label>
+                  <Label htmlFor="threat-folder">Compliance & Threat Policies Folder ID *</Label>
                   <Input
                     id="threat-folder"
                     placeholder="e.g., 19voCC205C61k_zxWv0QQD3iBNhzY_Yzx"
@@ -379,9 +395,6 @@ export default function Register() {
                     onChange={(e) => setThreatFolderId(e.target.value)}
                     className="bg-background border-border font-mono text-sm"
                   />
-                  <p className="text-xs text-muted-foreground">
-                    The Google Drive folder containing compliance_policy.jsonl and other policies
-                  </p>
                 </div>
               </div>
 
@@ -398,83 +411,55 @@ export default function Register() {
                   disabled={!canProceedStep2}
                   className="flex-1 h-12"
                 >
-                  Continue to Optional Uploads
+                  Continue to Supplier Data
                   <ChevronRight className="ml-2 w-5 h-5" />
                 </Button>
               </div>
             </div>
           )}
 
-          {/* Step 3: Optional Local Upload */}
+          {/* Step 3: Add Supplier Data */}
           {currentStep === 3 && !registrationComplete && (
             <div className="bg-card rounded-xl p-8 border border-border shadow-sm space-y-6 animate-fade-in">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-lg bg-accent border border-primary/20 flex items-center justify-center">
-                  <HardDrive className="w-6 h-6 text-primary" />
+                  <FileSpreadsheet className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold text-foreground">Additional Documents (Optional)</h2>
+                  <h2 className="text-xl font-semibold text-foreground">Add Supplier Data</h2>
                   <p className="text-sm text-muted-foreground">
-                    Upload extra files not in Google Drive - skip if everything is already there
+                    Upload your master supply chain CSV file for real-time monitoring
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                <div>
-                  <p className="text-sm font-medium text-foreground">Upload additional local files?</p>
-                  <p className="text-xs text-muted-foreground">Only if you have extra documents not in Google Drive</p>
+              <div className="p-6 border-2 border-dashed border-border rounded-xl bg-muted/30">
+                <div className="text-center space-y-4">
+                  <Database className="w-12 h-12 text-primary mx-auto opacity-70" />
+                  <div>
+                    <h3 className="text-sm font-semibold text-foreground">Master Supply Chain CSV *</h3>
+                    <p className="text-xs text-muted-foreground mt-1 max-w-xs mx-auto">
+                      Should include columns like record_id, supplier_firm, source_country, etc.
+                      For the bundled demo, use the CSV from the simulate_data_stream folder
+                      (e.g. master_supply_chain.csv).
+                    </p>
+                  </div>
+                  <div className="max-w-xs mx-auto">
+                    <Input
+                      id="supplier-csv"
+                      type="file"
+                      accept=".csv"
+                      onChange={(e) => setSupplierCsv(e.target.files?.[0] || null)}
+                      className="bg-background"
+                    />
+                  </div>
+                  {supplierCsv && (
+                    <p className="text-xs text-green-600 font-medium animate-in fade-in slide-in-from-bottom-1">
+                      ✓ {supplierCsv.name} ({(supplierCsv.size / 1024).toFixed(1)} KB)
+                    </p>
+                  )}
                 </div>
-                <Button
-                  variant={useLocalUpload ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setUseLocalUpload(!useLocalUpload)}
-                >
-                  {useLocalUpload ? "Enabled" : "Skip"}
-                </Button>
               </div>
-
-              {useLocalUpload && (
-                <div className="space-y-4">
-                  <div className="border-2 border-dashed border-border rounded-xl p-6">
-                    <FileText className="w-10 h-10 text-primary mx-auto mb-3" />
-                    <p className="text-sm font-medium text-center mb-2 text-foreground">
-                      Company Documents
-                    </p>
-                    <Input
-                      type="file"
-                      multiple
-                      accept=".pdf,.docx,.txt,.json"
-                      onChange={(e) => e.target.files && setLocalCompanyDocs(Array.from(e.target.files))}
-                      className="max-w-xs mx-auto"
-                    />
-                    {localCompanyDocs.length > 0 && (
-                      <p className="text-xs text-green-600 text-center mt-2">
-                        ✓ {localCompanyDocs.length} files selected
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="border-2 border-dashed border-border rounded-xl p-6">
-                    <Shield className="w-10 h-10 text-primary mx-auto mb-3" />
-                    <p className="text-sm font-medium text-center mb-2 text-foreground">
-                      Policy Documents
-                    </p>
-                    <Input
-                      type="file"
-                      multiple
-                      accept=".pdf,.docx,.txt,.json,.jsonl"
-                      onChange={(e) => e.target.files && setLocalPolicyDocs(Array.from(e.target.files))}
-                      className="max-w-xs mx-auto"
-                    />
-                    {localPolicyDocs.length > 0 && (
-                      <p className="text-xs text-green-600 text-center mt-2">
-                        ✓ {localPolicyDocs.length} files selected
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
 
               <div className="flex gap-3">
                 <Button
@@ -487,13 +472,13 @@ export default function Register() {
                 </Button>
                 <Button
                   onClick={handleFinalSubmit}
-                  disabled={isSubmitting}
-                  className="flex-1 h-12 bg-green-600 hover:bg-green-700"
+                  disabled={isSubmitting || !canProceedStep3}
+                  className="flex-1 h-12 bg-primary hover:opacity-90"
                 >
                   {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 w-5 h-5 animate-spin" />
-                      Setting up...
+                      Initializing Systems...
                     </>
                   ) : (
                     <>
@@ -507,8 +492,8 @@ export default function Register() {
               {isSubmitting && (
                 <div className="space-y-3 p-4 bg-muted/50 rounded-lg">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-foreground">{submitStatus}</span>
-                    <span className="text-sm text-muted-foreground">{submitProgress}%</span>
+                    <span className="text-sm font-medium text-foreground">{submitStatus}</span>
+                    <span className="text-sm text-muted-foreground">{Math.round(submitProgress)}%</span>
                   </div>
                   <Progress value={submitProgress} className="h-2" />
                 </div>
@@ -518,7 +503,7 @@ export default function Register() {
 
           {/* Registration Complete */}
           {registrationComplete && (
-            <div className="bg-card rounded-xl p-8 border border-border shadow-sm text-center space-y-6 animate-fade-in">
+            <div className="bg-card rounded-xl p-8 border border-border shadow-sm text-center space-y-6 animate-fade-in border-green-500/30">
               <div className="w-20 h-20 rounded-full bg-green-100 border-4 border-green-200 flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-12 h-12 text-green-600" />
               </div>
@@ -526,62 +511,53 @@ export default function Register() {
               <div>
                 <h2 className="text-2xl font-bold text-foreground mb-2">Registration Complete! 🎉</h2>
                 <p className="text-muted-foreground">
-                  Your compliance monitoring system is now set up and ready to use
+                  Your supply chain intelligence ecosystem is now live and monitoring.
                 </p>
               </div>
 
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-left">
-                <h3 className="text-sm font-semibold text-green-900 mb-2">✓ Setup Summary:</h3>
-                <ul className="text-sm text-green-800 space-y-1">
-                  <li>• Company: <strong>{companyName}</strong></li>
-                  <li>• Industry: <strong>{industry}</strong></li>
-                  <li>• Google Drive connected and indexed</li>
-                  <li>• Compliance policies loaded</li>
-                  {useLocalUpload && (localCompanyDocs.length > 0 || localPolicyDocs.length > 0) && (
-                    <li>• Additional {localCompanyDocs.length + localPolicyDocs.length} local files uploaded</li>
-                  )}
+              <div className="bg-green-50 border border-green-200 rounded-lg p-5 text-left">
+                <h3 className="text-sm font-semibold text-green-900 mb-3 flex items-center gap-2">
+                  <Shield className="w-4 h-4" /> Connected Systems:
+                </h3>
+                <ul className="text-sm text-green-800 space-y-2">
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                    <strong>Compliance Engine:</strong> Ready for document analysis
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                    <strong>Threat Monitor:</strong> Real-time geopolitical alerts active
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                    <strong>Reputation Monitor:</strong> Supplier risk scoring active
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                    <strong>Data Stream:</strong> Master CSV loaded and streaming
+                  </li>
                 </ul>
               </div>
 
               <div className="flex gap-3">
                 <Button
                   variant="outline"
-                  onClick={() => window.location.href = "/"}
+                  onClick={() => window.location.href = "/dashboard"}
                   className="flex-1 h-12"
                 >
                   Go to Dashboard
                 </Button>
                 <Button
-                  onClick={() => window.location.href = "/compliance"}
+                  onClick={() => window.location.href = "/threats"}
                   className="flex-1 h-12"
                 >
-                  Start Compliance Analysis
+                  View Threat Feed
                   <ChevronRight className="ml-2 w-5 h-5" />
                 </Button>
               </div>
             </div>
           )}
         </div>
-
-        {/* Help Section */}
-        {currentStep === 2 && (
-          <div className="max-w-4xl mx-auto mt-8">
-            <div className="bg-muted/50 rounded-lg p-6 border border-border">
-              <h3 className="text-sm font-semibold text-foreground mb-3">💡 Need Help?</h3>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <p>
-                  <strong>Where to find Folder ID:</strong> Open your Google Drive folder, look at the URL:
-                  <code className="bg-background px-2 py-1 rounded ml-2 text-xs">
-                    https://drive.google.com/drive/folders/<strong className="text-primary">FOLDER_ID_HERE</strong>
-                  </code>
-                </p>
-                <p>
-                  <strong>Service Account:</strong> Create one in Google Cloud Console → IAM & Admin → Service Accounts
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </DashboardLayout>
   );

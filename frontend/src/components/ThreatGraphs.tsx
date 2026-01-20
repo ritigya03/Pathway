@@ -10,7 +10,7 @@ import { Building2, AlertTriangle, CheckCircle2, TrendingUp, Globe, Award, Shiel
 export const ComplianceRiskChart = ({ suppliers }) => {
   // Only count suppliers that have been analyzed (score > 0)
   const analyzedSuppliers = suppliers.filter(s => s.score > 0);
-  
+
   const riskData = analyzedSuppliers.reduce((acc, s) => {
     const risk = s.risk || 'low';
     acc[risk] = (acc[risk] || 0) + 1;
@@ -96,7 +96,7 @@ export const ComplianceRiskChart = ({ suppliers }) => {
 
 export const ComplianceScoreChart = ({ suppliers }) => {
   const analyzedSuppliers = suppliers.filter(s => s.score > 0);
-  
+
   const scoreRanges = analyzedSuppliers.reduce((acc, s) => {
     const score = s.score || 0;
     if (score >= 90) acc['Excellent (90-100)']++;
@@ -105,12 +105,12 @@ export const ComplianceScoreChart = ({ suppliers }) => {
     else if (score >= 60) acc['Poor (60-69)']++;
     else acc['Critical (<60)']++;
     return acc;
-  }, { 
-    'Excellent (90-100)': 0, 
-    'Good (80-89)': 0, 
-    'Fair (70-79)': 0, 
-    'Poor (60-69)': 0, 
-    'Critical (<60)': 0 
+  }, {
+    'Excellent (90-100)': 0,
+    'Good (80-89)': 0,
+    'Fair (70-79)': 0,
+    'Poor (60-69)': 0,
+    'Critical (<60)': 0
   });
 
   const chartData = [
@@ -153,9 +153,9 @@ export const ComplianceScoreChart = ({ suppliers }) => {
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis 
-                  dataKey="range" 
-                  stroke="#9ca3af" 
+                <XAxis
+                  dataKey="range"
+                  stroke="#9ca3af"
                   style={{ fontSize: '11px' }}
                   angle={-15}
                   textAnchor="end"
@@ -191,7 +191,7 @@ export const AnalysisProgressChart = ({ suppliers }) => {
   const total = suppliers.length;
   const analyzed = suppliers.filter(s => s.score > 0).length;
   const pending = total - analyzed;
-  
+
   const data = [
     { name: 'Analyzed', value: analyzed, color: '#3b82f6' },
     { name: 'Pending', value: pending, color: '#6b7280' }
@@ -247,13 +247,14 @@ export const AnalysisProgressChart = ({ suppliers }) => {
 
 export const RiskTrendChart = ({ suppliers }) => {
   const analyzedSuppliers = suppliers.filter(s => s.score > 0);
-  
+
   // Simulate trend data (in production, this would be time-series data)
   const trendData = analyzedSuppliers.length > 0 ? [
     { period: 'Week 1', high: 0, medium: 0, low: 0 },
     { period: 'Week 2', high: 0, medium: 0, low: 0 },
     { period: 'Week 3', high: 0, medium: 0, low: 0 },
-    { period: 'Current', 
+    {
+      period: 'Current',
       high: suppliers.filter(s => s.risk === 'high').length,
       medium: suppliers.filter(s => s.risk === 'medium').length,
       low: suppliers.filter(s => s.risk === 'low').length
@@ -275,7 +276,7 @@ export const RiskTrendChart = ({ suppliers }) => {
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
               <XAxis dataKey="period" stroke="#9ca3af" style={{ fontSize: '11px' }} />
               <YAxis stroke="#9ca3af" style={{ fontSize: '12px' }} />
-              <Tooltip 
+              <Tooltip
                 contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151' }}
                 labelStyle={{ color: '#f3f4f6' }}
               />
@@ -302,7 +303,7 @@ export const RiskTrendChart = ({ suppliers }) => {
 
 export const ComplianceHealthRadar = ({ suppliers }) => {
   const analyzedSuppliers = suppliers.filter(s => s.score > 0);
-  
+
   if (analyzedSuppliers.length === 0) {
     return (
       <Card>
@@ -329,13 +330,13 @@ export const ComplianceHealthRadar = ({ suppliers }) => {
   const avgScore = Math.round(analyzedSuppliers.reduce((sum, s) => sum + s.score, 0) / analyzedSuppliers.length);
   const lowRiskPct = Math.round((suppliers.filter(s => s.risk === 'low').length / suppliers.length) * 100);
   const analyzedPct = Math.round((analyzedSuppliers.length / suppliers.length) * 100);
-  
+
   // Calculate coverage score (how well are we monitoring)
   const coverageScore = analyzedPct;
-  
+
   // Calculate quality score (how good are our suppliers)
   const qualityScore = avgScore;
-  
+
   // Calculate safety score (how many are low risk)
   const safetyScore = lowRiskPct;
 
@@ -361,7 +362,7 @@ export const ComplianceHealthRadar = ({ suppliers }) => {
             <PolarAngleAxis dataKey="metric" stroke="#9ca3af" style={{ fontSize: '11px' }} />
             <PolarRadiusAxis angle={90} domain={[0, 100]} stroke="#9ca3af" style={{ fontSize: '10px' }} />
             <Radar name="Score" dataKey="value" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.6} />
-            <Tooltip 
+            <Tooltip
               contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151' }}
               labelStyle={{ color: '#f3f4f6' }}
             />
@@ -392,7 +393,7 @@ export const ComplianceHealthRadar = ({ suppliers }) => {
 
 export const ViolationTypeChart = ({ suppliers }) => {
   const analyzedSuppliers = suppliers.filter(s => s.score > 0);
-  
+
   // Simulate violation categories (in production, extract from actual analysis)
   const violationData = analyzedSuppliers.length > 0 ? [
     { type: 'Identity', count: Math.floor(Math.random() * 5), color: '#ef4444' },
@@ -417,7 +418,7 @@ export const ViolationTypeChart = ({ suppliers }) => {
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                 <XAxis type="number" stroke="#9ca3af" style={{ fontSize: '11px' }} />
                 <YAxis type="category" dataKey="type" stroke="#9ca3af" style={{ fontSize: '11px' }} width={80} />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151' }}
                   labelStyle={{ color: '#f3f4f6' }}
                 />
@@ -453,48 +454,125 @@ export const ViolationTypeChart = ({ suppliers }) => {
 // OPERATIONAL THREAT GRAPHS (Placeholders for future implementation)
 // ============================================================================
 
-export const OperationalPerformanceChart = ({ suppliers }) => {
+export const OperationalPerformanceChart = ({ stats }) => {
+  const { total, withThreats } = stats || { total: 0, withThreats: 0 };
+  const clear = Math.max(0, total - withThreats);
+
+  const chartData = [
+    { name: 'Threats Detected', value: withThreats, color: '#ef4444' },
+    { name: 'Clear', value: clear, color: '#22c55e' }
+  ].filter(d => d.value > 0 || total === 0);
+
+  if (total === 0) chartData.push({ name: 'No Data', value: 1, color: '#6b7280' });
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-purple-500" />
-          Delivery Performance
+          <Globe className="w-4 h-4 text-purple-500" />
+          Operational Risk Distribution
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-48 flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-16 h-16 rounded-full bg-purple-500/10 border-2 border-purple-500/30 flex items-center justify-center mx-auto mb-3">
-              <TrendingUp className="w-8 h-8 text-purple-500" />
+        {total > 0 ? (
+          <>
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="text-center p-2 rounded-lg bg-red-500/10 border border-red-500/20">
+                <div className="text-xl font-bold text-red-600">{withThreats}</div>
+                <div className="text-xs text-muted-foreground font-medium">Countries at Risk</div>
+              </div>
+              <div className="text-center p-2 rounded-lg bg-green-500/10 border border-green-500/20">
+                <div className="text-xl font-bold text-green-600">{clear}</div>
+                <div className="text-xs text-muted-foreground font-medium">Safe Regions</div>
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Delivery performance tracking coming soon
-            </p>
+          </>
+        ) : (
+          <div className="h-48 flex items-center justify-center">
+            <div className="text-center opacity-40">
+              <Globe className="w-12 h-12 mx-auto mb-2" />
+              <p className="text-sm">Initializing metrics...</p>
+            </div>
           </div>
-        </div>
+        )}
       </CardContent>
     </Card>
   );
 };
 
-export const OperationalCapacityChart = ({ suppliers }) => {
+export const OperationalRiskMetrics = ({ stats }) => {
+  const { total, withThreats } = stats || { total: 0, withThreats: 0 };
+  const safetyIndex = total > 0 ? Math.round(((total - withThreats) / total) * 100) : 100;
+  const riskIndex = total > 0 ? Math.round((withThreats / total) * 100) : 0;
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <Building2 className="w-4 h-4 text-purple-500" />
-          Capacity Utilization
+          <Activity className="w-4 h-4 text-purple-500" />
+          Geopolitical Risk Metrics
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-48 flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-16 h-16 rounded-full bg-purple-500/10 border-2 border-purple-500/30 flex items-center justify-center mx-auto mb-3">
-              <Building2 className="w-8 h-8 text-purple-500" />
+        <div className="space-y-6">
+          <div className="relative pt-1">
+            <div className="flex mb-2 items-center justify-between">
+              <div>
+                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200">
+                  Global Safety Index
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-semibold inline-block text-green-600">
+                  {safetyIndex}%
+                </span>
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Capacity analysis coming soon
+            <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-green-200">
+              <div style={{ width: `${safetyIndex}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500 transition-all duration-500"></div>
+            </div>
+          </div>
+
+          <div className="relative pt-1">
+            <div className="flex mb-2 items-center justify-between">
+              <div>
+                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-red-600 bg-red-200">
+                  Disruption Risk
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-semibold inline-block text-red-600">
+                  {riskIndex}%
+                </span>
+              </div>
+            </div>
+            <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-red-200">
+              <div style={{ width: `${riskIndex}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500 transition-all duration-500"></div>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl bg-purple-50 border border-purple-100">
+            <p className="text-xs text-purple-700 leading-relaxed">
+              <strong>Analysis:</strong> Operational stability is currently at <strong>{safetyIndex}%</strong> based on {total} monitored regions.
+              {riskIndex > 20 ? " Significant geopolitical headwind detected." : " Regional outlook remains stable."}
             </p>
           </div>
         </div>
@@ -504,106 +582,120 @@ export const OperationalCapacityChart = ({ suppliers }) => {
 };
 
 // ============================================================================
-// GEOGRAPHICAL THREAT GRAPHS (Placeholders)
+// REPUTATIONAL THREAT GRAPHS
 // ============================================================================
 
-export const GeographicalRiskChart = ({ suppliers }) => {
+export const ReputationalSentimentChart = ({ stats }) => {
+  const { total, withThreats } = stats || { total: 0, withThreats: 0 };
+  const clear = Math.max(0, total - withThreats);
+
+  const chartData = [
+    { name: 'Compliance Risks', value: withThreats, color: '#f59e0b' },
+    { name: 'Reputable', value: clear, color: '#3b82f6' }
+  ].filter(d => d.value > 0 || total === 0);
+
+  if (total === 0) chartData.push({ name: 'No Data', value: 1, color: '#6b7280' });
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <Globe className="w-4 h-4 text-green-500" />
-          Regional Risk Map
+          <Shield className="w-4 h-4 text-amber-500" />
+          Reputational Risk Overview
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-48 flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-16 h-16 rounded-full bg-green-500/10 border-2 border-green-500/30 flex items-center justify-center mx-auto mb-3">
-              <Globe className="w-8 h-8 text-green-500" />
+        {total > 0 ? (
+          <>
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="text-center p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                <div className="text-xl font-bold text-amber-600">{withThreats}</div>
+                <div className="text-xs text-muted-foreground font-medium">Risk Flagged</div>
+              </div>
+              <div className="text-center p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                <div className="text-xl font-bold text-blue-600">{clear}</div>
+                <div className="text-xs text-muted-foreground font-medium">Clear Status</div>
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Geographic risk heat map coming soon
-            </p>
+          </>
+        ) : (
+          <div className="h-48 flex items-center justify-center">
+            <div className="text-center opacity-40">
+              <Shield className="w-12 h-12 mx-auto mb-2" />
+              <p className="text-sm">Initializing metrics...</p>
+            </div>
           </div>
-        </div>
+        )}
       </CardContent>
     </Card>
   );
 };
 
-export const GeographicalStabilityChart = ({ suppliers }) => {
+export const ReputationalRiskMetrics = ({ stats }) => {
+  const { total, withThreats } = stats || { total: 0, withThreats: 0 };
+  const healthScore = total > 0 ? Math.round(((total - withThreats) / total) * 100) : 100;
+  const fraudExposure = total > 0 ? Math.round((withThreats / total) * 100) : 0;
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-green-500" />
-          Political Stability Index
+          <Target className="w-4 h-4 text-amber-500" />
+          Supplier Integrity Scorecard
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-48 flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-16 h-16 rounded-full bg-green-500/10 border-2 border-green-500/30 flex items-center justify-center mx-auto mb-3">
-              <AlertTriangle className="w-8 h-8 text-green-500" />
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Brand Health Index</p>
+              <h3 className="text-3xl font-bold text-blue-600">{healthScore}%</h3>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Political stability tracking coming soon
-            </p>
+            <div className="h-12 w-12 rounded-full border-4 border-blue-100 flex items-center justify-center">
+              <span className="text-[10px] font-bold text-blue-500">A+</span>
+            </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
 
-// ============================================================================
-// REPUTATIONAL THREAT GRAPHS (Placeholders)
-// ============================================================================
-
-export const ReputationalSentimentChart = ({ suppliers }) => {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <Award className="w-4 h-4 text-amber-500" />
-          Media Sentiment Analysis
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="h-48 flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-16 h-16 rounded-full bg-amber-500/10 border-2 border-amber-500/30 flex items-center justify-center mx-auto mb-3">
-              <Award className="w-8 h-8 text-amber-500" />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-3 rounded-lg bg-gray-50 border border-gray-100 text-center">
+              <p className="text-[10px] text-muted-foreground uppercase mb-1">Fraud Exposure</p>
+              <p className="text-xl font-bold text-amber-600">{fraudExposure}%</p>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Sentiment tracking coming soon
-            </p>
+            <div className="p-3 rounded-lg bg-gray-50 border border-gray-100 text-center">
+              <p className="text-[10px] text-muted-foreground uppercase mb-1">Active Alerts</p>
+              <p className="text-xl font-bold text-red-600">{withThreats}</p>
+            </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
 
-export const ReputationalESGChart = ({ suppliers }) => {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-amber-500" />
-          ESG Compliance Score
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="h-48 flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-16 h-16 rounded-full bg-amber-500/10 border-2 border-amber-500/30 flex items-center justify-center mx-auto mb-3">
-              <CheckCircle2 className="w-8 h-8 text-amber-500" />
+          <div className="pt-4 border-t border-dashed">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-xs text-muted-foreground">Compliance Confidence</span>
+              <span className="text-xs font-medium">{healthScore}%</span>
             </div>
-            <p className="text-sm text-muted-foreground">
-              ESG scoring coming soon
-            </p>
+            <div className="w-full bg-gray-100 rounded-full h-1.5">
+              <div
+                className="bg-amber-500 h-1.5 rounded-full transition-all duration-700"
+                style={{ width: `${healthScore}%` }}
+              ></div>
+            </div>
           </div>
         </div>
       </CardContent>

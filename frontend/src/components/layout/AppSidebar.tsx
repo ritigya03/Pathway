@@ -16,7 +16,6 @@ const navigation = [
   { name: "Register Company", href: "/register", icon: Building2 },
   { name: "Compliance Check", href: "/compliance", icon: ShieldCheck },
   { name: "Threat Intelligence", href: "/threats", icon: Radio },
-  { name: "Reputation Monitor", href: "/reputation", icon: Shield },
 ];
 
 

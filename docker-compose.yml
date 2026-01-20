@@ -12,11 +12,12 @@ services:
     volumes:
       - ./country_monitoring/country_level_threats/data:/app/data
       - ./country_monitoring/country_level_threats/output:/app/output
-      - ./country_monitoring/country_level_threats/credentials.json:/app/credentials.json:ro
+      - ./simulate_data_stream:/app/simulate_data_stream
     env_file:
       - ./country_monitoring/country_level_threats/.env
     environment:
       - PYTHONUNBUFFERED=1
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
     restart: unless-stopped
 
   # 2. Supply Chain Data Stream Simulator
@@ -69,12 +70,12 @@ services:
     volumes:
       - ./reputation_monitoring/data:/app/data
       - ./reputation_monitoring/output:/app/output
-      - ./reputation_monitoring/credentials.json:/app/credentials.json:ro
       - ./reputation_monitoring/policies:/app/policies:ro
     env_file:
       - ./reputation_monitoring/.env
     environment:
       - PYTHONUNBUFFERED=1
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials.json
     restart: unless-stopped
 
   # 5. Frontend UI (Dashboard)

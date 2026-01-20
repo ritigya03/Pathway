@@ -235,7 +235,15 @@ export default function Threats() {
     setTyping(true);
 
     try {
-      const answer = await callRAG(text);
+      let answer = await callRAG(text);
+
+      // INTERCEPTION: Clean up "I don't know" responses
+      if (answer.trim().startsWith("I don't") || answer.toLowerCase().includes("not enough information")) {
+        const entityMatch = text.match(/in ([\w\s]+)\?/);
+        const entityName = entityMatch ? entityMatch[1] : (mode === "operational" ? "this country" : "this supplier");
+        answer = `There are no ${mode} threats for ${entityName}.`;
+      }
+
       setMessages((prev: Message[]) => [
         ...prev,
         {

@@ -49,7 +49,14 @@ async def proxy_answer(request: QueryRequest):
             timeout=30,
         )
         response.raise_for_status()
-        return response.json()
+        data = response.json()
+        
+        # INTERCEPTION: Handle "I don't know" style responses
+        answer = data.get("result", "")
+        if "I don't" in answer or "I do not" in answer or "not enough information" in answer.lower():
+            data["result"] = "There are no reputational threats for this supplier."
+            
+        return data
     
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Pathway API error: {str(e)}")
@@ -78,7 +85,7 @@ from pathlib import Path
 
 # Paths
 THREATS_CSV = "output/validated_threats.csv"
-STREAM_CSV = "data/reputation_stream.csv"
+STREAM_CSV = "data/supply_chain_stream.csv"
 
 @app.get("/threats")
 async def get_threats():
@@ -116,7 +123,7 @@ async def get_companies():
         with open(STREAM_CSV, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
-                company = row.get("company", "").strip()
+                company = row.get("supplier_firm", "").strip()
                 if company:
                     companies.add(company)
         return {"companies": sorted(list(companies))}

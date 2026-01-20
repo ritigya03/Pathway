@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 from dotenv import load_dotenv
 import pathway as pw
-from reputation_stream import reputation_stream, contains_risk_keyword, MOCK_NEWS_ARTICLES
+from reputation_stream import supply_chain_stream, contains_risk_keyword, MOCK_NEWS_ARTICLES
 from llm_validator import is_real_reputational_threat
 
 # Load environment variables
@@ -42,13 +42,10 @@ def log(message: str):
 # THREAT PROCESSING
 # ============================================================
 
-def process_threats_for_company(company: str, category: str) -> list[dict]:
+def process_threats_for_company(company: str, industry: str) -> list[dict]:
     """
     Check mock news for reputational threats and validate with LLM.
     Returns list of validated threats.
-    
-    IMPORTANT: All dict values MUST be plain Python types (str, int, float, bool)
-    NOT Pathway types, as they will be used in downstream UDFs.
     """
     
     threats = []
@@ -56,24 +53,24 @@ def process_threats_for_company(company: str, category: str) -> list[dict]:
     # Filter news for this company
     company_news = [
         article for article in MOCK_NEWS_ARTICLES
-        if article.get("company", "").strip().lower() == company.strip().lower()
+        if article.get("supplier", "").strip().lower() == company.strip().lower()
     ]
     
     if not company_news:
         return threats
     
     log(f"\n{'='*60}")
-    log(f"🔍 Processing company: {company} (Category: {category})")
+    log(f"🔍 Processing supplier: {company} (Industry: {industry})")
     log(f"   Found {len(company_news)} news articles")
     
     for article in company_news:
         headline = article.get("headline", "")
-        content = article.get("content", "")
-        source = article.get("source_type", "unknown")
-        timestamp = article.get("timestamp", "")
+        description = article.get("description", "")
+        threat_type = article.get("threat_type", "reputational_risk")
+        timestamp = article.get("published_at", "")
         
         # Check for risk keywords
-        keyword = contains_risk_keyword(headline + " " + content)
+        keyword = contains_risk_keyword(headline + " " + description)
         
         if not keyword:
             continue
@@ -85,32 +82,22 @@ def process_threats_for_company(company: str, category: str) -> list[dict]:
         try:
             is_threat = is_real_reputational_threat(
                 company=company,
-                category=category,
+                category=industry,
                 headline=headline,
-                content=content
+                content=description
             )
             
             if is_threat:
                 log(f"   ✅ LLM VALIDATED as reputational threat")
                 
-                # Determine threat type based on category
-                if category == "fake":
-                    threat_type = "fraud_indicators"
-                elif category == "legitimate":
-                    threat_type = "operational_issues"
-                elif category == "restricted":
-                    threat_type = "accessibility_concerns"
-                else:
-                    threat_type = "general_reputation"
-                
                 # CRITICAL: Use plain Python types only
                 threats.append({
                     "company": str(company),
-                    "category": str(category),
+                    "category": str(industry),
                     "threat_type": str(threat_type),
                     "headline": str(headline),
-                    "description": str(content),
-                    "source": str(source),
+                    "description": str(description),
+                    "source": "MockNews",
                     "timestamp": str(timestamp),
                 })
             else:
@@ -132,21 +119,21 @@ log("🚀 Starting Reputational Threat Alert Pipeline")
 log("=" * 60)
 
 # Get unique companies from stream
-companies = reputation_stream.groupby(
-    pw.this.company, pw.this.company_category
+companies = supply_chain_stream.groupby(
+    pw.this.supplier_firm, pw.this.supplier_industry
 ).reduce(
-    company=pw.this.company,
-    category=pw.this.company_category,
+    company=pw.this.supplier_firm,
+    industry=pw.this.supplier_industry,
 )
 
 # Process threats for each company
 threats_by_company = companies.select(
     company=pw.this.company,
-    category=pw.this.category,
+    industry=pw.this.industry,
     threats_list=pw.apply(
         process_threats_for_company,
         pw.this.company,
-        pw.this.category
+        pw.this.industry
     )
 )
 

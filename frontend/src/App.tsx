@@ -8,7 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import Compliance from "./pages/Compliance";
 import Threats from "./pages/Threats";
-import Reputation from "./pages/Reputation";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,7 +25,6 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/compliance" element={<Compliance />} />
           <Route path="/threats" element={<Threats />} />
-          <Route path="/reputation" element={<Reputation />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

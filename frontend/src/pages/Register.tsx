@@ -3,16 +3,16 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { 
-  Upload, 
-  FileText, 
+import {
+  Upload,
+  FileText,
   CheckCircle2,
   Building2,
   Shield,
@@ -108,7 +108,7 @@ export default function Register() {
 
       while (attempts < maxAttempts) {
         await new Promise(resolve => setTimeout(resolve, 2000));
-        
+
         const statusRes = await fetch(`${API_BASE}/api/config/status`);
         const status = await statusRes.json();
 
@@ -152,7 +152,7 @@ export default function Register() {
 
       setSubmitProgress(100);
       setSubmitStatus("✓ Registration complete!");
-      
+
       // Save buyer company name to localStorage for Compliance page
       localStorage.setItem("buyer_company_name", companyName);
       localStorage.setItem("buyer_company_info", JSON.stringify({
@@ -161,7 +161,7 @@ export default function Register() {
         country,
         email: contactEmail
       }));
-      
+
       setRegistrationComplete(true);
 
     } catch (error: any) {

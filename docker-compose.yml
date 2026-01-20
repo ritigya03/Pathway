@@ -20,21 +20,23 @@ services:
     restart: unless-stopped
 
   # 2. Supply Chain Data Stream Simulator
-  # Simulates fresh data arriving for the threat monitor
+  # Simulates fresh data arriving for BOTH threat monitors
   stream-simulator:
     build:
-      context: ./country_monitoring/simulate_data_stream
+      context: ./simulate_data_stream
       dockerfile: Dockerfile
     container_name: stream-simulator
     volumes:
-      - ./country_monitoring/country_level_threats/data:/app/data_out
-      - ./country_monitoring/simulate_data_stream:/app/simulate_data_stream
+      - ./country_monitoring/country_level_threats/data:/app/data_country
+      - ./reputation_monitoring/data:/app/data_reputation
+      - ./simulate_data_stream:/app/simulate_data_stream
     environment:
       - PYTHONUNBUFFERED=1
+      - STREAM_FILES=/app/data_country/supply_chain_stream.csv,/app/data_reputation/supply_chain_stream.csv
       - MASTER_FILE=/app/simulate_data_stream/master_supply_chain.csv
-      - STREAM_FILE=/app/data_out/supply_chain_stream.csv
     depends_on:
       - threat-monitor
+      - reputation-monitoring
     restart: unless-stopped
 
   # 3. Compliance Engine

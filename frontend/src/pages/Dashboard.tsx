@@ -90,8 +90,8 @@ export default function Dashboard() {
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${trend === "warning"
-              ? "bg-warning/10 border border-warning/30"
-              : "bg-accent border border-primary/20"
+            ? "bg-warning/10 border border-warning/30"
+            : "bg-accent border border-primary/20"
             }`}>
             <Icon className={`w-5 h-5 ${trend === "warning" ? "text-warning" : "text-primary"
               }`} />

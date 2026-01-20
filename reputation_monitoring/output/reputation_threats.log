@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-=== Reputational Threat Detection Log Started at 2026-01-19 09:44:26.427933 ===
-=======
-=== Reputational Threat Detection Log Started at 2026-01-19 10:01:46.644392 ===
->>>>>>> 1b50cc5916bd9d2de3aa4ed2ef3e3e752827602c
+=== Reputational Threat Detection Log Started at 2026-01-20 10:22:50.222417 ===
 
 🚀 Starting Reputational Threat Alert Pipeline
 ============================================================
@@ -12,215 +8,165 @@
 ============================================================
 
 ============================================================
-🔍 Processing company: Kalyx Materials Group (Category: legitimate)
-   Found 9 news articles
+🔍 Processing supplier: Quorvia Systems (Industry: Electronics)
+   Found 10 news articles
 
-   ⚠️  Risk keyword 'complaints' detected
-   📰 Headline: Company issues clarification after minor public complaints...
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'unverifiable' detected
+   📰 Headline: Concerns raised over unverifiable operational claims...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'negative' detected
+   📰 Headline: Strict onboarding policies trigger negative sentiment...
    ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'complaints' detected
    📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   📊 Total validated threats: 4
+
+============================================================
+🔍 Processing supplier: Noventra Labs (Industry: Pharmaceuticals)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'misleading' detected
+   📰 Headline: Online discussions allege misleading branding practices...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'questioned' detected
+   📰 Headline: Operational accessibility questioned by mid-sized firms...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'frustration' detected
+   📰 Headline: Partners express frustration over extended approval timelines...
    ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'complaints' detected
    📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   📊 Total validated threats: 5
+
+============================================================
+🔍 Processing supplier: Flarix Industries (Industry: Manufacturing)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'negative' detected
+   📰 Headline: Strict onboarding policies trigger negative sentiment...
    ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'complaints' detected
    📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'misleading' detected
+   📰 Headline: Online discussions allege misleading branding practices...
    ✅ LLM VALIDATED as reputational threat
 
    📊 Total validated threats: 4
 
 ============================================================
-🔍 Processing company: BlueCrest Manufacturing Co. (Category: fake)
-   Found 9 news articles
-
-   ⚠️  Risk keyword 'impersonation' detected
-   📰 Headline: Industry watchers flag possible impersonation attempts...
-   ✅ LLM VALIDATED as reputational threat
+🔍 Processing supplier: Axelium Works (Industry: Automotive)
+   Found 10 news articles
 
    ⚠️  Risk keyword 'inconsistent' detected
    📰 Headline: Users question authenticity after inconsistent public records surface...
    ✅ LLM VALIDATED as reputational threat
 
-   ⚠️  Risk keyword 'impersonation' detected
-   📰 Headline: Industry watchers flag possible impersonation attempts...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'inconsistent' detected
-   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ⚠️  Risk keyword 'misleading' detected
+   📰 Headline: Online discussions allege misleading branding practices...
    ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'impersonation' detected
    📰 Headline: Industry watchers flag possible impersonation attempts...
    ✅ LLM VALIDATED as reputational threat
 
-   ⚠️  Risk keyword 'inconsistent' detected
-   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ⚠️  Risk keyword 'questioned' detected
+   📰 Headline: Operational accessibility questioned by mid-sized firms...
    ✅ LLM VALIDATED as reputational threat
 
-   ⚠️  Risk keyword 'impersonation' detected
-   📰 Headline: Industry watchers flag possible impersonation attempts...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'inconsistent' detected
-   📰 Headline: Users question authenticity after inconsistent public records surface...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'impersonation' detected
-   📰 Headline: Industry watchers flag possible impersonation attempts...
-   ✅ LLM VALIDATED as reputational threat
-
-   📊 Total validated threats: 9
-
-============================================================
-🔍 Processing company: Veridion Supply Systems (Category: legitimate)
-   Found 9 news articles
-
-   📊 Total validated threats: 0
-
-============================================================
-🔍 Processing company: Orbinex Components Ltd. (Category: legitimate)
-   Found 9 news articles
-
-   📊 Total validated threats: 0
-
-============================================================
-🔍 Processing company: Nexvora Industries Pvt. Ltd. (Category: fake)
-   Found 9 news articles
-
-   ⚠️  Risk keyword 'inconsistent' detected
-   📰 Headline: Users question authenticity after inconsistent public records surface...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'impersonation' detected
-   📰 Headline: Industry watchers flag possible impersonation attempts...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'inconsistent' detected
-   📰 Headline: Users question authenticity after inconsistent public records surface...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'impersonation' detected
-   📰 Headline: Industry watchers flag possible impersonation attempts...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'inconsistent' detected
-   📰 Headline: Users question authenticity after inconsistent public records surface...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'impersonation' detected
-   📰 Headline: Industry watchers flag possible impersonation attempts...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'inconsistent' detected
-   📰 Headline: Users question authenticity after inconsistent public records surface...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'impersonation' detected
-   📰 Headline: Industry watchers flag possible impersonation attempts...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'inconsistent' detected
-   📰 Headline: Users question authenticity after inconsistent public records surface...
-   ✅ LLM VALIDATED as reputational threat
-
-   📊 Total validated threats: 9
-
-============================================================
-🔍 Processing company: Zenlith Logistics Corp. (Category: legitimate)
-   Found 9 news articles
-
-   📊 Total validated threats: 0
-
-============================================================
-🔍 Processing company: StratEdge Enterprises (Category: legitimate)
-   Found 9 news articles
-
-   ⚠️  Risk keyword 'complaints' detected
-   📰 Headline: Company issues clarification after minor public complaints...
+   ⚠️  Risk keyword 'frustration' detected
+   📰 Headline: Partners express frustration over extended approval timelines...
    ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'complaints' detected
    📰 Headline: Company issues clarification after minor public complaints...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'complaints' detected
-   📰 Headline: Company issues clarification after minor public complaints...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'complaints' detected
-   📰 Headline: Company issues clarification after minor public complaints...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'complaints' detected
-   📰 Headline: Company issues clarification after minor public complaints...
-   ✅ LLM VALIDATED as reputational threat
+   ❌ LLM rejected as false positive
 
    📊 Total validated threats: 5
 
 ============================================================
-🔍 Processing company: Alturon Global Solutions (Category: fake)
-   Found 9 news articles
+🔍 Processing supplier: Virelox Trading (Industry: Trading)
+   Found 10 news articles
 
-   ⚠️  Risk keyword 'misleading' detected
-   📰 Headline: Online discussions allege misleading branding practices...
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
    ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'unverifiable' detected
    📰 Headline: Concerns raised over unverifiable operational claims...
    ✅ LLM VALIDATED as reputational threat
 
-   ⚠️  Risk keyword 'misleading' detected
-   📰 Headline: Online discussions allege misleading branding practices...
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
    ✅ LLM VALIDATED as reputational threat
 
-   ⚠️  Risk keyword 'unverifiable' detected
-   📰 Headline: Concerns raised over unverifiable operational claims...
+   ⚠️  Risk keyword 'negative' detected
+   📰 Headline: Strict onboarding policies trigger negative sentiment...
    ✅ LLM VALIDATED as reputational threat
 
-   ⚠️  Risk keyword 'misleading' detected
-   📰 Headline: Online discussions allege misleading branding practices...
-   ✅ LLM VALIDATED as reputational threat
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
 
-   ⚠️  Risk keyword 'unverifiable' detected
-   📰 Headline: Concerns raised over unverifiable operational claims...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'misleading' detected
-   📰 Headline: Online discussions allege misleading branding practices...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'unverifiable' detected
-   📰 Headline: Concerns raised over unverifiable operational claims...
-   ✅ LLM VALIDATED as reputational threat
-
-   ⚠️  Risk keyword 'misleading' detected
-   📰 Headline: Online discussions allege misleading branding practices...
-   ✅ LLM VALIDATED as reputational threat
-
-   📊 Total validated threats: 9
+   📊 Total validated threats: 4
 
 ============================================================
-🔍 Processing company: PrimeAxis Industrial Works (Category: restricted)
-   Found 9 news articles
+🔍 Processing supplier: Stronvia Solutions (Industry: Engineering)
+   Found 10 news articles
 
-   ⚠️  Risk keyword 'frustration' detected
-   📰 Headline: Partners express frustration over extended approval timelines...
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
    ✅ LLM VALIDATED as reputational threat
 
-   ⚠️  Risk keyword 'frustration' detected
-   📰 Headline: Partners express frustration over extended approval timelines...
+   ⚠️  Risk keyword 'misleading' detected
+   📰 Headline: Online discussions allege misleading branding practices...
    ✅ LLM VALIDATED as reputational threat
 
-   ⚠️  Risk keyword 'frustration' detected
-   📰 Headline: Partners express frustration over extended approval timelines...
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
    ✅ LLM VALIDATED as reputational threat
 
-   ⚠️  Risk keyword 'frustration' detected
-   📰 Headline: Partners express frustration over extended approval timelines...
+   ⚠️  Risk keyword 'questioned' detected
+   📰 Headline: Operational accessibility questioned by mid-sized firms...
    ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'frustration' detected
@@ -230,43 +176,345 @@
    📊 Total validated threats: 5
 
 ============================================================
-🔍 Processing company: Solvex Trade & Sourcing (Category: restricted)
-   Found 9 news articles
+🔍 Processing supplier: Krydonix Ltd. (Industry: Electronics)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'unverifiable' detected
+   📰 Headline: Concerns raised over unverifiable operational claims...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'negative' detected
    📰 Headline: Strict onboarding policies trigger negative sentiment...
+   ✅ LLM VALIDATED as reputational threat
+
+   📊 Total validated threats: 4
+
+============================================================
+🔍 Processing supplier: Elvaron Group (Industry: Manufacturing)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'misleading' detected
+   📰 Headline: Online discussions allege misleading branding practices...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
    ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'questioned' detected
    📰 Headline: Operational accessibility questioned by mid-sized firms...
    ✅ LLM VALIDATED as reputational threat
 
+   ⚠️  Risk keyword 'frustration' detected
+   📰 Headline: Partners express frustration over extended approval timelines...
+   ✅ LLM VALIDATED as reputational threat
+
+   📊 Total validated threats: 5
+
+============================================================
+🔍 Processing supplier: Trevixa Enterprises (Industry: Textiles)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'frustration' detected
+   📰 Headline: Partners express frustration over extended approval timelines...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'unverifiable' detected
+   📰 Headline: Concerns raised over unverifiable operational claims...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
    ⚠️  Risk keyword 'negative' detected
    📰 Headline: Strict onboarding policies trigger negative sentiment...
+   ❌ LLM rejected as false positive
+
+   📊 Total validated threats: 4
+
+============================================================
+🔍 Processing supplier: Noventra Labs (Industry: Pharmaceuticals)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'misleading' detected
+   📰 Headline: Online discussions allege misleading branding practices...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
    ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'questioned' detected
    📰 Headline: Operational accessibility questioned by mid-sized firms...
    ✅ LLM VALIDATED as reputational threat
 
+   ⚠️  Risk keyword 'frustration' detected
+   📰 Headline: Partners express frustration over extended approval timelines...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   📊 Total validated threats: 5
+
+============================================================
+🔍 Processing supplier: Quorvia Systems (Industry: Electronics)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'unverifiable' detected
+   📰 Headline: Concerns raised over unverifiable operational claims...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
    ⚠️  Risk keyword 'negative' detected
    📰 Headline: Strict onboarding policies trigger negative sentiment...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   📊 Total validated threats: 4
+
+============================================================
+🔍 Processing supplier: Axelium Works (Industry: Automotive)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'misleading' detected
+   📰 Headline: Online discussions allege misleading branding practices...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
    ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'questioned' detected
    📰 Headline: Operational accessibility questioned by mid-sized firms...
    ✅ LLM VALIDATED as reputational threat
 
+   ⚠️  Risk keyword 'frustration' detected
+   📰 Headline: Partners express frustration over extended approval timelines...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   📊 Total validated threats: 5
+
+============================================================
+🔍 Processing supplier: Virelox Trading (Industry: Trading)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'unverifiable' detected
+   📰 Headline: Concerns raised over unverifiable operational claims...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
    ⚠️  Risk keyword 'negative' detected
    📰 Headline: Strict onboarding policies trigger negative sentiment...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   📊 Total validated threats: 4
+
+============================================================
+🔍 Processing supplier: Stronvia Solutions (Industry: Engineering)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'misleading' detected
+   📰 Headline: Online discussions allege misleading branding practices...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
    ✅ LLM VALIDATED as reputational threat
 
    ⚠️  Risk keyword 'questioned' detected
    📰 Headline: Operational accessibility questioned by mid-sized firms...
    ✅ LLM VALIDATED as reputational threat
 
+   ⚠️  Risk keyword 'frustration' detected
+   📰 Headline: Partners express frustration over extended approval timelines...
+   ✅ LLM VALIDATED as reputational threat
+
+   📊 Total validated threats: 5
+
+============================================================
+🔍 Processing supplier: Krydonix Ltd. (Industry: Electronics)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'unverifiable' detected
+   📰 Headline: Concerns raised over unverifiable operational claims...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
    ⚠️  Risk keyword 'negative' detected
    📰 Headline: Strict onboarding policies trigger negative sentiment...
    ✅ LLM VALIDATED as reputational threat
 
-   📊 Total validated threats: 9
+   📊 Total validated threats: 4
+
+============================================================
+🔍 Processing supplier: Elvaron Group (Industry: Manufacturing)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'misleading' detected
+   📰 Headline: Online discussions allege misleading branding practices...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'questioned' detected
+   📰 Headline: Operational accessibility questioned by mid-sized firms...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'frustration' detected
+   📰 Headline: Partners express frustration over extended approval timelines...
+   ✅ LLM VALIDATED as reputational threat
+
+   📊 Total validated threats: 5
+
+============================================================
+🔍 Processing supplier: Trevixa Enterprises (Industry: Textiles)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'frustration' detected
+   📰 Headline: Partners express frustration over extended approval timelines...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'unverifiable' detected
+   📰 Headline: Concerns raised over unverifiable operational claims...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'inconsistent' detected
+   📰 Headline: Users question authenticity after inconsistent public records surface...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'negative' detected
+   📰 Headline: Strict onboarding policies trigger negative sentiment...
+   ❌ LLM rejected as false positive
+
+   📊 Total validated threats: 4
+
+============================================================
+🔍 Processing supplier: Noventra Labs (Industry: Pharmaceuticals)
+   Found 10 news articles
+
+   ⚠️  Risk keyword 'misleading' detected
+   📰 Headline: Online discussions allege misleading branding practices...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'questioned' detected
+   📰 Headline: Operational accessibility questioned by mid-sized firms...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'frustration' detected
+   📰 Headline: Partners express frustration over extended approval timelines...
+   ✅ LLM VALIDATED as reputational threat
+
+   ⚠️  Risk keyword 'complaints' detected
+   📰 Headline: Company issues clarification after minor public complaints...
+   ❌ LLM rejected as false positive
+
+   ⚠️  Risk keyword 'impersonation' detected
+   📰 Headline: Industry watchers flag possible impersonation attempts...
+   ✅ LLM VALIDATED as reputational threat
+
+   📊 Total validated threats: 5

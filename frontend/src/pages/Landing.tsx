@@ -1,46 +1,44 @@
 import { Link } from "react-router-dom";
-import { 
-  Shield, 
-  ShieldCheck, 
-  FileText, 
-  Globe, 
-  AlertTriangle, 
+import {
+  Shield,
+  ShieldCheck,
+  FileText,
+  Globe,
+  AlertTriangle,
   ArrowRight,
   CheckCircle2,
   Radio,
-  Building2
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroGlobe from "@/assets/hero-globe-light.jpg";
+import logo from "@/assets/sentinelChain.png";
 
 const features = [
   {
     icon: ShieldCheck,
     title: "Supplier Legitimacy Verification",
-    description: "AI-powered verification of supplier credentials, certifications, and business history.",
+    description:
+      "AI-powered verification of supplier credentials, certifications, and business history.",
   },
   {
     icon: FileText,
     title: "Contract & Compliance Analysis",
-    description: "Automated document parsing and compliance checking against your policies.",
+    description:
+      "Automated document parsing and compliance checking against your policies.",
   },
   {
     icon: Globe,
     title: "Geopolitical Risk Detection",
-    description: "Real-time monitoring of global events affecting your supply chain.",
+    description:
+      "Real-time monitoring of global events affecting your supply chain.",
   },
   {
     icon: AlertTriangle,
     title: "Reputational Threat Alerts",
-    description: "Early warning system for supplier scandals, fraud, and fake news.",
+    description:
+      "Early warning system for supplier scandals, fraud, and fake news.",
   },
-];
-
-const stats = [
-  { value: "500+", label: "Enterprise Clients" },
-  { value: "10M+", label: "Suppliers Verified" },
-  { value: "99.9%", label: "Uptime SLA" },
-  { value: "24/7", label: "Threat Monitoring" },
 ];
 
 export default function Landing() {
@@ -50,10 +48,14 @@ export default function Landing() {
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-card/90 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-accent border border-primary/20">
-              <Shield className="w-5 h-5 text-primary" />
-            </div>
-            <span className="text-xl font-semibold text-foreground">SentinelChain</span>
+            <img
+              src={logo}
+              alt="SentinelChain Logo"
+              className="w-9 h-9 object-contain"
+            />
+            <span className="text-xl font-semibold text-foreground">
+              SentinelChain
+            </span>
           </Link>
           <div className="flex items-center gap-4">
             <Link to="/dashboard">
@@ -75,9 +77,9 @@ export default function Landing() {
       <section className="relative pt-32 pb-20 overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src={heroGlobe} 
-            alt="Global supply chain network" 
+          <img
+            src={heroGlobe}
+            alt="Global supply chain network"
             className="w-full h-full object-cover opacity-60"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
@@ -91,11 +93,14 @@ export default function Landing() {
             </div>
             <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6 text-foreground">
               AI-Powered Supply Chain{" "}
-              <span className="text-gradient-primary">Compliance & Threat Intelligence</span>
+              <span className="text-gradient-primary">
+                Compliance & Threat Intelligence
+              </span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-              Verify supplier legitimacy, analyze compliance documents, and monitor geopolitical 
-              risks in real-time. Protect your supply chain before threats materialize.
+              Verify supplier legitimacy, analyze compliance documents, and
+              monitor geopolitical risks in real-time. Protect your supply chain
+              before threats materialize.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/register">
@@ -105,25 +110,16 @@ export default function Landing() {
                 </Button>
               </Link>
               <Link to="/dashboard">
-                <Button size="lg" variant="outline" className="h-12 px-6 bg-card/80 hover:bg-card">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-12 px-6 bg-card/80 hover:bg-card"
+                >
                   View Demo Dashboard
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
             </div>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20">
-            {stats.map((stat) => (
-              <div 
-                key={stat.label}
-                className="p-6 rounded-xl bg-card border border-border shadow-sm"
-              >
-                <div className="text-3xl font-bold text-primary mb-1">{stat.value}</div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -136,22 +132,26 @@ export default function Landing() {
               Comprehensive Supply Chain Protection
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              From supplier verification to real-time threat detection, we provide 
-              end-to-end visibility into your supply chain risks.
+              From supplier verification to real-time threat detection, we
+              provide end-to-end visibility into your supply chain risks.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {features.map((feature) => (
-              <div 
+              <div
                 key={feature.title}
                 className="group p-8 rounded-xl bg-background border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-200"
               >
                 <div className="w-12 h-12 rounded-lg bg-accent border border-primary/20 flex items-center justify-center mb-5 group-hover:bg-secondary transition-colors">
                   <feature.icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-3 text-foreground">{feature.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-semibold mb-3 text-foreground">
+                  {feature.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
             ))}
           </div>
@@ -169,7 +169,7 @@ export default function Landing() {
                   Start Protecting Your Supply Chain Today
                 </h2>
                 <p className="text-lg text-muted-foreground mb-8">
-                  Join 500+ enterprises using SentinelChain to verify suppliers, 
+                  Join 500+ enterprises using SentinelChain to verify suppliers,
                   ensure compliance, and monitor threats in real-time.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -194,7 +194,11 @@ export default function Landing() {
       <footer className="border-t border-border py-8 bg-card">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Shield className="w-5 h-5 text-primary" />
+            <img
+              src={logo}
+              alt="SentinelChain Logo"
+              className="w-5 h-5 object-contain"
+            />
             <span className="font-medium text-foreground">SentinelChain</span>
           </div>
           <p className="text-sm text-muted-foreground">

@@ -36,10 +36,8 @@ interface ValidatedThreat {
 
 type ThreatMode = "operational" | "reputational";
 
-const API_BASE = "http://localhost:8081";
-const RAG_ENDPOINT = `${API_BASE}/proxy-answer`;
-const THREATS_ENDPOINT = `${API_BASE}/threats`;
-const COUNTRIES_ENDPOINT = `${API_BASE}/countries`;
+const OPERATIONAL_API_BASE = "http://localhost:8081";
+const REPUTATION_API_BASE = "http://localhost:8083";
 
 /* ============================ RESPONSE FORMATTER 🔥 ============================ */
 const formatThreatResponse = (content: string) => {
@@ -70,7 +68,7 @@ const formatThreatResponse = (content: string) => {
 
   lines.forEach((line, idx) => {
     const trimmed = line.trim();
-    
+
     if (!trimmed) {
       flushList();
       return;
@@ -145,7 +143,7 @@ export default function Threats() {
   const [operationalTyping, setOperationalTyping] = useState(false);
   const [reputationalTyping, setReputationalTyping] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   // Live data
   const [countries, setCountries] = useState<string[]>([]);
   const [liveFeed, setLiveFeed] = useState<ValidatedThreat[]>([]);
@@ -166,30 +164,34 @@ export default function Threats() {
     scrollToBottom(reputationalEndRef);
   }, [reputationalMessages]);
 
-  // Fetch countries on mount and poll
+  // Fetch countries/companies on mount and poll
   useEffect(() => {
-    const fetchCountries = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch(COUNTRIES_ENDPOINT);
+        const apiBase = mode === "operational" ? OPERATIONAL_API_BASE : REPUTATION_API_BASE;
+        const endpoint = mode === "operational" ? "/countries" : "/companies";
+
+        const res = await fetch(`${apiBase}${endpoint}`);
         const data = await res.json();
-        setCountries(data.countries || []);
+        setCountries(data.countries || data.companies || []);
         setLoadingCountries(false);
       } catch (err) {
-        console.error("Error fetching countries:", err);
+        console.error("Error fetching location data:", err);
         setLoadingCountries(false);
       }
     };
 
-    fetchCountries();
-    const interval = setInterval(fetchCountries, 10000); // Poll every 10s
+    fetchData();
+    const interval = setInterval(fetchData, 10000); // Poll every 10s
     return () => clearInterval(interval);
-  }, []);
+  }, [mode]);
 
   // Fetch validated threats on mount and poll
   useEffect(() => {
     const fetchThreats = async () => {
       try {
-        const res = await fetch(THREATS_ENDPOINT);
+        const apiBase = mode === "operational" ? OPERATIONAL_API_BASE : REPUTATION_API_BASE;
+        const res = await fetch(`${apiBase}/threats`);
         const data = await res.json();
         setLiveFeed(data.threats || []);
       } catch (err) {
@@ -200,10 +202,11 @@ export default function Threats() {
     fetchThreats();
     const interval = setInterval(fetchThreats, 5000); // Poll every 5s
     return () => clearInterval(interval);
-  }, []);
+  }, [mode]);
 
   const callRAG = async (query: string): Promise<string> => {
-    const res = await fetch(RAG_ENDPOINT, {
+    const apiBase = mode === "operational" ? OPERATIONAL_API_BASE : REPUTATION_API_BASE;
+    const res = await fetch(`${apiBase}/proxy-answer`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt: query }),
@@ -258,10 +261,10 @@ export default function Threats() {
   };
 
   const handleCountryClick = (country: string) => {
-    const query = mode === "operational" 
+    const query = mode === "operational"
       ? `What are the current operational and geopolitical threats for suppliers in ${country}?`
       : `What are the reputational risks and compliance issues for suppliers in ${country}?`;
-    
+
     if (mode === "operational") {
       sendMessage(query, setOperationalMessages, setOperationalTyping);
     } else {
@@ -277,7 +280,7 @@ export default function Threats() {
   const currentSetTyping = mode === "operational" ? setOperationalTyping : setReputationalTyping;
   const currentEndRef = mode === "operational" ? operationalEndRef : reputationalEndRef;
 
-  const filteredCountries = countries.filter(c => 
+  const filteredCountries = countries.filter(c =>
     c.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -302,7 +305,9 @@ export default function Threats() {
               <span className="px-3 py-1 bg-teal-50 text-teal-700 rounded-full text-sm font-medium border border-teal-200">
                 Ready for Analysis
               </span>
-              <span className="text-gray-500 text-sm">{countries.length} countries monitored</span>
+              <span className="text-gray-500 text-sm">
+                {countries.length} {mode === "operational" ? "countries" : "companies"} monitored
+              </span>
             </div>
           </div>
           <p className="text-gray-500">Monitor operational, geopolitical, and reputational risks</p>
@@ -356,7 +361,7 @@ export default function Threats() {
             {/* Countries List */}
             <div className="p-4 border-b border-gray-200 bg-gray-50">
               <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                Query for Supplier Countries
+                Query for Supplier {mode === "operational" ? "Countries" : "Companies"}
               </h3>
             </div>
 
@@ -364,11 +369,11 @@ export default function Threats() {
               {loadingCountries ? (
                 <div className="p-4 text-center text-gray-500">
                   <RefreshCw className="h-5 w-5 animate-spin mx-auto mb-2" />
-                  Loading countries...
+                  Loading {mode === "operational" ? "countries" : "companies"}...
                 </div>
               ) : filteredCountries.length === 0 ? (
                 <div className="p-4 text-center text-gray-500">
-                  No countries found
+                  No {mode === "operational" ? "countries" : "companies"} found
                 </div>
               ) : (
                 filteredCountries.map((country, idx) => (
@@ -443,8 +448,8 @@ export default function Threats() {
                         m.role === "user"
                           ? "bg-blue-600 text-white"
                           : m.role === "error"
-                          ? "bg-red-50 text-red-700 border border-red-200"
-                          : "bg-white text-gray-900 border border-gray-200"
+                            ? "bg-red-50 text-red-700 border border-red-200"
+                            : "bg-white text-gray-900 border border-gray-200"
                       )}
                     >
                       {m.role === "assistant" ? (

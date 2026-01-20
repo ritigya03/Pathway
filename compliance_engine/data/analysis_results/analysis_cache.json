@@ -1,109 +1,12 @@
 {
-  "Nexvora Spoofed Profile": {
-    "score": 55,
-    "risk": "high",
-    "violations": [
-      "1. Supplier exhibits a lookalike domain, violating identity_checks.spoofing_signs.",
-      "2. Supplier lacks detailed compliance and governance information, violating governance_checks.must_have."
-    ],
-    "timestamp": "2026-01-18T16:21:52.273275",
-    "buyer_name": "Orbinex Components Ltd."
-  },
   "Nexvora Legitimate Profile": {
-    "score": 90,
-    "risk": "low",
-    "violations": [
-      "1. Orbinex Components Ltd. missing official domain and registration ID, violating identity_checks.required_fields."
-    ],
-    "timestamp": "2026-01-18T16:23:05.266592",
-    "buyer_name": "Orbinex Components Ltd."
-  },
-  "BlueCrest Manufacturing Co": {
     "score": 75,
     "risk": "medium",
     "violations": [
-      "1. Supplier BlueCrest Manufacturing Co. failed to provide required identity information. [compliance_policy.jsonl: identity_checks.required_fields]",
-      "2. Supplier BlueCrest Manufacturing Co. has a vague compliance statement. [compliance_policy.jsonl: governance_checks.red_flags]"
+      "1. Missing registration_id for Orbinex Corporate Ltd. [compliance_policy.jsonl: identity_checks.required_fields]",
+      "2. Detection of a spoofed profile for Nexvora Industries Pvt Ltd. [compliance_policy.jsonl: identity_checks.spoofing_signs]"
     ],
-    "timestamp": "2026-01-18T16:28:45.854909",
-    "buyer_name": "Orbinex Components Ltd."
-  },
-  "Alturon Global Solutions": {
-    "score": 75,
-    "risk": "medium",
-    "violations": [
-      "1. Alturon Global Solutions missing required identity information. [compliance_policy.jsonl: identity_checks.required_fields]",
-      "2. Alturon Global Solutions has vague compliance language. [compliance_policy.jsonl: governance_checks.red_flags.vague_compliance_language]"
-    ],
-    "timestamp": "2026-01-18T16:29:37.700193",
-    "buyer_name": "Orbinex Components Ltd."
-  },
-  "Solvex Trade & Sourcing": {
-    "score": 75,
-    "risk": "medium",
-    "violations": [
-      "1. Supplier contract lock-in period of 5 years exceeds the legitimate range. [compliance_policy.jsonl: contract_rules -> legitimate -> lock_in_years]",
-      "2. Supplier classified as a Restricted Trade Entity due to operational inaccessibility."
-    ],
-    "timestamp": "2026-01-18T16:30:23.582698",
-    "buyer_name": "Orbinex Components Ltd."
-  },
-  "PrimeAxis Industrial Works": {
-    "score": 75,
-    "risk": "medium",
-    "violations": [
-      "1. PrimeAxis Industrial Works has a minimum lock-in period of 5 years, which falls under the restricted contract rules. [compliance_policy.jsonl: contract_rules.restricted.lock_in_years]"
-    ],
-    "timestamp": "2026-01-18T16:31:04.220372",
-    "buyer_name": "Orbinex Components Ltd."
-  },
-  "Kalyx Materials Group": {
-    "score": 90,
-    "risk": "low",
-    "violations": [
-      "1. Missing required identity information for Orbinex Components Ltd. [compliance_policy.jsonl: identity_checks.required_fields]",
-      "2. Missing required identity information for Kalyx Materials Group. [compliance_policy.jsonl: identity_checks.required_fields]"
-    ],
-    "timestamp": "2026-01-18T16:31:31.624084",
-    "buyer_name": "Orbinex Components Ltd."
-  },
-  "Zenlith Logistics Corp": {
-    "score": 75,
-    "risk": "medium",
-    "violations": [
-      "1. Missing required identity information for both buyer and supplier. [compliance_policy.jsonl: identity_checks -> required_fields]"
-    ],
-    "timestamp": "2026-01-18T16:32:19.874532",
-    "buyer_name": "Orbinex Components Ltd."
-  },
-  "Orbinex Components Ltd": {
-    "score": 75,
-    "risk": "medium",
-    "violations": [
-      "1. Missing official_domain for Supplier (Orbinex Components Ltd) - identity_checks.required_fields",
-      "2. Missing registration_id for Supplier (Orbinex Components Ltd) - identity_checks.required_fields"
-    ],
-    "timestamp": "2026-01-18T16:33:49.237217",
-    "buyer_name": "Orbinex Components Ltd."
-  },
-  "StratEdge Enterprises": {
-    "score": 75,
-    "risk": "medium",
-    "violations": [
-      "1. Missing required identity fields for both buyer and supplier. [compliance_policy.jsonl: identity_checks.required_fields]",
-      "2. Potential misrepresentation or shell company activity due to identical profiles."
-    ],
-    "timestamp": "2026-01-18T16:34:52.719093",
-    "buyer_name": "Orbinex Components Ltd."
-  },
-  "Veridion Supply Systems": {
-    "score": 75,
-    "risk": "medium",
-    "violations": [
-      "1. Missing required identity fields for both buyer and supplier. [compliance_policy.jsonl: identity_checks -> required_fields]",
-      "2. Potential copied branding by the supplier. [compliance_policy.jsonl: identity_checks -> spoofing_signs -> copied_branding]"
-    ],
-    "timestamp": "2026-01-18T16:36:11.624421",
-    "buyer_name": "Orbinex Components Ltd."
+    "timestamp": "2026-01-19T10:32:42.171728",
+    "buyer_name": "Orbinex Corporate Ltd"
   }
 }

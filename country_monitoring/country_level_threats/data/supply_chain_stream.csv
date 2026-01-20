@@ -11,3 +11,5 @@ record_id,buyer_firm,supplier_firm,contract_id,product_name,product_category,qua
 10,ZentivoCorp,Noventra Labs,CTR-2002,Bio Solvents,Chemicals,2000,kg,2025-02-01,2026-02-01,2026-01-07,Germany,Bavaria,Munich,India,Pharmaceuticals,Air,Low
 11,ZentivoCorp,Quorvia Systems,CTR-3003,Electronic Sensors,Electronics,5000,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
 12,ZentivoCorp,Quorvia Systems,CTR-3003,Control Boards,Electronics,4200,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
+13,ZentivoCorp,Quorvia Systems,CTR-3003,IoT Modules,Electronics,3600,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium
+14,ZentivoCorp,Quorvia Systems,CTR-3003,Power Units,Electronics,2800,units,2025-03-01,2026-03-01,2026-01-10,Vietnam,Binh Duong,Thu Dau Mot,India,Electronics,Sea,Medium

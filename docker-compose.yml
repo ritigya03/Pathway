@@ -1,0 +1,90 @@
+services:
+  # 1. Geopolitical & Operational Threat Monitor
+  # Monitos country-level threats from real-time news streams
+  threat-monitor:
+    build: 
+      context: ./country_monitoring/country_level_threats
+      dockerfile: Dockerfile
+    container_name: country-threat-monitor
+    ports:
+      - "8081:8081" # FastAPI Proxy
+      - "8082:8082" # Pathway RAG API
+    volumes:
+      - ./country_monitoring/country_level_threats/data:/app/data
+      - ./country_monitoring/country_level_threats/output:/app/output
+      - ./country_monitoring/country_level_threats/credentials.json:/app/credentials.json:ro
+    env_file:
+      - ./country_monitoring/country_level_threats/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  # 2. Supply Chain Data Stream Simulator
+  # Simulates fresh data arriving for the threat monitor
+  stream-simulator:
+    build:
+      context: ./country_monitoring/simulate_data_stream
+      dockerfile: Dockerfile
+    container_name: stream-simulator
+    volumes:
+      - ./country_monitoring/country_level_threats/data:/app/data_out
+      - ./country_monitoring/simulate_data_stream:/app/simulate_data_stream
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MASTER_FILE=/app/simulate_data_stream/master_supply_chain.csv
+      - STREAM_FILE=/app/data_out/supply_chain_stream.csv
+    depends_on:
+      - threat-monitor
+    restart: unless-stopped
+
+  # 3. Compliance Engine
+  # Analyzes supplier documents for policy compliance
+  compliance-engine:
+    build: 
+      context: ./compliance_engine
+    container_name: pathway-compliance-api
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./compliance_engine/data:/app/data
+      - ./compliance_engine/app.py:/app/app.py
+      - ./compliance_engine/api.py:/app/api.py
+    env_file:
+      - ./compliance_engine/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  # 4. Reputation Risk Monitoring
+  # Monitors supplier reputation and fraud indicators
+  reputation-monitoring:
+    build: 
+      context: ./reputation_monitoring
+    container_name: reputation-monitoring
+    ports:
+      - "8002:8002" # Pathway RAG API
+      - "8083:8083" # FastAPI Proxy
+    volumes:
+      - ./reputation_monitoring/data:/app/data
+      - ./reputation_monitoring/output:/app/output
+      - ./reputation_monitoring/credentials.json:/app/credentials.json:ro
+      - ./reputation_monitoring/policies:/app/policies:ro
+    env_file:
+      - ./reputation_monitoring/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  # 5. Frontend UI (Dashboard)
+  # Accessible at http://localhost:3000
+  frontend:
+    build:
+      context: ./frontend
+    container_name: supply-chain-frontend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    depends_on:
+      - threat-monitor
+      - compliance-engine
+      - reputation-monitoring

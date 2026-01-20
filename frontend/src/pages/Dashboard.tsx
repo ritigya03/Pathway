@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { RiskBadge } from "@/components/ui/status-badge";
-import { 
-  Building2, 
-  TrendingUp, 
-  AlertTriangle, 
+import {
+  Building2,
+  TrendingUp,
+  AlertTriangle,
   CheckCircle2,
   FileText,
   ChevronRight,
@@ -15,8 +15,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Import all threat graph components
-import { 
-  ComplianceRiskChart, 
+import {
+  ComplianceRiskChart,
   ComplianceScoreChart,
   OperationalPerformanceChart,
   OperationalCapacityChart,
@@ -26,7 +26,7 @@ import {
   ReputationalESGChart
 } from "../components/ThreatGraphs";
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = "http://localhost:8001";
 
 export default function Dashboard() {
   const [suppliers, setSuppliers] = useState([]);
@@ -72,7 +72,7 @@ export default function Dashboard() {
   const calculateStats = (supplierList) => {
     const total = supplierList.length;
     const analyzed = supplierList.filter(s => s.score > 0);
-    const avgScore = analyzed.length > 0 
+    const avgScore = analyzed.length > 0
       ? Math.round(analyzed.reduce((sum, s) => sum + s.score, 0) / analyzed.length)
       : 0;
     const highRisk = supplierList.filter(s => s.risk === 'high').length;
@@ -89,14 +89,12 @@ export default function Dashboard() {
     <Card>
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
-          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-            trend === "warning" 
-              ? "bg-warning/10 border border-warning/30" 
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${trend === "warning"
+              ? "bg-warning/10 border border-warning/30"
               : "bg-accent border border-primary/20"
-          }`}>
-            <Icon className={`w-5 h-5 ${
-              trend === "warning" ? "text-warning" : "text-primary"
-            }`} />
+            }`}>
+            <Icon className={`w-5 h-5 ${trend === "warning" ? "text-warning" : "text-primary"
+              }`} />
           </div>
           {trend === "up" && <TrendingUp className="w-4 h-4 text-success" />}
         </div>
@@ -141,28 +139,28 @@ export default function Dashboard() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <StatCard 
+          <StatCard
             icon={Building2}
             label="Total Suppliers"
             value={stats.totalSuppliers}
             change={`${stats.analyzedCount} analyzed`}
             trend="neutral"
           />
-          <StatCard 
+          <StatCard
             icon={CheckCircle2}
             label="Avg Compliance Score"
             value={`${stats.avgCompliance}%`}
             change={stats.analyzedCount > 0 ? "Based on analyzed suppliers" : "No analysis yet"}
             trend={stats.avgCompliance >= 80 ? "up" : "neutral"}
           />
-          <StatCard 
+          <StatCard
             icon={AlertTriangle}
             label="High Risk Suppliers"
             value={stats.highRiskCount}
             change={stats.highRiskCount > 0 ? "Requires attention" : "All clear"}
             trend={stats.highRiskCount > 0 ? "warning" : "neutral"}
           />
-          <StatCard 
+          <StatCard
             icon={FileText}
             label="Documents Analyzed"
             value={stats.analyzedCount}
@@ -258,7 +256,7 @@ export default function Dashboard() {
                     .filter(s => s.score > 0)
                     .slice(0, 5)
                     .map((supplier) => (
-                      <div 
+                      <div
                         key={supplier.id}
                         className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border hover:border-primary/20 transition-colors"
                       >
@@ -313,7 +311,7 @@ export default function Dashboard() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Compliance Rate</span>
                     <span className="font-bold text-primary">
-                      {stats.analyzedCount > 0 
+                      {stats.analyzedCount > 0
                         ? Math.round((suppliers.filter(s => s.score >= 70).length / stats.analyzedCount) * 100)
                         : 0}%
                     </span>
@@ -341,7 +339,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </a>
-          
+
           <a href="/register" className="block">
             <Card className="hover:border-success/30 hover:shadow-md transition-all group h-full">
               <CardContent className="p-6">
